@@ -9,7 +9,7 @@ from launch_ros.actions import Node
 from launch.events import Shutdown
 from pathlib import Path
 
-PACKAGE_NAME = "ros2_omni_robot_sim"
+PACKAGE_NAME = "simbot_gz"
 
 ARGUMENTS = [
     DeclareLaunchArgument('world', default_value='maze_2_brick.sdf', description='Gazebo World file (with extension)'),
@@ -167,7 +167,7 @@ def generate_launch_description():
     )
 
     tf_republisher_node = Node(
-        package='ros2_omni_robot_sim',
+        package='simbot_gz',
         executable='mecanum_tf_republisher.py',
         name='tf_republisher',
         output='screen'
@@ -189,11 +189,11 @@ def generate_launch_description():
     
     
     sim_extras_node = Node(
-        package='ros2_omni_robot_sim',
+        package='simbot_gz',
         executable='sim_extras_publisher_async.py',
         name='sim_extras_publisher',
         parameters=[PathJoinSubstitution([
-            FindPackageShare('ros2_omni_robot_sim'),
+            FindPackageShare('simbot_gz'),
             'config',
             'sim_extras_config.yaml'
         ])],
@@ -215,14 +215,14 @@ def generate_launch_description():
 
     # Launch the camera joint service node
     camera_joint_service_node = Node(
-        package='ros2_omni_robot_sim',
+        package='simbot_gz',
         executable='camera_joint_service.py',
         name='camera_joint_service',
         output='screen',
     )
 
     set_camera_joint_position_pub_node = Node(
-        package='ros2_omni_robot_sim',
+        package='simbot_gz',
         executable='set_camera_joint_position_pub.py',
         name='set_camera_joint_position_pub',
         output='screen',

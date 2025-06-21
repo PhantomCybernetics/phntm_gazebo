@@ -10,8 +10,8 @@
       <render_engine>optix</render_engine>  <!-- For NVIDIA GPUs -->
     </plugin>
     <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu"/>
-    <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-      <parameters>/ros2_ws/install/ros2_omni_robot_sim/share/ros2_omni_robot_sim/config/controller_configs/controller_config_4w_mecanum_waffle.yaml</parameters>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>/ros2_ws/install/simbot_gz/share/simbot_gz/config/controller_configs/controller_config_4w_mecanum_waffle.yaml</parameters>
       <ros>
         <remapping>~/odometry:=/odom</remapping>
         <remapping>~/tf_odometry:=/tf</remapping>
@@ -21,7 +21,7 @@
   </gazebo>
   <ros2_control name="IgnitionSystem" type="system">
     <hardware>
-      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+      <plugin>gz_ros2_control/IgnitionSystem</plugin>
     </hardware>
     <joint name="mecanum_wheel_joint_fl">
       <command_interface name="velocity">
@@ -61,7 +61,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="-0.064 0 0.047"/>
       <geometry>
-        <mesh filename="/root/ros2_ws/src/ros2_omni_robot_sim/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="/root/ros2_ws/src/simbot_gz/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="red">
         <color rgba="1 0 0 1"/>
@@ -98,7 +98,7 @@
     <visual>
       <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="/root/ros2_ws/src/ros2_omni_robot_sim/meshes/mecanum_a.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/root/ros2_ws/src/simbot_gz/meshes/mecanum_a.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <collision>
@@ -141,7 +141,7 @@
     <visual>
       <origin rpy="0.0 0.0 3.141592653589793" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="/root/ros2_ws/src/ros2_omni_robot_sim/meshes/mecanum_b.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/root/ros2_ws/src/simbot_gz/meshes/mecanum_b.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <collision>
@@ -184,7 +184,7 @@
     <visual>
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="/root/ros2_ws/src/ros2_omni_robot_sim/meshes/mecanum_b.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/root/ros2_ws/src/simbot_gz/meshes/mecanum_b.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <collision>
@@ -227,7 +227,7 @@
     <visual>
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
       <geometry>
-        <mesh filename="/root/ros2_ws/src/ros2_omni_robot_sim/meshes/mecanum_a.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/root/ros2_ws/src/simbot_gz/meshes/mecanum_a.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <collision>
@@ -259,7 +259,7 @@
     <visual>
       <origin rpy="0 0 3.1416"/>
       <geometry>
-        <mesh filename="/root/ros2_ws/src/ros2_omni_robot_sim/meshes/camera.stl"/>
+        <mesh filename="/root/ros2_ws/src/simbot_gz/meshes/camera.stl"/>
       </geometry>
       <material name="black">
         <color rgba="0 0 0 1"/>
@@ -314,7 +314,7 @@
     <visual>
       <origin rpy="0 0 3.1416"/>
       <geometry>
-        <mesh filename="/root/ros2_ws/src/ros2_omni_robot_sim/meshes/camera.stl"/>
+        <mesh filename="/root/ros2_ws/src/simbot_gz/meshes/camera.stl"/>
       </geometry>
       <material name="black">
         <color rgba="0 0 0 1"/>

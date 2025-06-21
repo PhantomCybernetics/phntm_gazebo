@@ -6,7 +6,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
 
-PACKAGE_NAME = "ros2_omni_robot_sim"
+PACKAGE_NAME = "simbot_gz"
 
 ARGUMENTS = [
     DeclareLaunchArgument('world', 

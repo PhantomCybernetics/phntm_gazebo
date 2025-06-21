@@ -7,19 +7,19 @@
 - ros_topic_name: "/imu"
   gz_topic_name: "/imu"
   ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "ignition.msgs.IMU"
+  gz_type_name: "gz.msgs.IMU"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/scan"
   gz_topic_name: "/scan"
   ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "ignition.msgs.LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/rgb_front"
   gz_topic_name: "/rgb_front"
   ros_type_name: "sensor_msgs/msg/Image"
-  gz_type_name: "ignition.msgs.Image"
+  gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/rgb_front/camera_info"
@@ -31,7 +31,7 @@
 - ros_topic_name: "/rgb_back"
   gz_topic_name: "/rgb_back"
   ros_type_name: "sensor_msgs/msg/Image"
-  gz_type_name: "ignition.msgs.Image"
+  gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/rgb_back/camera_info"
@@ -43,7 +43,7 @@
 - ros_topic_name: "/rgb_top"
   gz_topic_name: "/rgb_top"
   ros_type_name: "sensor_msgs/msg/Image"
-  gz_type_name: "ignition.msgs.Image"
+  gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/rgb_top/camera_info"
@@ -55,25 +55,25 @@
 - ros_topic_name: "/range_fr"
   gz_topic_name: "/range_fr"
   ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "ignition.msgs.LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/range_fl"
   gz_topic_name: "/range_fl"
   ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "ignition.msgs.LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/range_rr"
   gz_topic_name: "/range_rr"
   ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "ignition.msgs.LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
 - ros_topic_name: "/range_rl"
   gz_topic_name: "/range_rl"
   ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "ignition.msgs.LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
 

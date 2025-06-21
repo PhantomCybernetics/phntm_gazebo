@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:ignition="http://gazebosim.com/schema">
-  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/simple_wheel.urdf.xacro"/>
-  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
-  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/camera.urdf.xacro"/>
-  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/lidar.urdf.xacro"/>
-  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/ray.urdf.xacro"/>
-  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/imu.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/4w_mecanum_waffle/simple_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/4w_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/4w_mecanum_waffle/camera.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/4w_mecanum_waffle/lidar.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/4w_mecanum_waffle/ray.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/4w_mecanum_waffle/imu.urdf.xacro"/>
 
   <xacro:property name="base_visual_offset" value="-0.064 0 0.047"/>
   <xacro:property name="base_collision_offset" value="-0.064 0 0.097"/>
@@ -21,7 +21,7 @@
       <visual>
       <origin xyz="${base_visual_offset}" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://ros2_omni_robot_sim/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
+          <mesh filename="package://simbot_gz/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
         </geometry>
         <material name="red">
  		<color rgba="1 0 0 1" />	

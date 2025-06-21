@@ -6,7 +6,7 @@
         <visual>
         <origin rpy="0 0 3.1416"/>
           <geometry>
-            <mesh filename="package://ros2_omni_robot_sim/meshes/camera.stl" />
+            <mesh filename="package://simbot_gz/meshes/camera.stl" />
           </geometry>
           <material name="black">
             <color rgba="0 0 0 1" />
@@ -74,7 +74,7 @@
         <visual>
           <origin rpy="0 0 3.1416"/>
           <geometry>
-            <mesh filename="package://ros2_omni_robot_sim/meshes/camera.stl" />
+            <mesh filename="package://simbot_gz/meshes/camera.stl" />
           </geometry>
           <material name="black">
             <color rgba="0 0 0 1" />

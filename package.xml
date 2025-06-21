@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>wafflebot-gz-harmonic-sim</name>
+  <name>simbot_gz</name>
   <version>0.0.1</version>
-  <description>Phantom Wafflebot Gazebo Sim</description>
+  <description>Phantom Gazebo Simbot</description>
   <maintainer email="mirek@phntm.io">Mirek Burkon</maintainer>
   <license>MIT</license>
 

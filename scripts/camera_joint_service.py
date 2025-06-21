@@ -3,7 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
-from ros2_omni_robot_sim.srv import SetFloat64, GetFloat64
+from simbot_gz.srv import SetFloat64, GetFloat64
 import threading
 from sensor_msgs.msg import JointState
 

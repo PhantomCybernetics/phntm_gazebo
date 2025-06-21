@@ -27,17 +27,29 @@ RUN apt-get install -y ros-$ROS_DISTRO-ros-gz \
     ros-$ROS_DISTRO-controller-manager \
     ros-$ROS_DISTRO-slam-toolbox
 
+RUN apt-get install -y \
+    libgz-common6-dev \
+    libgz-plugin3-dev
 RUN apt-get install -y libgz-rendering9-dev
 
 # init workspace
 ENV ROS_WS=/ros2_ws
 RUN mkdir -p $ROS_WS/src
+WORKDIR $ROS_WS
+
+# clone and install Phntm Interfaces
+RUN git clone https://github.com/PhantomCybernetics/phntm_interfaces.git /ros2_ws/src/phntm_interfaces
+RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
+    rosdep update --rosdistro $ROS_DISTRO && \
+    rosdep install -i --from-path src/phntm_interfaces --rosdistro $ROS_DISTRO -y && \
+    colcon build --symlink-install --packages-select phntm_interfaces
 
 # build the sim
-# RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-#     . /ros2_ws/install/setup.sh && \
-#     rosdep install -i --from-path src/simbot_gz --rosdistro $ROS_DISTRO -y && \
-#     colcon build --symlink-install --packages-select simbot_gz
+COPY ./ $ROS_WS/src/simbot_gz
+RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
+    . /ros2_ws/install/setup.sh && \
+    rosdep install -i --from-path src/simbot_gz --rosdistro $ROS_DISTRO -y && \
+    colcon build --symlink-install --packages-select simbot_gz
 
 # generate entrypoint script
 RUN echo '#!/bin/bash \n \

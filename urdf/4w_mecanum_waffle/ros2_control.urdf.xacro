@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <ros2_control name="IgnitionSystem" type="system">
         <hardware>
-            <plugin>ign_ros2_control/IgnitionSystem</plugin>
+            <plugin>gz_ros2_control/IgnitionSystem</plugin>
         </hardware>
         <joint name="mecanum_wheel_joint_fl">
             <command_interface name="velocity">

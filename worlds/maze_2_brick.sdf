@@ -13,18 +13,18 @@
   </dart>
     </physics>
     <plugin
-      filename="libgz-sim-physics-system"
+      filename="gz-sim-physics-system"
 	    name="gz::sim::systems::Physics">
 	 <engine>
-    		<filename>gz-sim-physics-dartsim-plugin</filename>
+    		<filename>gz-physics-dartsim-plugin</filename>
   	</engine>
     </plugin>
     <plugin
-      filename="libgz-sim-user-commands-system.so"
-      name="gz::sim:systems::UserCommands">
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
     </plugin>
     <plugin
-      filename="libgz-sim-scene-broadcaster-system.so"
+      filename="gz-sim-scene-broadcaster-system"
       name="gz::sim::systems::SceneBroadcaster">
     </plugin>
 

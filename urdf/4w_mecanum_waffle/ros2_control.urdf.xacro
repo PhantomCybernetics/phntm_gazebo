@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <ros2_control name="IgnitionSystem" type="system">
+        <hardware>
+            <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </hardware>
+        <joint name="mecanum_wheel_joint_fl">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="mecanum_wheel_joint_fr">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="mecanum_wheel_joint_rl">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="mecanum_wheel_joint_rr">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="camera_joint_top">
+            <command_interface name="position">
+                <param name="min">-1000.0</param>      <!-- 4m back from 5.55 -->
+                <param name="max">1000.0</param>      <!-- 4m forward from 5.55 -->
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>
+    </ros2_control>
+</robot>

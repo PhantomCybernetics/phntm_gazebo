@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:ignition="http://gazebosim.com/schema">
+  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/simple_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/camera.urdf.xacro"/>
+  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/lidar.urdf.xacro"/>
+  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/ray.urdf.xacro"/>
+  <xacro:include filename="$(find ros2_omni_robot_sim)/urdf/4w_mecanum_waffle/imu.urdf.xacro"/>
+
+  <xacro:property name="base_visual_offset" value="-0.064 0 0.047"/>
+  <xacro:property name="base_collision_offset" value="-0.064 0 0.097"/>
+  <xacro:property name="base_collision_box_size" value="0.266 0.266 0.094"/>
+  <xacro:property name="wheel_z_offset" value="0.047"/>
+  <xacro:property name="front_wheel_x_offset" value="0.025"/>
+  <xacro:property name="rear_wheel_x_offset" value="-0.12"/>
+  <xacro:property name="left_wheel_y_offset" value="0.157"/>
+  <xacro:property name="right_wheel_y_offset" value="${-left_wheel_y_offset}"/>
+
+  <xacro:macro name="base_link" params="parent xyz rpy">
+    <link name="base_link">
+      <visual>
+      <origin xyz="${base_visual_offset}" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://ros2_omni_robot_sim/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="red">
+ 		<color rgba="1 0 0 1" />	
+	</material>
+
+      </visual>
+      <collision>
+      <origin xyz="${base_collision_offset}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_collision_box_size}"/>
+      </geometry>
+      </collision>
+      <inertial>
+        <mass value="3.0" />
+        <inertia 
+          ixx="0.9" ixy="0.0" ixz="0.0"
+          iyy="0.9" iyz="0.0"
+          izz="0.01"/>
+      </inertial>
+    </link>
+
+    <joint name="base_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="base_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+    </joint>
+
+    <!-- Childs -->
+    <!-- Front Left -->
+    <xacro:mecanum_wheel parent="base_link" suffix="fl"
+                        xyz="${front_wheel_x_offset} ${left_wheel_y_offset} ${wheel_z_offset}" 
+                        rpy="0 0 0"/>
+
+    <!-- Front Right -->
+    <xacro:mecanum_wheel parent="base_link" suffix="fr"
+                        xyz="${front_wheel_x_offset} ${right_wheel_y_offset} ${wheel_z_offset}" 
+                        rpy="0 0 0"/>
+
+    <!-- Rear Left -->
+    <xacro:mecanum_wheel parent="base_link" suffix="rl"
+                        xyz="${rear_wheel_x_offset} ${left_wheel_y_offset} ${wheel_z_offset}" 
+                        rpy="0 0 0"/>
+
+    <!-- Rear Right -->
+    <xacro:mecanum_wheel parent="base_link" suffix="rr"
+                        xyz="${rear_wheel_x_offset} ${right_wheel_y_offset} ${wheel_z_offset}" 
+                        rpy="0 0 0"/>
+
+
+
+    <xacro:camera2 parent="base_link" suffix="front" xyz="0.07 -0.0000 0.1030" rpy="0 0 0" visualize_model="true"/>
+    <xacro:camera2 parent="base_link" suffix="back" 
+               xyz="-0.195 0.0000 0.1030" 
+               rpy="0 0 3.14159"
+                visualize_model="true"/>
+    <!-- Top-Down Camera as moving camera -->
+    <xacro:moving_camera2 parent="base_link" suffix="top"
+               xyz="0.0 0.0 0.0"   
+               rpy="0 1.5708 0"
+               visualize_model="false"
+               lower="-1000" upper="1000" effort="100" velocity="100000.0"/>
+
+    <xacro:lidar parent="base_link" suffix="1" xyz="0.0000 0.0000 .1510" rpy="0 0 0"/>
+    <xacro:imu parent="base_link" suffix="1" xyz="0 0 0" rpy="0 0 0"/>
+    <xacro:range_sensor parent="base_link" suffix="fr" xyz="0.065 -0.10 0.08" rpy="0.0 0.0 0.0"/>
+    <xacro:range_sensor parent="base_link" suffix="fl" xyz="0.065 0.10 0.08" rpy="0.0 0.0 0.0"/>
+    <xacro:range_sensor parent="base_link" suffix="rr" xyz="-0.19 -0.10 0.08" rpy="0.0 0.0 3.1416"/>
+    <xacro:range_sensor parent="base_link" suffix="rl" xyz="-0.19 0.10 0.08" rpy="0.0 0.0 3.1416"/>
+
+
+  </xacro:macro>
+</robot>

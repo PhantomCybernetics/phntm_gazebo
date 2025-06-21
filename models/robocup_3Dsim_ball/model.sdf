@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="soccer_ball">
+    <static>false</static>
+    <link name="soccer_ball_link">
+      <!-- Raise ball center by new radius (0.2) so it rests on the ground -->
+      <pose>0 0 0.2 0 0 0</pose>
+      <inertial>
+        <mass>0.026</mass>
+        <!-- Adjust inertia: I = 2/5 * m * r^2 = 2/5 * 0.026 * 0.2^2 -->
+        <inertia>
+          <ixx>4.16e-4</ixx>
+          <iyy>4.16e-4</iyy>
+          <izz>4.16e-4</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <sphere>
+            <radius>0.2</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <!-- Setting friction to moderate values; adjust as needed -->
+              <mu>5.0</mu>
+              <mu2>5.0</mu2>
+            </ode>
+          </friction>
+          <bounce>
+            <restitution_coefficient>0.1</restitution_coefficient>
+            <threshold>1.0</threshold>
+          </bounce>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <scale>0.2 0.2 0.2</scale>
+            <uri>model://robocup_3Dsim_ball/meshes/ball.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <!-- Nonzero values here will help slow the ball's motion -->
+        <linear>0.5</linear>
+        <angular>0.5</angular>
+      </velocity_decay>
+    </link>
+  </model>
+</sdf>
+

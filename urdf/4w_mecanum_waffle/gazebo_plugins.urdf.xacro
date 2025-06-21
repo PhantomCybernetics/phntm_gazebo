@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <gazebo>
+    <plugin filename="libignition-gazebo-sensors-system.so"
+      name="ignition::gazebo::systems::Sensors">
+      <engine>ogre2</engine>
+      <render_engine>optix</render_engine>
+    </plugin>
+    <plugin name="ignition::gazebo::systems::Imu" filename="libignition-gazebo-imu-system.so" />
+    <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+      <parameters>$(find ros2_omni_robot_sim)/config/controller_configs/controller_config_4w_mecanum_waffle.yaml</parameters>
+      <ros>
+        <remapping>~/odometry:=/odom</remapping>
+        <remapping>~/reference_unstamped:=/cmd_vel</remapping>
+	<remapping>~/tf_odometry:=/tf</remapping>
+      </ros>
+    </plugin>
+  </gazebo>
+</robot>

@@ -1,0 +1,94 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 30
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    wheel1_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    wheel2_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    wheel3_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    wheel4_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    mecanum_controller:
+      type: mecanum_drive_controller/MecanumDriveController
+
+    camera_joint_top_position_controller:
+      type: position_controllers/JointGroupPositionController  
+
+joint_state_broadcaster:
+  ros__parameters:
+    publish_rate: 30.0
+
+wheel1_controller:
+  ros__parameters:
+    joints:
+      - mecanum_wheel_joint_fl
+
+wheel2_controller:
+  ros__parameters:
+    joints:
+      - mecanum_wheel_joint_fr
+
+wheel3_controller:
+  ros__parameters:
+    joints:
+      - mecanum_wheel_joint_rl
+
+wheel4_controller:
+  ros__parameters:
+    joints:
+      - mecanum_wheel_joint_rr
+
+mecanum_controller:
+  ros__parameters:
+    front_left_wheel_command_joint_name: mecanum_wheel_joint_fl
+    front_right_wheel_command_joint_name: mecanum_wheel_joint_fr
+    rear_left_wheel_command_joint_name: mecanum_wheel_joint_rl
+    rear_right_wheel_command_joint_name: mecanum_wheel_joint_rr
+
+    command_interfaces:
+      - velocity
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 30.0     # For internal state publishing
+    odom_publish_rate: 30.0      # For /odom topic
+    publish_rate: 30.0           # For TF (/tf)
+
+    kinematics:
+      wheels_radius: 0.05
+      sum_of_robot_center_projection_on_X_Y_axis: 0.20
+
+    base_frame_id: base_footprint
+    odom_frame_id: odom
+    odom_topic: /odom
+    use_stamped_vel: false
+    enable_odom_tf: true
+
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+    pose_covariance_diagonal:  [0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+
+    reference_timeout: 0.5
+
+camera_joint_top_position_controller:
+  ros__parameters:
+    joints:
+      - camera_joint_top
+    interface_name: position
+    state_publish_rate: 30.0
+    command_publish_rate: 30.0
+    # Optionally, you can set PID gains here if needed
+    # pid:
+    #   p: 1.0
+    #   i: 0.0
+    #   d: 0.0

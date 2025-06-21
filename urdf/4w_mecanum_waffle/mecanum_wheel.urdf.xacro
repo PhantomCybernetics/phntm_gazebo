@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" xmlns:ignition="http://gazebosim.com/schema">
+
+  <!-- Parameterized Mecanum Wheel Macro -->
+  <xacro:macro name="mecanum_wheel" params="parent suffix xyz rpy">
+
+  <xacro:property name="suffix_param" value="${suffix}"/>
+    <!-- Constants for Mecanum Wheels -->
+    <xacro:property name="wheel_radius" value="0.05"/>
+    <xacro:property name="wheel_thickness" value="0.0455"/>
+    <xacro:property name="mass" value="100.153"/>
+    <xacro:property name="ixx" value="0.000111"/>
+    <xacro:property name="iyy" value="0.000169"/>
+    <xacro:property name="izz" value="0.000111"/>
+    <xacro:property name="visual_rotation" value="0.0"/> <!-- might be updated-->
+     <xacro:property name="mesh" value="package://ros2_omni_robot_sim/meshes/3w_v2/omni_frame.stl"/> <!-- might be updated-->
+     <xacro:property name="fdir" value="1.0 -1.0 0.0"/> <!-- might be updated-->
+
+    <!-- Assign meshes and friction directions based on suffix -->
+    <xacro:if value="${suffix_param == 'fl'}">
+      <xacro:property name="mesh" value="package://ros2_omni_robot_sim/meshes/mecanum_a.dae"/>
+      <xacro:property name="visual_rotation" value="0.0"/>
+      <xacro:property name="fdir" value="1 -1 0"/>
+    </xacro:if>
+    <xacro:if value="${suffix_param == 'fr'}">
+      <xacro:property name="mesh" value="package://ros2_omni_robot_sim/meshes/mecanum_b.dae"/>
+      <xacro:property name="visual_rotation" value="0.0"/>
+      <xacro:property name="fdir" value="1 1 0"/>
+    </xacro:if>
+    <xacro:if value="${suffix_param == 'rl'}">
+      <xacro:property name="mesh" value="package://ros2_omni_robot_sim/meshes/mecanum_b.dae"/>
+      <xacro:property name="visual_rotation" value="0.0"/>
+      <xacro:property name="fdir" value="1 1 0"/>
+    </xacro:if>
+    <xacro:if value="${suffix_param == 'rr'}">
+      <xacro:property name="mesh" value="package://ros2_omni_robot_sim/meshes/mecanum_a.dae"/>
+      <xacro:property name="visual_rotation" value="0.0"/>
+      <xacro:property name="fdir" value="1 -1 0"/>
+    </xacro:if>
+
+    <!-- Joint Definition -->
+    <joint name="mecanum_wheel_joint_${suffix}" type="continuous">
+      <parent link="${parent}"/>
+      <child link="mecanum_wheel_link_${suffix}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <axis xyz="0.0 1.0 0.0"/>
+      <limit effort="100.0" velocity="100.0"/>
+      <dynamics damping="0.01" friction="0.01"/>
+    </joint>
+
+    <!-- Wheel Link -->
+    <link name="mecanum_wheel_link_${suffix}">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${ visual_rotation- pi}"/>
+        <geometry>
+          <mesh filename="${mesh}" scale="1.0 1.0 1.0"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${mass}"/>
+        <inertia ixx="${ixx}" ixy="0.0" ixz="0.0" iyy="${iyy}" iyz="0.0" izz="${izz}"/>
+      </inertial>
+    </link>
+
+    <!-- Gazebo Friction -->
+    <gazebo reference="mecanum_wheel_link_${suffix}">
+      <collision>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>0.0</mu2>
+	      <fdir1 ignition:expressed_in="base_footprint">${fdir}</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </gazebo>
+
+  </xacro:macro>
+</robot>
+

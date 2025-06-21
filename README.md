@@ -1,4 +1,6 @@
-# Simbot
+# Gazebo Simbot
+
+Headless Gazebo sim with GPU rendering used as a demo but also for internal development & testing purposes.
 
 ### Clone this repo and build the Docker image
 ```bash

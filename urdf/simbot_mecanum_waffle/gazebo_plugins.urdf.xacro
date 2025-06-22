@@ -2,13 +2,13 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <gazebo>
     <plugin filename="libgz-sim-sensors-system.so"
-      name="ignition::gazebo::systems::Sensors">
+      name="gz::sim::systems::Sensors">
       <engine>ogre2</engine>
       <render_engine>optix</render_engine>
     </plugin>
     <plugin name="gz::sim::systems::Imu" filename="gz-sim-imu-system" />
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-      <parameters>$(find simbot_gz)/config/controller_configs/controller_config_4w_mecanum_waffle.yaml</parameters>
+      <parameters>$(find simbot_gz)/config/controller_configs/controller_config_simbot_mecanum_waffle.yaml</parameters>
       <ros>
         <remapping>~/odometry:=/odom</remapping>
         <remapping>~/reference_unstamped:=/cmd_vel</remapping>

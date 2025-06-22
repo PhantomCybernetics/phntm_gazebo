@@ -11,7 +11,7 @@
     </plugin>
     <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu"/>
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-      <parameters>/ros2_ws/install/simbot_gz/share/simbot_gz/config/controller_configs/controller_config_4w_mecanum_waffle.yaml</parameters>
+      <parameters>/ros2_ws/install/simbot_gz/share/simbot_gz/config/controller_configs/controller_config_simbot_mecanum_waffle.yaml</parameters>
       <ros>
         <remapping>~/odometry:=/odom</remapping>
         <remapping>~/tf_odometry:=/tf</remapping>

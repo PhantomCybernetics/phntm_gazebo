@@ -20,19 +20,19 @@ ARGUMENTS = [
 ]
 
 robot_model_list = [
-    '3w', 
-    '3w_v2',
-    '4w',
-    '5w',
-    '6w',
-    '4w_mecanum_waffle'
+    # '3w', 
+    # '3w_v2',
+    # '4w',
+    # '5w',
+    # '6w',
+    'simbot_mecanum_waffle'
 ]
 
 def generate_launch_description():
-    robot_model = os.environ.get("OMNI_ROBOT_MODEL", "4w_mecanum_waffle")
+    robot_model = os.environ.get("ROBOT_MODEL", "simbot_mecanum_waffle")
 
     if robot_model not in robot_model_list:
-        error_msg = f"The robot model specified in environment variable OMNI_ROBOT_MODEL is '{robot_model}', which is unknown.\nPlease choose from the following options:\n"
+        error_msg = f"The robot model specified in environment variable ROBOT_MODEL is '{robot_model}', which is unknown.\nPlease choose from the following options:\n"
 
         for model in robot_model_list:
             error_msg += f"- {model}\n"
@@ -42,7 +42,8 @@ def generate_launch_description():
         return LaunchDescription([
             EmitEvent(event=Shutdown(reason='Invalid robot model specified'))
         ])
-
+    
+    print("Robot model: ", robot_model)
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
 
     # Source Environment (Need it to be able find mesh files)
@@ -63,20 +64,28 @@ def generate_launch_description():
     )
     
     append_ign_path = AppendEnvironmentVariable(
-    name='IGN_GAZEBO_RESOURCE_PATH',
-    value='/ros2_ws/src/'
+        name='IGN_GAZEBO_RESOURCE_PATH',
+        value='/ros2_ws/src/'
     )
     
     append_gz_path = AppendEnvironmentVariable(
-    name='GZ_SIM_RESOURCE_PATH',
-    value='/ros2_ws/src/'
+        name='GZ_SIM_RESOURCE_PATH',
+        value='/ros2_ws/src/'
     )
 
     # Create a robot_state_publisher node
     pkg_path = get_package_share_directory(PACKAGE_NAME)
     xacro_file = os.path.join(pkg_path,'urdf', robot_model, 'main.urdf.xacro')
-    robot_description_config = Command(['xacro ', xacro_file])
+    print(f"Loading {xacro_file}...")
+    try:
+        robot_description_config = Command(['xacro ', xacro_file])
+    except():
+        return LaunchDescription([
+            EmitEvent(event=Shutdown(reason=f'Failed loading {xacro_file}'))
+        ])
     
+    print(f"Creating state publisher...")
+
     params = {'robot_description': robot_description_config, 'use_sim_time': use_sim_time, 'publish_frequency': 30.0}
     node_robot_state_publisher = Node(
         package='robot_state_publisher',
@@ -88,9 +97,10 @@ def generate_launch_description():
     world_path = PathJoinSubstitution([pkg_path, 'worlds', LaunchConfiguration('world')])
 
     # launch gazebo
+    print(f"Launching Gazebo with world {world_path}")
     gazebo_launch_path = PathJoinSubstitution([
-                get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py'
-            ])
+        get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py'
+    ])
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gazebo_launch_path]),
         launch_arguments=[
@@ -100,8 +110,9 @@ def generate_launch_description():
                           ' --render-engine optix ', world_path])
         ]
     )
-
+    
     # Spawn the robot in Gazebo
+    print(f"Spawning the robot...")
     spawn_robot = Node(package='ros_gz_sim', executable='create',
                         arguments=['-topic', 'robot_description',
                                    '-name', robot_model,
@@ -109,6 +120,7 @@ def generate_launch_description():
                         output='screen')
     
     # gz bridge 
+    print(f"Starting ROS-GZ bridge...")
     bridge_params = os.path.join(get_package_share_directory(PACKAGE_NAME),'config', 'gz_bridge', f'gz_bridge.yaml')
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
@@ -122,6 +134,7 @@ def generate_launch_description():
     )    
     
     # Spawn joint_state_broadcaster
+    print(f"Spawning joint state broadcaster...")
     spawn_jsb = Node(
         package='controller_manager',
         executable='spawner',
@@ -130,12 +143,9 @@ def generate_launch_description():
     )
 
     # Spawn wheel controllers
-    if robot_model == '3w':
-        controller_names = ['wheel1_controller', 'wheel2_controller', 'wheel3_controller', 'camera_servo_controller']
-    else:
-        N = int(robot_model[0])
-        controller_names = [f'wheel{i+1}_controller' for i in range(N)]
-
+    num_wheels = 4
+    print(f"Spawning {num_wheels} wheel controllers...")
+    controller_names = [f'wheel{i+1}_controller' for i in range(num_wheels)]
     spawn_wheel_controllers = Node(
         package='controller_manager',
         executable='spawner',
@@ -143,9 +153,7 @@ def generate_launch_description():
         output='screen'
     )
     
-    
-    
-        
+    print(f"Lading mecanum controller...")    
     load_mecanum_controller = Node(
         package='controller_manager',
         executable='spawner',  # the spawner script/executable
@@ -156,6 +164,7 @@ def generate_launch_description():
         ]
     )
     
+    print(f"Lading top camera controller...")    
     load_camera_joint_top_controller = Node(
         package='controller_manager',
         executable='spawner',
@@ -166,6 +175,7 @@ def generate_launch_description():
         ]
     )
 
+    print(f"Making tf republisher node...")    
     tf_republisher_node = Node(
         package='simbot_gz',
         executable='mecanum_tf_republisher.py',
@@ -173,21 +183,22 @@ def generate_launch_description():
         output='screen'
     )
 
+    print(f"Making kinematics node...")    
     kinematics = Node(
         package=PACKAGE_NAME,
         executable="kinematics",
         parameters=[{"use_sim_time": use_sim_time}]
     )
 
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        output='screen',
-        arguments=['-d', os.path.join(pkg_path, 'rviz', 'test.rviz')]
-    )
+    # rviz_node = Node(
+    #     package='rviz2',
+    #     executable='rviz2',
+    #     name='rviz2',
+    #     output='screen',
+    #     arguments=['-d', os.path.join(pkg_path, 'rviz', 'test.rviz')]
+    # )
     
-    
+    print(f"Making sim_extras node...")    
     sim_extras_node = Node(
         package='simbot_gz',
         executable='sim_extras_publisher_async.py',
@@ -200,6 +211,7 @@ def generate_launch_description():
         output='screen'
     )
     
+    print(f"Making range converter node...")    
     range_converter_node = Node(
         package=PACKAGE_NAME,
         executable='laser_to_range_async.py',  
@@ -212,8 +224,8 @@ def generate_launch_description():
         output='screen'
     )
 
-
     # Launch the camera joint service node
+    print(f"Launching camera joint service...")    
     camera_joint_service_node = Node(
         package='simbot_gz',
         executable='camera_joint_service.py',
@@ -221,6 +233,7 @@ def generate_launch_description():
         output='screen',
     )
 
+    print(f"Setting camera joint position pub node...")    
     set_camera_joint_position_pub_node = Node(
         package='simbot_gz',
         executable='set_camera_joint_position_pub.py',

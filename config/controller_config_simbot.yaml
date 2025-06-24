@@ -20,8 +20,8 @@ controller_manager:
     mecanum_controller:
       type: mecanum_drive_controller/MecanumDriveController
 
-    camera_joint_top_position_controller:
-      type: position_controllers/JointGroupPositionController  
+    # camera_joint_top_position_controller:
+    #   type: position_controllers/JointGroupPositionController  
 
 joint_state_broadcaster:
   ros__parameters:
@@ -54,6 +54,9 @@ mecanum_controller:
     rear_left_wheel_command_joint_name: mecanum_wheel_joint_rl
     rear_right_wheel_command_joint_name: mecanum_wheel_joint_rr
 
+    in_chained_mode: False
+    is_async: True
+    
     command_interfaces:
       - velocity
 
@@ -80,15 +83,15 @@ mecanum_controller:
 
     reference_timeout: 0.5
 
-camera_joint_top_position_controller:
-  ros__parameters:
-    joints:
-      - camera_joint_top
-    interface_name: position
-    state_publish_rate: 30.0
-    command_publish_rate: 30.0
-    # Optionally, you can set PID gains here if needed
-    # pid:
-    #   p: 1.0
-    #   i: 0.0
-    #   d: 0.0
+# camera_joint_top_position_controller:
+#   ros__parameters:
+#     joints:
+#       - camera_joint_top
+#     interface_name: position
+#     state_publish_rate: 30.0
+#     command_publish_rate: 30.0
+#     # Optionally, you can set PID gains here if needed
+#     # pid:
+#     #   p: 1.0
+#     #   i: 0.0
+#     #   d: 0.0

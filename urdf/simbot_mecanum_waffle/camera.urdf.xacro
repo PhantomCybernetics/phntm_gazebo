@@ -54,7 +54,7 @@
           <image>
             <width>1280</width>
             <height>720</height>
-	    <anti_aliasing>8</anti_aliasing>
+	          <anti_aliasing>0</anti_aliasing>
           </image>
           <clip>
             <near>0.1</near>
@@ -66,7 +66,7 @@
   </xacro:macro>
 
   <!-- Macro for a moving camera with prismatic joint in z direction -->
-  <xacro:macro name="moving_camera2" params="suffix parent xyz rpy visualize_model:=true lower:=-1.0 upper:=1.0 effort:=10 velocity:=1.0">
+  <xacro:macro name="moving_camera2" params="suffix parent xyz rpy visualize_model:=true lower:=1.0 upper:=2.0 effort:=10 velocity:=1.0">
     <link name="camera_link_${suffix}">
       <xacro:if value="${visualize_model}">
         <visual>
@@ -119,7 +119,7 @@
           <image>
             <width>1280</width>
             <height>720</height>
-            <anti_aliasing>8</anti_aliasing>
+            <anti_aliasing>0</anti_aliasing>
           </image>
           <clip>
             <near>0.1</near>

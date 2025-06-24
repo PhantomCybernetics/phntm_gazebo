@@ -8,12 +8,7 @@
     </plugin>
     <plugin name="gz::sim::systems::Imu" filename="gz-sim-imu-system" />
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-      <parameters>$(find simbot_gz)/config/controller_configs/controller_config_simbot_mecanum_waffle.yaml</parameters>
-      <ros>
-        <remapping>~/odometry:=/odom</remapping>
-        <remapping>~/reference_unstamped:=/cmd_vel</remapping>
-	<remapping>~/tf_odometry:=/tf</remapping>
-      </ros>
+      <parameters>$(find simbot_gz)/config/controller_config_simbot.yaml</parameters>
     </plugin>
   </gazebo>
 </robot>

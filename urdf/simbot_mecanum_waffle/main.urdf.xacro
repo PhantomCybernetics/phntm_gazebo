@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="simple_robot" xmlns:xacro="http://ros.org/wiki/xacro" xmlns:ignition="http://gazebosim.com/schema">
+<robot name="simple_robot" xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
 
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/base_link.urdf.xacro" />
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/gazebo_plugins.urdf.xacro" />   

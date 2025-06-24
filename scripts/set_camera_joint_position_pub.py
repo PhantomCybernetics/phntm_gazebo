@@ -17,9 +17,9 @@ class SetCameraJointPositionPub(Node):
                 rclpy.spin_once(self, timeout_sec=0.1)
                 if self.publisher.get_subscription_count() > 0:
                     msg = Float64MultiArray()
-                    msg.data = [1.5]
+                    msg.data = [500]
                     self.publisher.publish(msg)
-                    self.get_logger().info('Published initial camera joint position: 1.5')
+                    self.get_logger().info('Published initial camera joint position: 500')
                     self.done = True
                 else:
                     self.get_logger().info('Waiting for controller to subscribe to /camera_joint_top_position_controller/commands...')

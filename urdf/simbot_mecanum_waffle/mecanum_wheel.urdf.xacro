@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" xmlns:ignition="http://gazebosim.com/schema">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
 
   <!-- Parameterized Mecanum Wheel Macro -->
   <xacro:macro name="mecanum_wheel" params="parent suffix xyz rpy">
@@ -76,7 +76,7 @@
             <ode>
               <mu>1.0</mu>
               <mu2>0.0</mu2>
-	      <fdir1 ignition:expressed_in="base_footprint">${fdir}</fdir1>
+	            <fdir1 gz:expressed_in="base_footprint">${fdir}</fdir1>
             </ode>
           </friction>
         </surface>

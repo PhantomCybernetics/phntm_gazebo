@@ -107,7 +107,7 @@ def generate_launch_description():
             ('gz_args', [' -r',
                           ' -s',
                           ' -v 4',
-                          ' --render-engine optix ', world_path])
+                          ' --render-engine ogre2 ', world_path])
         ]
     )
     
@@ -121,37 +121,41 @@ def generate_launch_description():
     
     # gz bridge 
     print(f"Starting ROS-GZ bridge...")
-    bridge_params = os.path.join(get_package_share_directory(PACKAGE_NAME),'config', 'gz_bridge', f'gz_bridge.yaml')
+    gz_bridge_params_file = os.path.join(get_package_share_directory(PACKAGE_NAME),'config', 'gz_bridge.yaml')
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        parameters=[{'config_file': bridge_params}],
-        # arguments=[
-        #     '--ros-args',
-        #     '-p',
-        #     f'config_file:={bridge_params}',
-        # ]
+        parameters=[{'config_file': gz_bridge_params_file}],
+        arguments=[
+            '--ros-args',
+            '-p',
+            f'config_file:={gz_bridge_params_file}',
+        ]
     )    
+    
+    mecanum_remappings = '--ros-args --remap /mecanum_controller/odometry:=/odom --remap /mecanum_controller/reference:=/cmd_vel --remap /mecanum_controller/tf_odometry:=/tf'
     
     # Spawn joint_state_broadcaster
     print(f"Spawning joint state broadcaster...")
     spawn_jsb = Node(
         package='controller_manager',
         executable='spawner',
-        arguments=['joint_state_broadcaster'],
-        output='screen'
+        arguments=['joint_state_broadcaster',
+                   '--controller-ros-args', mecanum_remappings],
+        output='screen',
     )
+    # , 
 
     # Spawn wheel controllers
-    num_wheels = 4
-    print(f"Spawning {num_wheels} wheel controllers...")
-    controller_names = [f'wheel{i+1}_controller' for i in range(num_wheels)]
-    spawn_wheel_controllers = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=controller_names,
-        output='screen'
-    )
+    # num_wheels = 4
+    # print(f"Spawning {num_wheels} wheel controllers...")
+    # controller_names = [f'wheel{i+1}_controller' for i in range(num_wheels)]
+    # spawn_wheel_controllers = Node(
+    #     package='controller_manager',
+    #     executable='spawner',
+    #     arguments=controller_names,
+    #     output='screen'
+    # )
     
     print(f"Lading mecanum controller...")    
     load_mecanum_controller = Node(
@@ -159,9 +163,10 @@ def generate_launch_description():
         executable='spawner',  # the spawner script/executable
         output='screen',
         arguments=[
-            'mecanum_controller',                # name of the controller to spawn
-            '--controller-manager', '/controller_manager',  # controller manager node name (if not default)
-        ]
+            'mecanum_controller', # name of the controller to spawn
+            '--controller-manager', '/controller_manager', # controller manager node name (if not default)
+            '--controller-ros-args', mecanum_remappings
+        ],
     )
     
     print(f"Lading top camera controller...")    
@@ -175,20 +180,20 @@ def generate_launch_description():
         ]
     )
 
-    print(f"Making tf republisher node...")    
-    tf_republisher_node = Node(
-        package='simbot_gz',
-        executable='mecanum_tf_republisher.py',
-        name='tf_republisher',
-        output='screen'
-    )
+    # print(f"Making tf republisher node...")    
+    # mecanum_tf_republisher_node = Node(
+    #     package='simbot_gz',
+    #     executable='mecanum_tf_republisher.py',
+    #     name='tf_republisher',
+    #     output='screen'
+    # )
 
-    print(f"Making kinematics node...")    
-    kinematics = Node(
-        package=PACKAGE_NAME,
-        executable="kinematics",
-        parameters=[{"use_sim_time": use_sim_time}]
-    )
+    # print(f"Making kinematics node...")    
+    # kinematics = Node(
+    #     package='simbot_gz',
+    #     executable="kinematics",
+    #     parameters=[{"use_sim_time": use_sim_time}]
+    # )
 
     # rviz_node = Node(
     #     package='rviz2',
@@ -225,21 +230,21 @@ def generate_launch_description():
     )
 
     # Launch the camera joint service node
-    print(f"Launching camera joint service...")    
-    camera_joint_service_node = Node(
-        package='simbot_gz',
-        executable='camera_joint_service.py',
-        name='camera_joint_service',
-        output='screen',
-    )
+    # print(f"Launching camera joint service...")    
+    # camera_joint_service_node = Node(
+    #     package='simbot_gz',
+    #     executable='camera_joint_service.py',
+    #     name='camera_joint_service',
+    #     output='screen',
+    # )
 
-    print(f"Setting camera joint position pub node...")    
-    set_camera_joint_position_pub_node = Node(
-        package='simbot_gz',
-        executable='set_camera_joint_position_pub.py',
-        name='set_camera_joint_position_pub',
-        output='screen',
-    )
+    # print(f"Setting camera joint position pub node...")    
+    # set_camera_joint_position_pub_node = Node(
+    #     package='simbot_gz',
+    #     executable='set_camera_joint_position_pub.py',
+    #     name='set_camera_joint_position_pub',
+    #     output='screen',
+    # )
 
     # Create launch description and add actions
     ld = LaunchDescription(ARGUMENTS)
@@ -252,15 +257,15 @@ def generate_launch_description():
     ld.add_action(gazebo)
     ld.add_action(spawn_robot)
     ld.add_action(ros_gz_bridge)
-    # ld.add_action(spawn_wheel_controller)
+    # ld.add_action(spawn_wheel_controllers)
     ld.add_action(spawn_jsb)
     ld.add_action(load_mecanum_controller)
     ld.add_action(load_camera_joint_top_controller)
     ld.add_action(sim_extras_node)
     ld.add_action(range_converter_node)
-    ld.add_action(camera_joint_service_node)
-    ld.add_action(set_camera_joint_position_pub_node)
-    #ld.add_action(tf_republisher_node)
+    # ld.add_action(camera_joint_service_node)
+    # ld.add_action(set_camera_joint_position_pub_node)
+    # ld.add_action(mecanum_tf_republisher_node)
     # ld.add_action(kinematics)
     # ld.add_action(rviz_node)
     return ld

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:ignition="http://gazebosim.com/schema">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/simple_wheel.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/camera.urdf.xacro"/>
@@ -7,7 +7,7 @@
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/ray.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/imu.urdf.xacro"/>
 
-  <xacro:property name="base_visual_offset" value="-0.064 0 0.047"/>
+  <xacro:property name="base_visual_offset" value="-0.064 0 0.097"/>
   <xacro:property name="base_collision_offset" value="-0.064 0 0.097"/>
   <xacro:property name="base_collision_box_size" value="0.266 0.266 0.094"/>
   <xacro:property name="wheel_z_offset" value="0.047"/>
@@ -21,17 +21,14 @@
       <visual>
       <origin xyz="${base_visual_offset}" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://simbot_gz/meshes/waffle_base.dae" scale="0.001 0.001 0.001"/>
+          <mesh filename="package://simbot_gz/meshes/simbot_base.dae" scale="1 1 1"/>
         </geometry>
-        <material name="red">
- 		      <color rgba="1.0 0 0 1.0" />	
-	      </material>
       </visual>
       <collision>
-      <origin xyz="${base_collision_offset}" rpy="0 0 0"/>
-      <geometry>
-        <box size="${base_collision_box_size}"/>
-      </geometry>
+        <origin xyz="${base_collision_offset}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${base_collision_box_size}"/>
+        </geometry>
       </collision>
       <inertial>
         <mass value="3.0" />
@@ -71,10 +68,10 @@
     <!-- Cameras -->
     <xacro:camera2 parent="base_link" suffix="front" xyz="0.07 -0.0000 0.1030" rpy="0 0 0" visualize_model="true"/>
     <xacro:camera2 parent="base_link" suffix="back" xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159" visualize_model="true"/>
-    
+
     <!-- Top-Down Camera as moving camera -->
     <xacro:moving_camera2 parent="base_link" suffix="top"
-               xyz="0.0 0.0 0.0"   
+               xyz="0.0 0.0 2.0"   
                rpy="0 1.5708 0"
                visualize_model="false"
                lower="-1000" upper="1000" effort="100" velocity="100000.0"/>

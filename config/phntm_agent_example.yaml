@@ -1,0 +1,14 @@
+/**:
+  ros__parameters:
+    host_name: '' # lower case, must be valid ros id or ''
+    refresh_period_sec: 0.5
+    docker: True # monitor containers
+    docker_topic: '/docker_info'
+    docker_control: True
+    system_info: True # monitor system stats
+    system_info_topic: '/system_info'
+    disk_volume_paths: [ '/', '/dev/shm' ] # volumes to monitor, must be accessible from the container
+    iw_interface: 'wlan0' # disabled if empty
+    iw_monitor_topic: '/iw_status' # writes output here
+    iw_control: False # enable wi-fi scanning
+    iw_roaming: False # enable wi-fi roaming

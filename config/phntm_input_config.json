@@ -1,0 +1,75 @@
+{
+    "BasicMovement": {
+        "label": "BasicMovement",
+        "keyboard": {
+            "driver": "Twist",
+            "driver_config": {
+                "output_topic": "/cmd_vel",
+                "stamped": true
+            },
+            "buttons": [
+                {
+                    "driver_axis": "linear.x",
+                    "key": "E",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                },
+                {
+                    "driver_axis": "linear.x",
+                    "key": "D",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -1
+                },
+                {
+                    "driver_axis": "angular.z",
+                    "key": "ARROWLEFT",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                },
+                {
+                    "driver_axis": "angular.z",
+                    "key": "ARROWRIGHT",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -1
+                },
+                {
+                    "action": "ctrl-enabled",
+                    "key": "`",
+                    "ctrl_state": "toggle"
+                },
+                {
+                    "driver_axis": "linear.y",
+                    "key": "S",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                },
+                {
+                    "driver_axis": "linear.y",
+                    "key": "F",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -1
+                },
+                {
+                    "driver_axis": "linear.x",
+                    "key": "E",
+                    "key_mod": "shift",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": 2
+                },
+                {
+                    "driver_axis": "linear.x",
+                    "key": "D",
+                    "key_mod": "shift",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -2
+                }
+            ]
+        }
+    }
+}
+

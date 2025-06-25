@@ -1,15 +1,15 @@
 sim_extras_publisher:
   ros__parameters:
-    refresh_period_sec: 5.0
+    refresh_period_sec: 0.5
 
     # Battery simulation parameters
     ui_battery_topic: /battery
-    nominal_voltage: 22.2
+    nominal_voltage: 24.3
     min_voltage: 19.2
     max_voltage: 25.2
     max_linear_speed: 10.0
     max_angular_speed: 10.0
-    voltage_drop_range: 5.0
+    voltage_drop_range: 15.0
 
     # Wi-Fi simulation parameters
     ui_wifi_topic: /iw_status

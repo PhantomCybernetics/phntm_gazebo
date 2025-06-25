@@ -1,3 +1,18 @@
 {
-    "workbench.colorTheme": "Abyss"
+    "workbench.colorTheme": "Abyss",
+    "python.analysis.include": [
+        "/ros2_ws/install/simbot_gz/lib/python3.12/site-packages/",
+        "/ros2_ws/install/phntm_interfaces/lib/python3.12/site-packages/",
+        "/opt/ros/jazzy/lib/python3.12/site-packages/"
+    ],
+    "python.autoComplete.extraPaths": [
+        "/ros2_ws/install/simbot_gz/lib/python3.12/site-packages/",
+        "/ros2_ws/install/phntm_interfaces/lib/python3.12/site-packages/",
+        "/opt/ros/jazzy/lib/python3.12/site-packages/"
+    ],
+    "python.analysis.extraPaths": [
+        "/ros2_ws/install/simbot_gz/lib/python3.12/site-packages/",
+        "/ros2_ws/install/phntm_interfaces/lib/python3.12/site-packages/",
+        "/opt/ros/jazzy/lib/python3.12/site-packages/"
+    ],
 }

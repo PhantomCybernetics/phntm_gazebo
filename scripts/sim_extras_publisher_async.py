@@ -5,7 +5,7 @@ import math
 import random
 import asyncio
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
 from sensor_msgs.msg import BatteryState
 from nav_msgs.msg import Odometry
 from phntm_interfaces.msg import IWStatus
@@ -42,7 +42,7 @@ class SimExtrasPublisher(Node):
         self.battery_task = None
         self.wifi_task = None
 
-        self.create_subscription(Twist, '/cmd_vel', self.cmd_vel_callback, 10)
+        self.create_subscription(TwistStamped, '/cmd_vel', self.cmd_vel_callback, 10)
         self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
 
     def cmd_vel_callback(self, msg):
@@ -52,9 +52,9 @@ class SimExtrasPublisher(Node):
         self.last_position = msg.pose.pose.position
 
     def publish_battery_status(self):
-        twist = self.last_cmd_vel or Twist()
-        linear = math.sqrt(twist.linear.x**2 + twist.linear.y**2 + twist.linear.z**2)
-        angular = math.sqrt(twist.angular.x**2 + twist.angular.y**2 + twist.angular.z**2)
+        msg = self.last_cmd_vel or TwistStamped()
+        linear = math.sqrt(msg.twist.linear.x**2 + msg.twist.linear.y**2 + msg.twist.linear.z**2)
+        angular = math.sqrt(msg.twist.angular.x**2 + msg.twist.angular.y**2 + msg.twist.angular.z**2)
 
         load_factor = 0.5 * ((linear / self.max_linear_speed) + (angular / self.max_angular_speed))
         voltage_drop = load_factor * self.drop_range

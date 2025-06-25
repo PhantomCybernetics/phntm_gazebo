@@ -72,7 +72,7 @@
     <!-- Top-Down Camera as moving camera -->
     <xacro:moving_camera2 parent="base_link" suffix="top"
                xyz="0.0 0.0 2.0"   
-               rpy="0 1.5708 0"
+               rpy="${pi} 0 -${pi/2}"
                visualize_model="false"
                lower="-1000" upper="1000" effort="100" velocity="100000.0"/>
 

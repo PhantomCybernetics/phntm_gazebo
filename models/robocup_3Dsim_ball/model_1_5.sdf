@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<sdf version="1.6">
+<sdf version="1.5">
   <model name="soccer_ball">
     <static>false</static>
     <link name="soccer_ball_link">
@@ -40,8 +40,8 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <scale>0.582 0.582 0.582</scale> <!-- 0.15 diameter to 0.2 -->
-            <uri>model://robocup_3Dsim_ball/meshes/football2.dae</uri>
+            <scale>0.2 0.2 0.2</scale>
+            <uri>model://robocup_3Dsim_ball/meshes/ball.dae</uri>
           </mesh>
         </geometry>
       </visual>

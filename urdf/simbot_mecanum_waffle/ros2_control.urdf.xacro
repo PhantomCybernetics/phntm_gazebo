@@ -36,12 +36,6 @@
             <state_interface name="position" />
             <state_interface name="velocity" />
         </joint>
-        <joint name="camera_joint_top">
-            <command_interface name="position">
-                <param name="min">-1000.0</param>      <!-- 4m back from 5.55 -->
-                <param name="max">1000.0</param>      <!-- 4m forward from 5.55 -->
-            </command_interface>
-            <state_interface name="position"/>
-        </joint>
+       
     </ros2_control>
 </robot>

@@ -101,13 +101,17 @@ def generate_launch_description():
     gazebo_launch_path = PathJoinSubstitution([
         get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py'
     ])
+    # gz params explained: ruby /opt/ros/jazzy/opt/gz_tools_vendor/bin/gz sim --help
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gazebo_launch_path]),
         launch_arguments=[
-            ('gz_args', [' -r',
-                          ' -s',
-                          ' -v 4',
-                          ' --render-engine ogre2 ', world_path])
+            ('gz_args', [' -r', # run the simulation
+                         ' -s', # server only (headless mode)
+                         ' -v 4', # verbosity level (0-4)
+                         ' --render-engine ogre2',
+                         ' --render-engine-api-backend vulkan'
+                         ' --physics-engine gz-physics-dartsim-plugin ',
+                         world_path])
         ]
     )
     
@@ -169,16 +173,16 @@ def generate_launch_description():
         ],
     )
     
-    print(f"Lading top camera controller...")    
-    load_camera_joint_top_controller = Node(
-        package='controller_manager',
-        executable='spawner',
-        output='screen',
-        arguments=[
-            'camera_joint_top_position_controller',
-            '--controller-manager', '/controller_manager',
-        ]
-    )
+    # print(f"Lading top camera controller...")    
+    # load_camera_joint_top_controller = Node(
+    #     package='controller_manager',
+    #     executable='spawner',
+    #     output='screen',
+    #     arguments=[
+    #         'camera_joint_top_position_controller',
+    #         '--controller-manager', '/controller_manager',
+    #     ]
+    # )
 
     # print(f"Making tf republisher node...")    
     # mecanum_tf_republisher_node = Node(
@@ -260,7 +264,7 @@ def generate_launch_description():
     # ld.add_action(spawn_wheel_controllers)
     ld.add_action(spawn_jsb)
     ld.add_action(load_mecanum_controller)
-    ld.add_action(load_camera_joint_top_controller)
+    # ld.add_action(load_camera_joint_top_controller)
     ld.add_action(sim_extras_node)
     ld.add_action(range_converter_node)
     # ld.add_action(camera_joint_service_node)

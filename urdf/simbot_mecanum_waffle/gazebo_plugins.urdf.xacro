@@ -3,7 +3,7 @@
   <gazebo>
 
     <plugin  name="gz::sim::systems::Sensors" filename="libgz-sim-sensors-system.so">
-      <engine>ogre2</engine>
+      <render_engine>ogre2</render_engine>
     </plugin>
 
     <plugin name="gz::sim::systems::Imu" filename="gz-sim-imu-system" />

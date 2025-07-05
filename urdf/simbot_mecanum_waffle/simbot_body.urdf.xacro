@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/simple_wheel.urdf.xacro"/>
+  <!-- <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/simple_wheel.urdf.xacro"/> -->
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/camera.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/cameras.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/lidar.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/ray.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/imu.urdf.xacro"/>
@@ -65,11 +65,11 @@
     <xacro:mecanum_wheel parent="base_link" suffix="rr"
                         xyz="${rear_wheel_x_offset} ${right_wheel_y_offset} ${wheel_z_offset}" 
                         rpy="0 0 0"/>
-    <!-- Cameras -->
-    <xacro:robot_camera parent="base_link" suffix="front" xyz="0.07 -0.0000 0.1030" rpy="0 0 0"/>
+    <!-- Robot cameras -->
+    <xacro:robot_camera parent="base_link" suffix="front" xyz="0.07 -0.0000 0.1030" rpy="0 0 0" fov="1.5"/>
     <xacro:robot_camera parent="base_link" suffix="back" xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"/> <!-- pixel_format="L8" -->
 
-    <!-- Top-Down Camera as moving camera -->
+    <!-- Top-Down camera as moving camera -->
     <xacro:top_down_camera parent="base_link" suffix="top"
                xyz="0.0 0.0 2.0"   
                rpy="${pi} 0 -${pi/2}"

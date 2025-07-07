@@ -84,6 +84,7 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
 # h264 video output
 RUN apt install -y ffmpeg
 RUN apt install -y libnvidia-encode-535
+RUN apt install -y ros-$ROS_DISTRO-ffmpeg-image-transport-msgs
 
 # gz-sensors fork
 # RUN git clone https://github.com/gazebosim/gz-sensors /root/gz-sensors

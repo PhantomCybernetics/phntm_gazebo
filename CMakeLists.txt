@@ -17,8 +17,6 @@ find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
-
-
 # install all python code inside scripts folder and add exec permission
 install(DIRECTORY scripts/
         DESTINATION lib/${PROJECT_NAME}

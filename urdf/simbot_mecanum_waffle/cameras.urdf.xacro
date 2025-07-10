@@ -93,7 +93,6 @@
     </joint>
 
     <gazebo reference="camera_link_${suffix}">
-    
       <sensor name="camera_${suffix}" type="camera">
         <gz_frame_id>camera_link_${suffix}</gz_frame_id>
         <pose>0 0 0 0 -${pi/2} ${pi/2}</pose>
@@ -117,13 +116,6 @@
             <far>10</far>
           </clip>
         </camera>
-
-        <!-- <plugin
-          filename="gz-sim-camera-video-recorder-system"
-          name="gz::sim::systems::CameraVideoRecorder">
-          <service>camera/record_video</service>
-        </plugin> -->
-
       </sensor>
     </gazebo>
   </xacro:macro>

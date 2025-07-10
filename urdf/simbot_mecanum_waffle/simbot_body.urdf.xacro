@@ -66,8 +66,8 @@
                         xyz="${rear_wheel_x_offset} ${right_wheel_y_offset} ${wheel_z_offset}" 
                         rpy="0 0 0"/>
     <!-- Robot cameras -->
-    <xacro:robot_camera parent="base_link" suffix="front" xyz="0.07 -0.0000 0.1030" rpy="0 0 0" fov="1.5"/>
-    <xacro:robot_camera parent="base_link" suffix="back" xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"/> <!-- pixel_format="L8" -->
+    <xacro:robot_camera parent="base_link" suffix="front" fov="1.5" xyz="0.07 -0.0000 0.1030" rpy="0 0 0"/>
+    <xacro:robot_camera parent="base_link" suffix="back" pixel_format="RGB_INT8" xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"/> <!-- pixel_format="L8" -->
 
     <!-- Top-Down camera as moving camera -->
     <xacro:top_down_camera parent="base_link" suffix="top"

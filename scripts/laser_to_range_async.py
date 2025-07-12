@@ -23,18 +23,19 @@ class LaserToRangeConverter(Node):
         self.publish_interval = 1.0 / self.get_parameter('publish_rate_hz').get_parameter_value().double_value
         self.scan_to_range_dict = {topic: topic + '_ranged' for topic in self.scan_topic_list}
 
+        print("Range publish interval is " + str(self.publish_interval))
+        
         self.latest_scans = {topic: None for topic in self.scan_topic_list}
         self.shutting_down = False
         
-
         self.range_publishers = {}
         for topic in self.scan_topic_list:
-            self.range_publishers[topic] = self.create_publisher(Range, self.scan_to_range_dict[topic], 10)
+            self.range_publishers[topic] = self.create_publisher(Range, self.scan_to_range_dict[topic], 1)
             self.create_subscription(
                 LaserScan,
                 topic,
                 partial(self.scan_callback, topic_name=topic),
-                10
+                1
             )
 
     def scan_callback(self, msg: LaserScan, topic_name: str):
@@ -46,7 +47,7 @@ class LaserToRangeConverter(Node):
 
     def convert_scan_to_range(self):
         for topic, msg in self.latest_scans.items():
-            if msg is None or not msg.ranges:
+            if msg is None:
                 continue
             angle_min = msg.angle_min
             angle_inc = msg.angle_increment
@@ -58,11 +59,10 @@ class LaserToRangeConverter(Node):
             start = max(center_index - half_width, 0)
             end = min(center_index + half_width + 1, total_beams)
             
+            avg_range = 0.0
             valid_ranges = [r for r in msg.ranges[start:end] if msg.range_min <= r <= msg.range_max]
-            if not valid_ranges:
-                continue
-            
-            avg_range = sum(valid_ranges) / len(valid_ranges)
+            if valid_ranges:
+                avg_range = sum(valid_ranges) / len(valid_ranges)
             
             range_msg = Range()
             range_msg.header = msg.header
@@ -78,7 +78,8 @@ class LaserToRangeConverter(Node):
     async def main_loop(self):
         try:
             while not self.shutting_down:
-                rclpy.spin_once(self, timeout_sec=0.1)
+                for i in range(len(self.scan_topic_list)):
+                    rclpy.spin_once(self, timeout_sec=0.01)
                 self.convert_scan_to_range()
                 await asyncio.sleep(self.publish_interval)
         except (asyncio.CancelledError, KeyboardInterrupt):

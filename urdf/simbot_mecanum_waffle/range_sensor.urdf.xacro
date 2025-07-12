@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="range_sensor" params="suffix parent xyz rpy">
+    <link name="range_link_${suffix}">
+      <visual>
+        <geometry>
+          <cylinder radius="0.001" length="0.002"/>
+        </geometry>
+        <material name="green">
+          <color rgba="0.0 0.5 0.0 1"/>
+        </material>
+      </visual>
+    </link>
+
+    <joint name="range_joint_${suffix}" type="fixed">
+      <parent link="${parent}"/>
+      <child link="range_link_${suffix}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <gazebo reference="range_link_${suffix}">
+      <sensor name="range_sensor_${suffix}" type="gpu_lidar">
+        <topic>/range_${suffix}</topic>
+        <gz_frame_id>range_link_${suffix}</gz_frame_id>
+        <update_rate>15</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>3</samples>               <!-- 1 sample per degree -->
+              <resolution>1</resolution>
+              <min_angle>-0.0873</min_angle>     <!-- ~ -5 degrees -->
+              <max_angle>0.0873</max_angle>      <!-- ~ +5 degrees -->
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.02</min>
+            <max>1.5</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+      </sensor>
+    </gazebo>
+
+  </xacro:macro>
+</robot>

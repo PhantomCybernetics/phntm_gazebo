@@ -4,7 +4,7 @@
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/cameras.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/lidar.urdf.xacro"/>
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/ray.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/range_sensor.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/imu.urdf.xacro"/>
 
   <xacro:property name="base_visual_offset" value="-0.064 0 0.097"/>
@@ -67,13 +67,10 @@
                         rpy="0 0 0"/>
     <!-- Robot cameras -->
     <xacro:robot_camera parent="base_link" suffix="front" fov="1.5" xyz="0.07 -0.0000 0.1030" rpy="0 0 0"/>
-    <xacro:robot_camera parent="base_link" suffix="back" pixel_format="RGB_INT8" xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"/> <!-- pixel_format="L8" -->
+    <xacro:robot_camera parent="base_link" suffix="back" xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"/> <!-- pixel_format="L8" -->
 
     <!-- Top-Down camera as moving camera -->
-    <xacro:top_down_camera parent="base_link" suffix="top"
-               xyz="0.0 0.0 2.0"   
-               rpy="${pi} 0 -${pi/2}"
-               lower="-1000" upper="1000" effort="100" velocity="100000.0"/>
+    <xacro:top_down_camera parent="base_link" suffix="top" xyz="0.0 0.0 2.0" rpy="${pi} 0 -${pi/2}"/>
 
     <xacro:lidar parent="base_link" suffix="1" xyz="0.0000 0.0000 .1510" rpy="0 0 0"/>
     <xacro:imu parent="base_link" suffix="1" xyz="0 0 0" rpy="0 0 0"/>

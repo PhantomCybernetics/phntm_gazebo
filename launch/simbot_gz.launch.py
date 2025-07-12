@@ -152,23 +152,6 @@ def launch_setup(context, *args, **kwargs):
         ]
     ))
     
-    # can_bridges = []
-    # for cam_suffix in [ 'top', 'front', 'back' ]:
-    #     print(f"Starting ROS-GZ bridge...")
-    #     gz_bridge_params_file = os.path.join(get_package_share_directory(PACKAGE_NAME),'config', f'gz_bridge_cam_{cam_suffix}.yaml')
-    #     cam_gz_bridge = Node(
-    #         package=f"ros_gz_bridge",
-    #         executable="parameter_bridge",
-    #         parameters=[{'config_file': gz_bridge_params_file}],
-    #         name=f'ros_gz_bridge_cam_{cam_suffix}',
-    #         arguments=[
-    #             '--ros-args',
-    #             '-p',
-    #             f'config_file:={gz_bridge_params_file}',
-    #         ]
-    #     )
-    #     can_bridges.append(cam_gz_bridge)
-    
     mecanum_remappings = '--ros-args --remap /mecanum_controller/odometry:=/odom --remap /mecanum_controller/reference:=/cmd_vel --remap /mecanum_controller/tf_odometry:=/tf'
     
     # Spawn joint_state_broadcaster
@@ -231,40 +214,32 @@ def launch_setup(context, *args, **kwargs):
     #     executable="kinematics",
     #     parameters=[{"use_sim_time": use_sim_time}]
     # )
-
-    # rviz_node = Node(
-    #     package='rviz2',
-    #     executable='rviz2',
-    #     name='rviz2',
-    #     output='screen',
-    #     arguments=['-d', os.path.join(pkg_path, 'rviz', 'test.rviz')]
-    # )
     
-    # print(f"Making sim_extras node...")    
-    # ld.add_action(Node(
-    #     package='simbot_gz',
-    #     executable='sim_extras_publisher_async.py',
-    #     name='sim_extras_publisher',
-    #     parameters=[PathJoinSubstitution([
-    #         FindPackageShare('simbot_gz'),
-    #         'config',
-    #         'sim_extras_config.yaml'
-    #     ])],
-    #     output='screen'
-    # ))
+    print(f"Making sim_extras node...")    
+    actions.append(Node(
+        package='simbot_gz',
+        executable='sim_extras_publisher_async.py',
+        name='sim_extras_publisher',
+        parameters=[PathJoinSubstitution([
+            FindPackageShare('simbot_gz'),
+            'config',
+            'sim_extras_config.yaml'
+        ])],
+        output='screen'
+    ))
     
-    # print(f"Making range converter node...")    
-    # ld.add_action(Node(
-    #     package=PACKAGE_NAME,
-    #     executable='laser_to_range_async.py',  
-    #     name='laser_to_range_converter',
-    #     parameters=[PathJoinSubstitution([
-    #         FindPackageShare(PACKAGE_NAME),
-    #         'config',
-    #         'range_config.yaml'
-    #     ])],
-    #     output='screen'
-    # ))
+    print(f"Making range converter node...")    
+    actions.append(Node(
+        package=PACKAGE_NAME,
+        executable='laser_to_range_async.py',  
+        name='laser_to_range_converter',
+        parameters=[PathJoinSubstitution([
+            FindPackageShare(PACKAGE_NAME),
+            'config',
+            'range_config.yaml'
+        ])],
+        output='screen'
+    ))
 
     # Launch the camera joint service node
     # print(f"Launching camera joint service...")    

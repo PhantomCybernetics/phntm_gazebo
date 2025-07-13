@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
 
   <!-- Front / back camera -->
-  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 pixel_format:=RGB_INT8">
+  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 pixel_format:=RGB_INT8 encoder_hw_device:=cuda encoder_bit_rate:=1000000 encoder_thread_count:=2 encoder_input_pixel_format">
     <link name="camera_link_${suffix}">
       <visual>
         <origin rpy="0 0 ${pi}"/>
@@ -45,6 +45,10 @@
           <camera_info_topic>rgb_${suffix}/camera_info</camera_info_topic>
           <camera_h264_topic>rgb_${suffix}/h264</camera_h264_topic>
           <horizontal_fov>${fov}</horizontal_fov>
+          <encoder_hw_device>${encoder_hw_device}</encoder_hw_device>
+          <encoder_bit_rate>${encoder_bit_rate}</encoder_bit_rate>
+          <encoder_input_pixel_format>${encoder_input_pixel_format}</encoder_input_pixel_format>
+          <encoder_thread_count>${encoder_thread_count}</encoder_thread_count>
           <image>
             <width>1280</width>
             <height>720</height>
@@ -81,7 +85,7 @@
 -->
 
   <!-- top down camera that moves in z direction -->
-  <xacro:macro name="top_down_camera" params="suffix parent xyz rpy pixel_format:=RGB_INT8 lower:=1.0 upper:=2.0 effort:=10 velocity:=1.0">
+  <xacro:macro name="top_down_camera" params="suffix parent xyz rpy pixel_format:=RGB_INT8 encoder_hw_device:=cuda encoder_bit_rate:=1000000 encoder_thread_count:=2 encoder_input_pixel_format">
 
     <link name="camera_link_${suffix}"/>
 
@@ -103,6 +107,10 @@
           <camera_info_topic>rgb_${suffix}/camera_info</camera_info_topic>
           <camera_h264_topic>rgb_${suffix}/h264</camera_h264_topic>
           <horizontal_fov>1.2</horizontal_fov>
+          <encoder_hw_device>${encoder_hw_device}</encoder_hw_device>
+          <encoder_bit_rate>${encoder_bit_rate}</encoder_bit_rate>
+          <encoder_input_pixel_format>${encoder_input_pixel_format}</encoder_input_pixel_format>
+          <encoder_thread_count>${encoder_thread_count}</encoder_thread_count>
           <image>
             <width>1280</width>
             <height>720</height>
@@ -111,7 +119,7 @@
           </image>
           <clip>
             <near>0.1</near>
-            <far>10</far>
+            <far>100</far>
           </clip>
         </camera>
       </sensor>

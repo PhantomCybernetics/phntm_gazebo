@@ -16,6 +16,14 @@
   <xacro:property name="left_wheel_y_offset" value="0.157"/>
   <xacro:property name="right_wheel_y_offset" value="${-left_wheel_y_offset}"/>
 
+  <xacro:arg name="camera_top_z" default="2.0"/>
+
+  <xacro:arg name="cameras_pixel_format" default="RGB_INT8"/>
+  <xacro:arg name="encoder_hw_device" default="cuda"/>
+  <xacro:arg name="encoder_bit_rate" default="1000000"/>
+  <xacro:arg name="encoder_input_pixel_format" default=""/>
+  <xacro:arg name="encoder_thread_count" default="2"/>
+
   <xacro:macro name="base_link" params="parent xyz rpy">
     <link name="base_link">
       <visual>
@@ -66,11 +74,32 @@
                         xyz="${rear_wheel_x_offset} ${right_wheel_y_offset} ${wheel_z_offset}" 
                         rpy="0 0 0"/>
     <!-- Robot cameras -->
-    <xacro:robot_camera parent="base_link" suffix="front" fov="1.5" xyz="0.07 -0.0000 0.1030" rpy="0 0 0"/>
-    <xacro:robot_camera parent="base_link" suffix="back" xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"/> <!-- pixel_format="L8" -->
+    <xacro:robot_camera parent="base_link" suffix="front" fov="1.5"
+      pixel_format="$(arg cameras_pixel_format)"
+      encoder_hw_device="$(arg encoder_hw_device)"
+      encoder_bit_rate="$(arg encoder_bit_rate)"
+      encoder_thread_count="$(arg encoder_thread_count)"
+      encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
+      xyz="0.07 -0.0000 0.1030" rpy="0 0 0"
+    />
+    <xacro:robot_camera parent="base_link" suffix="back"
+      pixel_format="$(arg cameras_pixel_format)"
+      encoder_hw_device="$(arg encoder_hw_device)"
+      encoder_bit_rate="$(arg encoder_bit_rate)"
+      encoder_thread_count="$(arg encoder_thread_count)"
+      encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
+      xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"
+    /> <!-- pixel_format="L8" -->
 
     <!-- Top-Down camera as moving camera -->
-    <xacro:top_down_camera parent="base_link" suffix="top" xyz="0.0 0.0 2.0" rpy="${pi} 0 -${pi/2}"/>
+    <xacro:top_down_camera parent="base_link" suffix="top"
+      pixel_format="$(arg cameras_pixel_format)"
+      encoder_hw_device="$(arg encoder_hw_device)"
+      encoder_bit_rate="$(arg encoder_bit_rate)"
+      encoder_thread_count="$(arg encoder_thread_count)"
+      encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
+      xyz="0.0 0.0 $(arg camera_top_z)" rpy="${pi} 0 -${pi/2}"
+    />
 
     <xacro:lidar parent="base_link" suffix="1" xyz="0.0000 0.0000 .1510" rpy="0 0 0"/>
     <xacro:imu parent="base_link" suffix="1" xyz="0 0 0" rpy="0 0 0"/>

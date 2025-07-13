@@ -1,6 +1,7 @@
 # Gazebo Simbot
 
 Headless Gazebo sim with GPU rendering used as a demo but also for internal development & testing purposes.
+This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked version of [gz-sensors8](https://github.com/PhantomCybernetics/gz-sensors), which introsuced Direct ROS2 node for low-latency publishing (skipping Gazebo message typings and gz-ros-bridge entirely). The used CameraSensor either generates raw camera frames into a ROS2 Image topic or encodes frames into H.264 (via libavcodec) and produces them as ffmpeg_image_transport_msgs::msg::FFMPEGPacket messages.
 
 ### Clone this repo and build the Docker image
 ```bash
@@ -13,7 +14,7 @@ docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy .
 ### Install Phantom Bridge Client
 Follow instructions [[here|PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client]]
 
-In ./config/phntm_bridge_example.yaml you'll find a template for the Sim's Bridge congiguration that uses default inpit config from ./config/phntm_input_config.json. There's also an example of the Agent config in ./config/phntm_agent_example.yaml configured for this sim.
+In `./config/phntm_bridge_example.yaml` you'll find a template for the Sim's Bridge congiguration that uses default inpit config from `./config/phntm_input_config.json`. There's also an example of the Agent config in `./config/phntm_agent_example.yaml` configured for this sim.
 
 ### Add service to your compose.yaml
 ```yaml
@@ -74,10 +75,19 @@ services:
             - capabilities: [gpu]
 
     command:
-      ros2 launch phntm_bridge client_agent_launch.py
+      ros2 launch phntm_bridge client_agent_launch.py encoder_hw_device:=cuda
 ```
 
 ### Launch
 ```bash
 docker compose up simbot-gz
 ```
+
+### Argument examples
+`camera_top_z:=5.0` - initial distance of the top-down camera above the robot [m]
+
+`encoder_hw_device:=cuda` - hardware device for the H.264 video encoding (`cuda` - default, `vaapi` or `sw`)
+`cameras_pixel_format:=BGR_INT8` - internal format generated bu the Gazebo/Ogre2 cameras (`RGB_INT8` default)
+`encoder_input_pixel_format:=bgr0` - input pixel format for the H.264 video encoder (autodetected and defaults to `nv12` if not set)
+
+The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped in an OpenCV Mat and if necessary, transformed to match the supported input pixel format of the encoder. This scaling operation is performed on CPU (on a dedicated thread) and could be expencive. Some formats (such as `yuv420` or `nv12`) require this scaling. If supported by the encoder, it is recommended to use `bgr0` or similar to skip this scaling step.

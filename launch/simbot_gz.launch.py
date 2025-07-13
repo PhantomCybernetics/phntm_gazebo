@@ -13,19 +13,49 @@ from pathlib import Path
 PACKAGE_NAME = "simbot_gz"
 
 ARGUMENTS = [
-    DeclareLaunchArgument('world', default_value='demo_world.sdf', description='Gazebo World file (with extension)'),
     DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='true',
-            description='Use sim time if true'),
+        'world',
+        default_value='demo_world.sdf',
+        description='Gazebo World file (with extension)'
+    ),
+    DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='true',
+        description='Use sim time if true'
+    ),
+    DeclareLaunchArgument(
+        'camera_top_z',
+        default_value='2.0',
+        description='Position of the top-down camera above the robot'
+    ),
+    DeclareLaunchArgument(
+        'cameras_pixel_format',
+        default_value='RGB_INT8',
+        description='Internal format used by the camera'
+    ),
+    DeclareLaunchArgument(
+        'encoder_hw_device',
+        default_value='cuda',
+        description='H264 encoder hw device ("cuda", "vaapi" or "sw")'
+    ),
+    DeclareLaunchArgument(
+        'encoder_bit_rate',
+        default_value='1000000',
+        description='H264 encoder bit rate'
+    ),
+    DeclareLaunchArgument(
+        'encoder_thread_count',
+        default_value='2',
+        description='H264 encoder thread count'
+    ),
+    DeclareLaunchArgument(
+        'encoder_input_pixel_format',
+        default_value='',
+        description='Force H264 encoder input format ("nv12", "rgb0", "bgr0", etc)'
+    ),
 ]
 
 robot_model_list = [
-    # '3w', 
-    # '3w_v2',
-    # '4w',
-    # '5w',
-    # '6w',
     'simbot_mecanum_waffle'
 ]
 
@@ -85,15 +115,25 @@ def launch_setup(context, *args, **kwargs):
     xacro_file = os.path.join(pkg_path,'urdf', robot_model, 'main.urdf.xacro')
     print(f"Loading {xacro_file}...")
     try:
-        robot_description_config = Command(['xacro ', xacro_file])
+        robot_description_config = Command(['xacro ', xacro_file,
+                                            ' camera_top_z:=', LaunchConfiguration('camera_top_z'),
+                                            ' cameras_pixel_format:=', LaunchConfiguration('cameras_pixel_format'),
+                                            ' encoder_hw_device:=', LaunchConfiguration('encoder_hw_device'),
+                                            ' encoder_bit_rate:=', LaunchConfiguration('encoder_bit_rate'),
+                                            ' encoder_thread_count:=', LaunchConfiguration('encoder_thread_count'),
+                                            ' encoder_input_pixel_format:=', LaunchConfiguration('encoder_input_pixel_format')
+                                            ])
     except():
         return LaunchDescription([
             EmitEvent(event=Shutdown(reason=f'Failed loading {xacro_file}'))
         ])
     
     print(f"Creating state publisher...")
-
-    params = {'robot_description': robot_description_config, 'use_sim_time': use_sim_time, 'publish_frequency': 30.0}
+    params = {
+        'robot_description': robot_description_config,
+        'use_sim_time': use_sim_time,
+        'publish_frequency': 30.0,
+    }
     actions.append(Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -164,8 +204,6 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
     ))
     
-    # , 
-
     # Spawn wheel controllers
     # num_wheels = 4
     # print(f"Spawning {num_wheels} wheel controllers...")
@@ -188,25 +226,6 @@ def launch_setup(context, *args, **kwargs):
             '--controller-ros-args', mecanum_remappings
         ],
     ))
-    
-    # print(f"Lading top camera controller...")    
-    # load_camera_joint_top_controller = Node(
-    #     package='controller_manager',
-    #     executable='spawner',
-    #     output='screen',
-    #     arguments=[
-    #         'camera_joint_top_position_controller',
-    #         '--controller-manager', '/controller_manager',
-    #     ]
-    # )
-
-    # print(f"Making tf republisher node...")    
-    # mecanum_tf_republisher_node = Node(
-    #     package='simbot_gz',
-    #     executable='mecanum_tf_republisher.py',
-    #     name='tf_republisher',
-    #     output='screen'
-    # )
 
     # print(f"Making kinematics node...")    
     # kinematics = Node(
@@ -241,37 +260,6 @@ def launch_setup(context, *args, **kwargs):
         output='screen'
     ))
 
-    # Launch the camera joint service node
-    # print(f"Launching camera joint service...")    
-    # camera_joint_service_node = Node(
-    #     package='simbot_gz',
-    #     executable='camera_joint_service.py',
-    #     name='camera_joint_service',
-    #     output='screen',
-    # )
-
-    # print(f"Setting camera joint position pub node...")    
-    # set_camera_joint_position_pub_node = Node(
-    #     package='simbot_gz',
-    #     executable='set_camera_joint_position_pub.py',
-    #     name='set_camera_joint_position_pub',
-    #     output='screen',
-    # )
-
-    # Create launch description and add actions
-    
-    
-    # for can_gz_bridge in can_bridges:
-    #     ld.add_action(can_gz_bridge)
-    # ld.add_action(spawn_wheel_controllers)
-    
-    
-    # ld.add_action(load_camera_joint_top_controller)
-    
-    
-    # ld.add_action(camera_joint_service_node)
-    # ld.add_action(set_camera_joint_position_pub_node)
-    # ld.add_action(mecanum_tf_republisher_node)
     # ld.add_action(kinematics)
     # ld.add_action(rviz_node)
     return actions

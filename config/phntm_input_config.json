@@ -69,7 +69,73 @@
                     "scale": -2
                 }
             ]
+        },
+        "touch": {
+            "driver": "Twist",
+            "driver_config": {
+                "output_topic": "/cmd_vel",
+                "stamped": true
+            },
+            "axes": [
+                {
+                    "axis": 0,
+                    "driver_axis": "linear.y",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -1
+                },
+                {
+                    "axis": 1,
+                    "driver_axis": "linear.x",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -1
+                },
+                {
+                    "axis": 2,
+                    "driver_axis": "angular.z",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -1
+                }
+            ]
+        },
+        "gamepad": {
+            "axes": [
+                {
+                    "axis": 0,
+                    "dead_max": 0.1,
+                    "dead_min": -0.1,
+                    "driver_axis": "linear.y",
+                    "scale": -1
+                },
+                {
+                    "axis": 1,
+                    "dead_max": 0.1,
+                    "dead_min": -0.1,
+                    "driver_axis": "linear.x",
+                    "scale": -2
+                },
+                {
+                    "axis": 2,
+                    "dead_max": 0.1,
+                    "dead_min": -0.1,
+                    "driver_axis": "angular.z",
+                    "scale": -2
+                }
+            ],
+            "buttons": [
+                {
+                    "action": "ctrl-enabled",
+                    "btn": 8,
+                    "ctrl_state": "toggle"
+                }
+            ],
+            "driver": "Twist",
+            "driver_config": {
+                "output_topic": "/cmd_vel",
+                "stamped": true
+            }
         }
     }
 }
-

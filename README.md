@@ -75,7 +75,7 @@ services:
             - capabilities: [gpu]
 
     command:
-      ros2 launch phntm_bridge client_agent_launch.py encoder_hw_device:=cuda
+      ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda camera_top_z:=5.0 cameras_pixel_format:=BGR_INT8 encoder_input_pixel_format:=bgr0
 ```
 
 ### Launch

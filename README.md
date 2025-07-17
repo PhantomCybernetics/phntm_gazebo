@@ -45,7 +45,7 @@ services:
       # on g4dn_xlarge launch:
       # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda cameras_pixel_format:=BGR_INT8 encoder_input_pixel_format:=bgr0
       # on jetson orin nano:
-      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=sw encoder_input_pixel_format:=rgb0
+      # rros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=sw camera_top_z:=5.0 cameras_pixel_format:=RGB_INT8 encoder_input_pixel_format:=nv12 encoder_thread_count:=3 cameras_resolution:=640x480
 
   phntm-bridge:
     image: phntm/bridge:jazzy
@@ -102,7 +102,7 @@ The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped
 ### Hardware Notes
 
 #### Jetson Orin Nano
-Both rendering and frame encoding are done on CPU as the GPU has no such capabilities
+Frame encoding is done on CPU as the GPU has no such capabilities
 
 #### AWS g4dn_xlarge insance
 Hw rendering and frame encoding utilizes the GPU at abou 20% with 3 cameras @ 1290x720

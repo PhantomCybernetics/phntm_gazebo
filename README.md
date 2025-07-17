@@ -45,7 +45,7 @@ services:
       # on g4dn_xlarge launch:
       # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda cameras_pixel_format:=BGR_INT8 encoder_input_pixel_format:=bgr0
       # on jetson orin nano:
-      # rros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=sw camera_top_z:=5.0 cameras_pixel_format:=RGB_INT8 encoder_input_pixel_format:=nv12 encoder_thread_count:=3 cameras_resolution:=640x480
+      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=sw camera_top_z:=5.0 cameras_pixel_format:=RGB_INT8 encoder_input_pixel_format:=nv12 encoder_thread_count:=3 cameras_resolution:=640x480
 
   phntm-bridge:
     image: phntm/bridge:jazzy

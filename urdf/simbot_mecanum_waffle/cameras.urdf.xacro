@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
 
   <!-- Front / back camera -->
-  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 pixel_format:=RGB_INT8 encoder_hw_device:=cuda encoder_bit_rate:=1000000 encoder_thread_count:=2 encoder_input_pixel_format">
+  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format:=RGB_INT8 encoder_hw_device:=cuda encoder_bit_rate:=1000000 encoder_thread_count:=2 encoder_input_pixel_format">
     <link name="camera_link_${suffix}">
       <visual>
         <origin rpy="0 0 ${pi}"/>
@@ -50,8 +50,8 @@
           <encoder_input_pixel_format>${encoder_input_pixel_format}</encoder_input_pixel_format>
           <encoder_thread_count>${encoder_thread_count}</encoder_thread_count>
           <image>
-            <width>1280</width>
-            <height>720</height>
+            <width>${width}</width>
+            <height>${height}</height>
             <format>${pixel_format}</format>
             <anti_aliasing>4</anti_aliasing>
           </image>
@@ -85,7 +85,7 @@
 -->
 
   <!-- top down camera that moves in z direction -->
-  <xacro:macro name="top_down_camera" params="suffix parent xyz rpy pixel_format:=RGB_INT8 encoder_hw_device:=cuda encoder_bit_rate:=1000000 encoder_thread_count:=2 encoder_input_pixel_format">
+  <xacro:macro name="top_down_camera" params="suffix parent xyz rpy width height pixel_format:=RGB_INT8 encoder_hw_device:=cuda encoder_bit_rate:=1000000 encoder_thread_count:=2 encoder_input_pixel_format">
 
     <link name="camera_link_${suffix}"/>
 
@@ -112,8 +112,8 @@
           <encoder_input_pixel_format>${encoder_input_pixel_format}</encoder_input_pixel_format>
           <encoder_thread_count>${encoder_thread_count}</encoder_thread_count>
           <image>
-            <width>1280</width>
-            <height>720</height>
+            <width>${width}</width>
+            <height>${height}</height>
             <format>${pixel_format}</format>
             <anti_aliasing>4</anti_aliasing>
           </image>

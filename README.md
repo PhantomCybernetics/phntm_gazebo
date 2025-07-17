@@ -11,6 +11,8 @@ cd simbot_gz
 docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy .
 ```
 
+This builds Gazebo Harmonic with our forked gz-sensors8 package.
+
 ### Install Phantom Bridge Client
 Follow instructions [[here|PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client]]
 
@@ -39,7 +41,11 @@ services:
     # ipc: host  # Bridge needs this to see other local containers
     shm_size: '200mb'
     command:
-      ros2 launch simbot_gz simbot_gz.launch.py
+      ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda camera_top_z:=5.0
+      # on g4dn_xlarge launch:
+      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda cameras_pixel_format:=BGR_INT8 encoder_input_pixel_format:=bgr0
+      # on jetson orin nano:
+      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=sw encoder_input_pixel_format:=rgb0
 
   phntm-bridge:
     image: phntm/bridge:jazzy
@@ -88,6 +94,15 @@ docker compose up simbot-gz
 
 `encoder_hw_device:=cuda` - hardware device for the H.264 video encoding (`cuda` - default, `vaapi` or `sw`)
 `cameras_pixel_format:=BGR_INT8` - internal format generated bu the Gazebo/Ogre2 cameras (`RGB_INT8` default)
+`cameras_resolution:=1280x720` - resolutions for all cameras
 `encoder_input_pixel_format:=bgr0` - input pixel format for the H.264 video encoder (autodetected and defaults to `nv12` if not set)
 
 The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped in an OpenCV Mat and if necessary, transformed to match the supported input pixel format of the encoder. This scaling operation is performed on CPU (on a dedicated thread) and could be expencive. Some formats (such as `yuv420` or `nv12`) require this scaling. If supported by the encoder, it is recommended to use `bgr0` or similar to skip this scaling step.
+
+### Hardware Notes
+
+#### Jetson Orin Nano
+Both rendering and frame encoding are done on CPU as the GPU has no such capabilities
+
+#### AWS g4dn_xlarge insance
+Hw rendering and frame encoding utilizes the GPU at abou 20% with 3 cameras @ 1290x720

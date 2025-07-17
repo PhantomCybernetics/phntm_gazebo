@@ -53,6 +53,11 @@ ARGUMENTS = [
         default_value='',
         description='Force H264 encoder input format ("nv12", "rgb0", "bgr0", etc)'
     ),
+     DeclareLaunchArgument(
+        'cameras_resolution',
+        default_value='1280x720',
+        description='Set resolution for cameras'
+    ),
 ]
 
 robot_model_list = [
@@ -113,10 +118,20 @@ def launch_setup(context, *args, **kwargs):
     # Create a robot_state_publisher node
     pkg_path = get_package_share_directory(PACKAGE_NAME)
     xacro_file = os.path.join(pkg_path,'urdf', robot_model, 'main.urdf.xacro')
+    cameras_resolution_str = LaunchConfiguration('cameras_resolution').perform(context);
+    parts = cameras_resolution_str.split('x')
+    cameras_width = 1280
+    cameras_height = 720
+    if len(parts) == 2:
+        cameras_width = parts[0]
+        cameras_height = parts[1]
+    print("cameras_width=", cameras_width, "cameras_height=", cameras_height, parts)
     print(f"Loading {xacro_file}...")
     try:
         robot_description_config = Command(['xacro ', xacro_file,
                                             ' camera_top_z:=', LaunchConfiguration('camera_top_z'),
+                                            ' cameras_width:=', str(cameras_width),
+                                            ' cameras_height:=', str(cameras_height),
                                             ' cameras_pixel_format:=', LaunchConfiguration('cameras_pixel_format'),
                                             ' encoder_hw_device:=', LaunchConfiguration('encoder_hw_device'),
                                             ' encoder_bit_rate:=', LaunchConfiguration('encoder_bit_rate'),

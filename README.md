@@ -27,11 +27,6 @@ services:
     hostname: simbot-gz.local
     # GPU integration
     runtime: nvidia           # compose v2 syntax
-    environment:
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: all   # graphics,compute,video,utility …
-      GZ_SIM_RESOURCE_PATH: /usr/share/gz
-      GZ_CONFIG_PATH: /usr/share/gz
     volumes:
       - /dev/shm:/dev/shm
       - ~/simbot_gz:/ros2_ws/src/simbot_gz

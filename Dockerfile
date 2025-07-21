@@ -1,4 +1,6 @@
 ARG ROS_DISTRO=jazzy
+# GPU = "nvidia" or "amd"
+ARG GPU=nvidia 
 FROM ros:$ROS_DISTRO
 
 RUN echo "Building docker image with ROS_DISTRO=$ROS_DISTRO"
@@ -16,10 +18,23 @@ RUN apt-get install -y lsb-release gnupg
 
 # h264 video output
 RUN apt install -y ffmpeg
-RUN apt install -y libnvidia-encode-535
 RUN apt install -y ros-$ROS_DISTRO-ffmpeg-image-transport-msgs
 RUN apt install -y libopencv-dev
 RUN apt install -y libavdevice-dev
+
+RUN if [ "$GPU" = "nvidia" ]; then \
+        echo "Installing Nvidia GPU extras"; \
+        RUN apt install -y libnvidia-encode-535; \
+    elif [ "$GPU" = "amd" ]; then \
+        echo "Installing AMD GPU extras"; \
+        cd ~; \
+        curl https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb --output ~/amdgpu-install_6.4.60401-1_all.deb; \
+        apt ~/amdgpu-install_6.4.60401-1_all.deb; \
+        amdgpu-install --usecase=workstation --vulkan=pro -y; \
+        apt install -y vainfo \
+    else \
+        echo "No valid GPU specified"; \
+    fi
 
 # GZ Harmonic (goes with Jazzy)
 RUN curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
@@ -120,11 +135,16 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
 # RUN git checkout gz-sensors8
 # RUN mkdir build; cd build; cmake ..; make
 
-ENV NVIDIA_VISIBLE_DEVICES=all
-ENV NVIDIA_DRIVER_CAPABILITIES=all
 ENV GZ_SIM_RESOURCE_PATH=/usr/share/gz
 ENV GZ_CONFIG_PATH=/usr/share/gz
-ENV __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.json
+
+RUN if [ "$GPU" = "nvidia" ]; then \
+        echo "NVIDIA_VISIBLE_DEVICES=all" >> /root/.bashrc; \
+        echo "NVIDIA_DRIVER_CAPABILITIES=all" >> /root/.bashrc; \
+        echo "__EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.json" >> /root/.bashrc; \
+    elif [ "$GPU" = "amd" ]; then \
+        echo "__EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json" >> /root/.bashrc; \
+    fi
 
 # generate entrypoint script
 RUN echo '#!/bin/bash \n \
@@ -133,7 +153,7 @@ set -e \n \
 # setup ros environment \n \
 source "/opt/ros/'$ROS_DISTRO'/setup.bash" \n \
 test -f "/ros2_ws/install/setup.bash" && source "/ros2_ws/install/setup.bash" \n \
-test -f "/gz_ws/install/setup.bash" && source "/gz_ws/install/setup.bash" \n \
+test -f "/gz_ws/install/setup.bash" && source "/gz_ws/install/setup.bash" \n \ 
 \n \
 exec "$@"' > /ros_entrypoint.sh
 RUN chmod a+x /ros_entrypoint.sh
@@ -142,6 +162,7 @@ RUN chmod a+x /ros_entrypoint.sh
 RUN echo 'source /opt/ros/'$ROS_DISTRO'/setup.bash' >> /root/.bashrc
 RUN echo 'test -f "/ros2_ws/install/setup.bash" && source "/ros2_ws/install/setup.bash"' >> /root/.bashrc
 RUN echo 'test -f "/gz_ws/install/setup.bash" && source "/gz_ws/install/setup.bash"' >> /root/.bashrc
+RUN echo 'export RCUTILS_COLORIZED_OUTPUT=1' >> /root/.bashrc
 
 # set startup path
 WORKDIR $ROS_WS

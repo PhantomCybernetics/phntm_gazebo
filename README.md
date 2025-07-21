@@ -8,7 +8,7 @@ This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked ve
 cd ~
 git clone git@github.com:PhantomCybernetics/simbot_gz.git simbot_gz
 cd simbot_gz
-docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy .
+GPU=nvidia; docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy-$GPU --build-arg GPU=$GPU .
 ```
 
 This builds Gazebo Harmonic with our forked gz-sensors8 package.
@@ -21,8 +21,8 @@ In `./config/phntm_bridge_example.yaml` you'll find a template for the Sim's Bri
 ### Add service to your compose.yaml
 ```yaml
 services:
-    simbot-gz:
-    image: phntm/simbot-gz:harmonic-jazzy
+  simbot-gz:
+    image: phntm/simbot-gz:harmonic-jazzy-nvidia
     container_name: simbot-gz
     hostname: simbot-gz.local
     # GPU integration
@@ -37,9 +37,11 @@ services:
     shm_size: '200mb'
     command:
       ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda camera_top_z:=5.0
-      # on g4dn_xlarge launch:
+      ## on g4ad_xlarge (AMD)launch:
+      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi encoder_input_pixel_format:=nv12 
+      ## on g4dn_xlarge (Nvidia) launch:
       # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda cameras_pixel_format:=BGR_INT8 encoder_input_pixel_format:=bgr0
-      # on jetson orin nano:
+      ## on jetson orin nano:
       # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=sw camera_top_z:=5.0 cameras_pixel_format:=RGB_INT8 encoder_input_pixel_format:=nv12 encoder_thread_count:=3 cameras_resolution:=640x480
 
   phntm-bridge:

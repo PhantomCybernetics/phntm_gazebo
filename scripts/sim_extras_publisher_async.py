@@ -9,6 +9,7 @@ from geometry_msgs.msg import TwistStamped
 from sensor_msgs.msg import BatteryState
 from nav_msgs.msg import Odometry
 from phntm_interfaces.msg import IWStatus
+from rclpy.qos import QoSProfile, ReliabilityPolicy
 
 class SimExtrasPublisher(Node):
     def __init__(self):
@@ -42,8 +43,12 @@ class SimExtrasPublisher(Node):
         self.battery_task = None
         self.wifi_task = None
 
-        self.create_subscription(TwistStamped, '/cmd_vel', self.cmd_vel_callback, 10)
-        self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
+        qos = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            depth=1
+        )
+        self.create_subscription(TwistStamped, '/cmd_vel', self.cmd_vel_callback, qos)
+        self.create_subscription(Odometry, '/odom', self.odom_callback, qos)
 
     def cmd_vel_callback(self, msg):
         self.last_cmd_vel = msg
@@ -72,6 +77,8 @@ class SimExtrasPublisher(Node):
         msg.percentage = (voltage - self.min_voltage) / voltage_range if voltage_range > 0 else 1.0
         msg.percentage = max(0.0, min(1.0, msg.percentage))
 
+        print("Battery: " + str(msg.percentage))
+        
         self.battery_pub.publish(msg)
 
     def publish_wifi_status(self):

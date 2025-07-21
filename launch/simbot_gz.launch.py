@@ -207,7 +207,9 @@ def launch_setup(context, *args, **kwargs):
         ]
     ))
     
-    mecanum_remappings = '--ros-args --remap /mecanum_controller/odometry:=/odom --remap /mecanum_controller/reference:=/cmd_vel --remap /mecanum_controller/tf_odometry:=/tf'
+    mecanum_remappings = '--ros-args --remap /mecanum_controller/odometry:=/odom' \
+                                 + ' --remap /mecanum_controller/reference:=/cmd_vel' \
+                                 + ' --remap /mecanum_controller/tf_odometry:=/tf'
     
     # Spawn joint_state_broadcaster
     print(f"Spawning joint state broadcaster...")

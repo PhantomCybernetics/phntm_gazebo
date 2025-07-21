@@ -69,18 +69,6 @@
   direction: GZ_TO_ROS
   lazy: true
 
-- ros_topic_name: "/rgb_front_odometer_test"
-  gz_topic_name: "/rgb_front_odometer_test"
-  ros_type_name: "std_msgs/msg/Float64"
-  gz_type_name: "gz.msgs.Double"
-  direction: GZ_TO_ROS
-
-- ros_topic_name: "/rgb_back_odometer_test"
-  gz_topic_name: "/rgb_back_odometer_test"
-  ros_type_name: "std_msgs/msg/Float64"
-  gz_type_name: "gz.msgs.Double"
-  direction: GZ_TO_ROS
-
 - ros_topic_name: "/range_fr"
   gz_topic_name: "/range_fr"
   ros_type_name: "sensor_msgs/msg/LaserScan"

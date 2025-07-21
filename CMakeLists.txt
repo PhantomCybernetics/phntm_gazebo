@@ -17,22 +17,15 @@ find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
-# install all python code inside scripts folder and add exec permission
-install(DIRECTORY scripts/
-        DESTINATION lib/${PROJECT_NAME}
-        FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
-                         GROUP_EXECUTE GROUP_READ
-                         WORLD_EXECUTE WORLD_READ
-        FILES_MATCHING PATTERN "*.py")
-
 install(DIRECTORY
+  config
   launch
+  map
+  meshes
+  scripts
+  models
   urdf
   worlds
-  meshes
-  config
-  map
-  models
   DESTINATION share/${PROJECT_NAME}/
 )
 

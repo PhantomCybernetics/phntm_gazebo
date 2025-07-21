@@ -77,8 +77,6 @@ class SimExtrasPublisher(Node):
         msg.percentage = (voltage - self.min_voltage) / voltage_range if voltage_range > 0 else 1.0
         msg.percentage = max(0.0, min(1.0, msg.percentage))
 
-        print("Battery: " + str(msg.percentage))
-        
         self.battery_pub.publish(msg)
 
     def publish_wifi_status(self):

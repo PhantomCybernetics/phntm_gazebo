@@ -8,7 +8,8 @@ This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked ve
 cd ~
 git clone git@github.com:PhantomCybernetics/simbot_gz.git simbot_gz
 cd simbot_gz
-GPU=nvidia; docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy-$GPU --build-arg GPU=$GPU .
+# GPU options: amd, nvidia or not set for sw (not recommended)
+GPU=amd; docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy-$GPU --build-arg GPU=$GPU .
 ```
 
 This builds Gazebo Harmonic with our forked gz-sensors8 package.
@@ -98,8 +99,24 @@ The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped
 
 ### Hardware Notes
 
+#### AWS g4ad.xlarge insance (AMD Radeon Pro V520 GPU)
+Install drivers (in the host machine, not Docker container):
+`bash
+sudo apt-get update --fix-missing
+sudo apt install build-essential linux-firmware linux-modules-extra-aws -y
+wget https://repo.radeon.com/amdgpu-install/6.4.2/ubuntu/jammy/amdgpu-install_6.4.60402-1_all.deb
+sudo apt install ./amdgpu-install_6.4.60402-1_all.deb
+sudo amdgpu-install -y --usecase=graphics,rocm
+sudo usermod -a -G render,video $LOGNAME
+sudo reboot
+`
+
+#### AWS g4dn.xlarge insance (NVIDIA T4 GPU)
+Hw rendering and frame encoding utilizes the GPU at about 20% with 3 cameras @ 1290x720
+
 #### Jetson Orin Nano
 Frame encoding is done on CPU as the GPU has no such capabilities
 
-#### AWS g4dn_xlarge insance
-Hw rendering and frame encoding utilizes the GPU at abou 20% with 3 cameras @ 1290x720
+
+
+

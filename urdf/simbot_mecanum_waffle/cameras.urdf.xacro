@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
 
   <!-- Front / back camera -->
-  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format:=RGB_INT8 encoder_hw_device:=cuda encoder_bit_rate:=1000000 encoder_thread_count:=2 encoder_input_pixel_format">
+  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing">
     <link name="camera_link_${suffix}">
       <visual>
         <origin rpy="0 0 ${pi}"/>
@@ -40,7 +40,7 @@
         <always_on>true</always_on>
         <update_rate>30</update_rate>
         <visualize>false</visualize>
-        <topic>rgb_${suffix}</topic>
+        <topic>rgb_${suffix}/raw</topic>
         <camera>
           <camera_info_topic>rgb_${suffix}/camera_info</camera_info_topic>
           <camera_h264_topic>rgb_${suffix}/h264</camera_h264_topic>
@@ -53,7 +53,7 @@
             <width>${width}</width>
             <height>${height}</height>
             <format>${pixel_format}</format>
-            <anti_aliasing>4</anti_aliasing>
+            <anti_aliasing>${anti_aliasing}</anti_aliasing>
           </image>
           <clip>
             <near>0.015</near>
@@ -66,8 +66,7 @@
   </xacro:macro>
 
   <!-- top down camera that moves in z direction -->
-  <xacro:macro name="top_down_camera" params="suffix parent xyz rpy width height pixel_format:=RGB_INT8 encoder_hw_device:=cuda encoder_bit_rate:=1000000 encoder_thread_count:=2 encoder_input_pixel_format">
-
+  <xacro:macro name="top_down_camera" params="suffix parent xyz rpy width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing">
     <link name="camera_link_${suffix}"/>
 
     <joint name="camera_joint_${suffix}" type="fixed">
@@ -83,7 +82,7 @@
         <always_on>true</always_on>
         <update_rate>30</update_rate>
         <visualize>false</visualize>
-        <topic>rgb_${suffix}</topic>
+        <topic>rgb_${suffix}/raw</topic>
         <camera>
           <camera_info_topic>rgb_${suffix}/camera_info</camera_info_topic>
           <camera_h264_topic>rgb_${suffix}/h264</camera_h264_topic>
@@ -96,7 +95,7 @@
             <width>${width}</width>
             <height>${height}</height>
             <format>${pixel_format}</format>
-            <anti_aliasing>4</anti_aliasing>
+            <anti_aliasing>${anti_aliasing}</anti_aliasing>
           </image>
           <clip>
             <near>0.1</near>

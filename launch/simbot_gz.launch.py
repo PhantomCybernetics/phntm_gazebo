@@ -40,7 +40,7 @@ ARGUMENTS = [
     ),
     DeclareLaunchArgument(
         'encoder_bit_rate',
-        default_value='1000000',
+        default_value='2000000',
         description='H264 encoder bit rate'
     ),
     DeclareLaunchArgument(
@@ -50,7 +50,7 @@ ARGUMENTS = [
     ),
     DeclareLaunchArgument(
         'encoder_input_pixel_format',
-        default_value='',
+        default_value='nv12',
         description='Force H264 encoder input format ("nv12", "rgb0", "bgr0", etc)'
     ),
      DeclareLaunchArgument(
@@ -179,7 +179,7 @@ def launch_setup(context, *args, **kwargs):
                          ' -v 4', # verbosity level (0-4)
                          ' --headless-rendering',
                          ' --render-engine ogre2',
-                         ' --render-engine-api-backend vulkan'
+                         ' --render-engine-api-backend opengl' # was vulkan
                          ' --physics-engine gz-physics-dartsim-plugin ',
                          world_sdf_path])
         ]
@@ -257,7 +257,7 @@ def launch_setup(context, *args, **kwargs):
         executable='sim_extras_publisher_async.py',
         name='sim_extras_publisher',
         parameters=[PathJoinSubstitution([
-            FindPackageShare('simbot_gz'),
+            FindPackageShare(PACKAGE_NAME),
             'config',
             'sim_extras_config.yaml'
         ])],

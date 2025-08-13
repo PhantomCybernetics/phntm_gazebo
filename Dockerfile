@@ -11,7 +11,7 @@ RUN apt-get update -y --fix-missing
 RUN apt-get install -y vim mc \
                        iputils-ping net-tools iproute2 \
                        curl \
-                       gdb \
+                       gdb gdbserver \
                        clangd
 
 RUN apt-get install -y lsb-release gnupg
@@ -21,6 +21,16 @@ RUN apt install -y ffmpeg
 RUN apt install -y ros-$ROS_DISTRO-ffmpeg-image-transport-msgs
 RUN apt install -y libopencv-dev
 RUN apt install -y libavdevice-dev
+RUN apt install -y \
+    libdrm-dev \
+    libgbm-dev \
+    libegl-dev \
+    libgles2-mesa-dev \
+    libva-dev \
+    libva-drm2 \
+    libavcodec-dev \
+    libavutil-dev \
+    mesa-va-drivers
 
 RUN if [ "$GPU" = "nvidia" ]; then \
         echo "Installing Nvidia GPU extras"; \

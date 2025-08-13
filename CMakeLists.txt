@@ -22,11 +22,16 @@ install(DIRECTORY
   launch
   map
   meshes
-  scripts
   models
   urdf
   worlds
   DESTINATION share/${PROJECT_NAME}/
+)
+
+install(PROGRAMS
+  scripts/laser_to_range_async.py
+  scripts/sim_extras_publisher_async.py
+  DESTINATION lib/${PROJECT_NAME}/
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}

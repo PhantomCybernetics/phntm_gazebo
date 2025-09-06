@@ -21,10 +21,13 @@ services:
     image: phntm/simbot-gz:harmonic-jazzy-amd
     container_name: simbot-gz
     hostname: simbot-gz.local
+    restart: unless-stopped
     # runtime: nvidia # with Nvidia
     volumes:
       - /dev/shm:/dev/shm
       - ~/simbot_gz:/ros2_ws/src/simbot_gz
+    devices:
+      - /dev:/dev # GPU
     group_add:
       - video
     network_mode: host
@@ -58,8 +61,8 @@ There's also an example of the Agent's config in `./config/phntm_agent_example.y
     network_mode: host  # WebRTC needs this
     ipc: host  # Bridge needs this to see other local containers
     shm_size: '200mb'
-    runtime: nvidia
-    environment:
+    runtime: nvidia # for Nvidia
+    environment: # for Nvidi a
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
     volumes:
@@ -70,11 +73,7 @@ There's also an example of the Agent's config in `./config/phntm_agent_example.y
       - /tmp:/tmp  # WiFi control needs this
       - ~/simbot_gz:/ros2_ws/src/simbot_gz # srv defs
     devices:
-      - /dev:/dev  # LED control needs this
-      - /dev/nvidia0:/dev/nvidia0
-      - /dev/nvidiactl:/dev/nvidiactl
-      - /dev/nvidia-uvm:/dev/nvidia-uvm
-      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
+      - /dev:/dev  # GPU
     deploy:
       resources:  
         reservations:
@@ -82,7 +81,7 @@ There's also an example of the Agent's config in `./config/phntm_agent_example.y
             - capabilities: [gpu]
 
     command:
-      ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda camera_top_z:=5.0 cameras_pixel_format:=BGR_INT8 encoder_input_pixel_format:=bgr0
+      ros2 launch phntm_bridge client_agent_launch.py
 ```
 
 ### Launch

@@ -90,7 +90,7 @@ There's also an example of the Agent's config in `./config/phntm_agent_example.y
 docker compose up simbot-gz
 ```
 
-### Argument examples
+### Argument examples 
 `camera_top_z:=5.0` - initial distance of the top-down camera above the robot [m]
 `encoder_hw_device:=cuda` - hardware device for the H.264 video encoding (`cuda` - default, `vaapi` or `sw`)
 `cameras_pixel_format:=BGR_INT8` - internal format generated bu the Gazebo/Ogre2 cameras (`RGB_INT8` default)
@@ -105,7 +105,7 @@ The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped
 This is the recommended option as AMD GPU instances are more cost-effective than instances with Nvidia GPUs. 
 
 Install drivers (in the host machine, not Docker container):
-`bash
+```bash
 sudo apt-get update --fix-missing
 sudo apt install build-essential linux-firmware linux-modules-extra-aws -y
 wget https://repo.radeon.com/amdgpu-install/6.4.2/ubuntu/jammy/amdgpu-install_6.4.60402-1_all.deb
@@ -113,7 +113,7 @@ sudo apt install ./amdgpu-install_6.4.60402-1_all.deb
 sudo amdgpu-install -y --usecase=graphics,rocm
 sudo usermod -a -G render,video $LOGNAME
 sudo reboot
-`
+```
 
 #### AWS g4dn.xlarge insance (NVIDIA T4 GPU)
 Hw rendering and frame encoding utilizes the GPU at about 20% with 3 cameras @ 1290x720

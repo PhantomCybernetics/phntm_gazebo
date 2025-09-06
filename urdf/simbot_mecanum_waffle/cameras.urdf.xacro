@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
 
   <!-- Front / back camera -->
-  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing">
+  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing depth:=false">
     <link name="camera_link_${suffix}">
       <visual>
         <origin rpy="0 0 ${pi}"/>
@@ -18,14 +18,6 @@
       </collision>
     </link>
 
-    <link name="camera_optical_frame_${suffix}" />
-
-    <joint name="camera_optical_joint_${suffix}" type="fixed">
-      <parent link="camera_link_${suffix}" />
-      <child link="camera_optical_frame_${suffix}" />
-      <origin xyz="0.0 0 0.02" rpy="-${pi/2.0} 0 -${pi/2.0}"/>
-    </joint>
-
     <joint name="camera_joint_${suffix}" type="fixed">
       <parent link="${parent}" />
       <child link="camera_link_${suffix}" />
@@ -33,10 +25,18 @@
       <axis xyz="0 0 1"/>
     </joint>
 
-    <gazebo reference="camera_link_${suffix}">
+    <link name="camera_optical_frame_${suffix}" />
+
+    <joint name="camera_optical_joint_${suffix}" type="fixed">
+      <parent link="camera_link_${suffix}" />
+      <child link="camera_optical_frame_${suffix}" />
+      <origin xyz="0.012 0.03 0.015" rpy="-${pi/2.0} 0 -${pi/2.0}"/>
+    </joint>
+
+    <gazebo reference="camera_optical_frame_${suffix}">
       <sensor name="camera_${suffix}" type="camera">
         <gz_frame_id>camera_optical_frame_${suffix}</gz_frame_id>
-        <pose>0 0 0.02 0 0 0</pose>
+        <pose>0 0 0 0 -${pi/2.0} ${pi/2.0}</pose>
         <always_on>true</always_on>
         <update_rate>30</update_rate>
         <visualize>false</visualize>
@@ -56,12 +56,46 @@
             <anti_aliasing>${anti_aliasing}</anti_aliasing>
           </image>
           <clip>
-            <near>0.015</near>
+            <near>0.001</near> <!-- less than collider to prevent seeing through walls -->
             <far>100</far>
           </clip>
         </camera>
       </sensor>
     </gazebo>
+
+    <!-- Depth camera -->
+    <xacro:if value="${depth}">
+      <link name="depth_camera_optical_frame_${suffix}" />
+
+      <joint name="depth_camera_optical_joint_${suffix}" type="fixed">
+        <parent link="camera_link_${suffix}" />
+        <child link="depth_camera_optical_frame_${suffix}" />
+        <origin xyz="0.012 -0.03 0.015" rpy="-${pi/2.0} 0 -${pi/2.0}"/>
+      </joint>
+
+      <gazebo reference="depth_camera_optical_frame_${suffix}">
+        <sensor name="depth_camera_${suffix}" type="depth_camera">
+          <gz_frame_id>depth_camera_optical_frame_${suffix}</gz_frame_id>
+          <pose>0 0 0 -${pi/2.0} ${pi/2.0}</pose>
+          <always_on>true</always_on>
+          <update_rate>30</update_rate>
+          <visualize>false</visualize>
+          <topic>depth_${suffix}/raw</topic>
+          <camera>
+            <camera_info_topic>depth_${suffix}/camera_info</camera_info_topic>
+            <horizontal_fov>${fov}</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+            </image>
+            <clip>
+              <near>0.1</near> <!-- smaller produces rendering errors -->
+              <far>100</far>
+            </clip>
+          </camera>
+        </sensor>
+      </gazebo>
+    </xacro:if>
 
   </xacro:macro>
 

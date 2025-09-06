@@ -1,50 +1,53 @@
 # Gazebo Simbot
 
 Headless Gazebo sim with GPU rendering used as a demo but also for internal development & testing purposes.
-This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked version of [gz-sensors8](https://github.com/PhantomCybernetics/gz-sensors), which introsuced Direct ROS2 node for low-latency publishing (skipping Gazebo message typings and gz-ros-bridge entirely). The used CameraSensor either generates raw camera frames into a ROS2 Image topic or encodes frames into H.264 (via libavcodec) and produces them as ffmpeg_image_transport_msgs::msg::FFMPEGPacket messages.
+This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked version of [gz-sensors8](https://github.com/PhantomCybernetics/gz-sensors), which introduces Direct ROS2 node for low-latency publishing (skipping Gazebo message typings and gz-ros-bridge entirely). The used CameraSensor either generates raw camera frames into a ROS2 Image topic or encodes frames into H.264 (via libavcodec) and produces them as ffmpeg_image_transport_msgs::msg::FFMPEGPacket messages.
 
 ### Clone this repo and build the Docker image
 ```bash
 cd ~
 git clone git@github.com:PhantomCybernetics/simbot_gz.git simbot_gz
 cd simbot_gz
-# GPU options: amd, nvidia or not set for sw (not recommended)
+# GPU options: amd, nvidia or not set for sw encoding (not recommended)
 GPU=amd; docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy-$GPU --build-arg GPU=$GPU .
 ```
 
 This builds Gazebo Harmonic with our forked gz-sensors8 package.
 
-### Install Phantom Bridge Client
-Follow instructions [[here|PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client]]
-
-In `./config/phntm_bridge_example.yaml` you'll find a template for the Sim's Bridge congiguration that uses default inpit config from `./config/phntm_input_config.json`. There's also an example of the Agent config in `./config/phntm_agent_example.yaml` configured for this sim.
-
-### Add service to your compose.yaml
+### Add Gazebo service to your compose.yaml
 ```yaml
 services:
   simbot-gz:
-    image: phntm/simbot-gz:harmonic-jazzy-nvidia
+    image: phntm/simbot-gz:harmonic-jazzy-amd
     container_name: simbot-gz
     hostname: simbot-gz.local
-    # GPU integration
-    runtime: nvidia           # compose v2 syntax
+    # runtime: nvidia # with Nvidia
     volumes:
       - /dev/shm:/dev/shm
       - ~/simbot_gz:/ros2_ws/src/simbot_gz
     group_add:
       - video
     network_mode: host
-    # ipc: host  # Bridge needs this to see other local containers
     shm_size: '200mb'
     command:
-      ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda camera_top_z:=5.0
+      ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi
       ## on g4ad_xlarge (AMD)launch:
-      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi encoder_input_pixel_format:=nv12 
+      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi
       ## on g4dn_xlarge (Nvidia) launch:
       # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda cameras_pixel_format:=BGR_INT8 encoder_input_pixel_format:=bgr0
       ## on jetson orin nano:
       # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=sw camera_top_z:=5.0 cameras_pixel_format:=RGB_INT8 encoder_input_pixel_format:=nv12 encoder_thread_count:=3 cameras_resolution:=640x480
+```
 
+### Install Phantom Bridge Client
+
+Follow instructions [[here|PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client]]
+
+In `./config/phntm_bridge_example.yaml` you'll find a template for the Sim's Bridge configuration that uses default input config from `./config/phntm_input_config.json`.
+There's also an example of the Agent's config in `./config/phntm_agent_example.yaml` configured for this sim.
+
+### Add Bridge service to your compose.yaml
+```yaml
   phntm-bridge:
     image: phntm/bridge:jazzy
     container_name: phntm-bridge
@@ -73,7 +76,7 @@ services:
       - /dev/nvidia-uvm:/dev/nvidia-uvm
       - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
     deploy:
-      resources:
+      resources:  
         reservations:
           devices:
             - capabilities: [gpu]
@@ -89,7 +92,6 @@ docker compose up simbot-gz
 
 ### Argument examples
 `camera_top_z:=5.0` - initial distance of the top-down camera above the robot [m]
-
 `encoder_hw_device:=cuda` - hardware device for the H.264 video encoding (`cuda` - default, `vaapi` or `sw`)
 `cameras_pixel_format:=BGR_INT8` - internal format generated bu the Gazebo/Ogre2 cameras (`RGB_INT8` default)
 `cameras_resolution:=1280x720` - resolutions for all cameras
@@ -99,7 +101,9 @@ The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped
 
 ### Hardware Notes
 
-#### AWS g4ad.xlarge insance (AMD Radeon Pro V520 GPU)
+#### AWS g4ad.xlarge insance with AMD Radeon Pro V520 GPU
+This is the recommended option as AMD GPU instances are more cost-effective than instances with Nvidia GPUs. 
+
 Install drivers (in the host machine, not Docker container):
 `bash
 sudo apt-get update --fix-missing
@@ -117,6 +121,7 @@ Hw rendering and frame encoding utilizes the GPU at about 20% with 3 cameras @ 1
 #### Jetson Orin Nano
 Frame encoding is done on CPU as the GPU has no such capabilities
 
-
-
-
+## Known Issues
+- Gazebo often leaves behind zombie processes, kill them with `pkill -9 -f "gz sim"`
+- Gazebo sometimes crashes with `ODE INTERNAL ERROR 1: assertion "aabbBound >= dMinIntExact && aabbBound < dMaxIntExact" failed in collide() [collision_space.cpp:460]`. This is an error of the physics engine. It happens for instance when an object runs away of falls through the ground, causing an integer overflow
+- The hardware H.264 encoder requires NV12 frames as the input. The Ogre2 engine produces rgb8 textures and offers an OpenGL texture handle. This means a transformation needs to take place before we can feed the input frames to the encoder. It is theoretically possible to do this completely on the GPU with zero-copy to RAM, minimal CPU involvement and very low latency, however, this has proven to be very challenging and more work is needed, [see details here](https://www.reddit.com/r/GraphicsProgramming/comments/1mn0gpn/zerocopy_h264_video_encoding_from_opengl_texture/). At the moment, every frame if copied to RAM and transformed on the CPU, which means we're losing about 3-5 FPS per active camera (all cameras in Gazebo run on the same rendering thread).

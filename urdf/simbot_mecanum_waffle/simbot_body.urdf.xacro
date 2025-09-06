@@ -20,7 +20,7 @@
 
   <xacro:arg name="cameras_pixel_format" default="RGB_INT8"/>
   <xacro:arg name="encoder_hw_device" default="cuda"/>
-  <xacro:arg name="encoder_bit_rate" default="1000000"/>
+  <xacro:arg name="encoder_bit_rate" default="2000000"/>
   <xacro:arg name="encoder_input_pixel_format" default=""/>
   <xacro:arg name="encoder_thread_count" default="2"/>
   <xacro:arg name="cameras_width" default="1280"/>
@@ -85,9 +85,11 @@
       encoder_bit_rate="$(arg encoder_bit_rate)"
       encoder_thread_count="$(arg encoder_thread_count)"
       encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
-      xyz="0.07 -0.0000 0.1030" rpy="0 0 0"
+      xyz="0.07 0.0 0.1030" rpy="0 0 0"
       anti_aliasing="$(arg cameras_anti_aliasing)"
+      depth="true"
     />
+
     <xacro:robot_camera parent="base_link" suffix="back"
       width="$(arg cameras_width)"
       height="$(arg cameras_height)"

@@ -20,34 +20,6 @@
   lazy: true
   qos_profile: SENSOR_DATA
 
-# - ros_topic_name: "/rgb_front"
-#   gz_topic_name: "/rgb_front"
-#   ros_type_name: "sensor_msgs/msg/Image"
-#   gz_type_name: "gz.msgs.Image"
-#   direction: GZ_TO_ROS
-#   publish_frequency: 30
-#   lazy: true
-#   qos_profile: SENSOR_DATA
-
-# - ros_topic_name: "/rgb_back"
-#   gz_topic_name: "/rgb_back"
-#   ros_type_name: "sensor_msgs/msg/Image"
-#   gz_type_name: "gz.msgs.Image"
-#   direction: GZ_TO_ROS
-#   publish_frequency: 30
-#   lazy: true
-#   qos_profile: SENSOR_DATA
-
-# - ros_topic_name: "/rgb_top"
-#   gz_topic_name: "/rgb_top"
-#   ros_type_name: "sensor_msgs/msg/Image"
-#   gz_type_name: "gz.msgs.Image"
-#   direction: GZ_TO_ROS
-#   publisher_queue: 1
-#   publish_frequency: 30
-#   lazy: true
-#   qos_profile: SENSOR_DATA
-
 - ros_topic_name: "/rgb_front/camera_info"
   gz_topic_name: "/rgb_front/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"

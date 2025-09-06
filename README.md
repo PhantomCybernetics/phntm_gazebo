@@ -91,11 +91,11 @@ docker compose up simbot-gz
 ```
 
 ### Argument examples 
-`camera_top_z:=5.0` - initial distance of the top-down camera above the robot [m]
-`encoder_hw_device:=cuda` - hardware device for the H.264 video encoding (`cuda` - default, `vaapi` or `sw`)
-`cameras_pixel_format:=BGR_INT8` - internal format generated bu the Gazebo/Ogre2 cameras (`RGB_INT8` default)
-`cameras_resolution:=1280x720` - resolutions for all cameras
-`encoder_input_pixel_format:=bgr0` - input pixel format for the H.264 video encoder (autodetected and defaults to `nv12` if not set)
+`camera_top_z:=5.0` - initial distance of the top-down camera above the robot [m] \
+`encoder_hw_device:=cuda` - hardware device for the H.264 video encoding (`cuda` - default, `vaapi` or `sw`) \
+`cameras_pixel_format:=BGR_INT8` - internal format generated bu the Gazebo/Ogre2 cameras (`RGB_INT8` default) \
+`cameras_resolution:=1280x720` - resolutions for all cameras \
+`encoder_input_pixel_format:=bgr0` - input pixel format for the H.264 video encoder (autodetected and defaults to `nv12` if not set) \
 
 The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped in an OpenCV Mat and if necessary, transformed to match the supported input pixel format of the encoder. This scaling operation is performed on CPU (on a dedicated thread) and could be expencive. Some formats (such as `yuv420` or `nv12`) require this scaling. If supported by the encoder, it is recommended to use `bgr0` or similar to skip this scaling step.
 
@@ -125,3 +125,4 @@ Frame encoding is done on CPU as the GPU has no such capabilities
 - Gazebo often leaves behind zombie processes, kill them with `pkill -9 -f "gz sim"`
 - Gazebo sometimes crashes with `ODE INTERNAL ERROR 1: assertion "aabbBound >= dMinIntExact && aabbBound < dMaxIntExact" failed in collide() [collision_space.cpp:460]`. This is an error of the physics engine. It happens for instance when an object runs away of falls through the ground, causing an integer overflow
 - The hardware H.264 encoder requires NV12 frames as the input. The Ogre2 engine produces rgb8 textures and offers an OpenGL texture handle. This means a transformation needs to take place before we can feed the input frames to the encoder. It is theoretically possible to do this completely on the GPU with zero-copy to RAM, minimal CPU involvement and very low latency, however, this has proven to be very challenging and more work is needed, [see details here](https://www.reddit.com/r/GraphicsProgramming/comments/1mn0gpn/zerocopy_h264_video_encoding_from_opengl_texture/). At the moment, every frame if copied to RAM and transformed on the CPU, which means we're losing about 3-5 FPS per active camera (all cameras in Gazebo run on the same rendering thread).
+- The Range sensors are implemented as GPU lidars with limited FOV, then converted to sensor_msgs/msg/Range by the laser_to_range_converter. This is not ideal but fine for now.

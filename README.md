@@ -99,9 +99,9 @@ docker compose up simbot-gz
 
 The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped in an OpenCV Mat and if necessary, transformed to match the supported input pixel format of the encoder. This scaling operation is performed on CPU (on a dedicated thread) and could be expencive. Some formats (such as `yuv420` or `nv12`) require this scaling. If supported by the encoder, it is recommended to use `bgr0` or similar to skip this scaling step.
 
-### Hardware Notes
+## Hardware Notes
 
-#### AWS g4ad.xlarge insance with AMD Radeon Pro V520 GPU
+### AWS g4ad.xlarge insance (AMD Radeon Pro V520 GPU)
 This is the recommended option as AMD GPU instances are more cost-effective than instances with Nvidia GPUs. 
 
 Install drivers (in the host machine, not Docker container):
@@ -115,11 +115,11 @@ sudo usermod -a -G render,video $LOGNAME
 sudo reboot
 ```
 
-#### AWS g4dn.xlarge insance (NVIDIA T4 GPU)
+### AWS g4dn.xlarge insance (NVIDIA T4 GPU)
 Hw rendering and frame encoding utilizes the GPU at about 20% with 3 cameras @ 1290x720
 
-#### Jetson Orin Nano
-Frame encoding is done on CPU as the GPU has no such capabilities
+### Jetson Orin Nano
+Frame encoding is done on the CPU as the GPU has no video encoding capabilities
 
 ## Known Issues
 - Gazebo often leaves behind zombie processes, kill them with `pkill -9 -f "gz sim"`

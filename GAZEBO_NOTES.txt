@@ -1,0 +1,36 @@
+Use-case: Headless high-performance GPU rendering
+-------------------------------------------------
+
+Plugin system doesn't work with rendering sensors
+GPU utlization ~10-15% when rendering 3 cameras 1280x720 w all targeting 30FPS but getting 20Hz max
+35 minutes to compile from src
+GZ-bridge inefficiencies (everything is a copy + extra buffering bcs of separate message typings)
+	=> dedicating a new gz-bridge to a topic does not increase perfomance
+Adding GZ message type is extremely complex
+	=> you'd expect to add a .proto and build, I still don't know what's happening
+	=> chances are, you already have exactly what you want in ROS!
+SDF parsing is a self-serving fascism
+	=> 15 edits to add an attribute & mapping, still producing warnings (from a different package)
+	=> all this to then copy the value to sensor's attribute on load!! Simple XML parser would do it better
+
+Using ROS-like philosophy, 100% used with ROS, yet it needs to be a separate project that introduces insane amount of complexity for no good reason.
+
+CPU utilization and bottlenecks are a product if the unnecessary complexity, not high demands.
+Leaves behind zombie processes when terminated.
+Project hierarchy and versioning is a nightmare (add message definition => change SDF version => need to rebuild everything with the correct sdformat package version)
+If you just want to add a plugin with custom message type and SDF attributes, you need to fork gz-msg and sdfortmat, add message coversion to ROS, add bindings for SDF parsing, chreate your own SDF version and build everything together
+Visual bit mask doesn't work
+Always on v. lazy
+Separate launch system, although 100% launched with ROS
+GUI should be more optinal and less expected.
+
+Poor integration with the rendering engine -> Pick one for fuck's sake! -> tons of CPU work that shoudl be done on GPU
+Logical camera unfinished, partially in the SDF Format but not instantiating and not reading obj poses.
+BoundingBox Camera must be run on low res camera.
+
+The cameras, camera info and bb detections all have mismatching frames of reference
+
+All cameras render on the same thread, then block it by synchronous processing. This means that desired FPS is never achieved.
+
+Each camera seems to be calling the physics solver when rednering, as opposed to calling it only once per the rendering thread's update.
+This means speed of the simulation depends on the amount of rendering.

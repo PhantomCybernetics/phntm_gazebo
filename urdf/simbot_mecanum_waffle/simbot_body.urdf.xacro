@@ -88,6 +88,7 @@
       xyz="0.07 0.0 0.1030" rpy="0 0 0"
       anti_aliasing="$(arg cameras_anti_aliasing)"
       depth="true"
+      bounding_boxes="true"
     />
 
     <xacro:robot_camera parent="base_link" suffix="back"
@@ -100,6 +101,7 @@
       encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
       xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"
       anti_aliasing="$(arg cameras_anti_aliasing)"
+      bounding_boxes="true"
     /> <!-- pixel_format="L8" -->
 
     <!-- Top-Down camera as moving camera -->

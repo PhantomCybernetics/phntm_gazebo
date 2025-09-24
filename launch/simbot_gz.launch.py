@@ -20,7 +20,7 @@ ARGUMENTS = [
     ),
     DeclareLaunchArgument(
         'use_sim_time',
-        default_value='true',
+        default_value='True',
         description='Use sim time if true'
     ),
     DeclareLaunchArgument(
@@ -80,7 +80,7 @@ def launch_setup(context, *args, **kwargs):
         ])
     
     print("Robot model: ", robot_model)
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    use_sim_time = LaunchConfiguration('use_sim_time', default='True')
 
     # ld = LaunchDescription(ARGUMENTS)
     actions = []
@@ -147,7 +147,7 @@ def launch_setup(context, *args, **kwargs):
     params = {
         'robot_description': robot_description_config,
         'use_sim_time': use_sim_time,
-        'publish_frequency': 30.0,
+        'publish_frequency': 90.0,
     }
     actions.append(Node(
         package='robot_state_publisher',
@@ -217,7 +217,8 @@ def launch_setup(context, *args, **kwargs):
         package='controller_manager',
         executable='spawner',
         arguments=['joint_state_broadcaster',
-                   '--controller-ros-args', mecanum_remappings],
+                   '--controller-ros-args', mecanum_remappings
+                   ],
         output='screen',
     ))
     

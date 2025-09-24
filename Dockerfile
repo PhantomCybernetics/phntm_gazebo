@@ -85,21 +85,31 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
 
 # Gazebo Harmonic binary packages
 #RUN apt-get install -y gz-harmonic
-RUN apt install -y libgz-cmake3-dev
-RUN apt install -y libgz-common5-dev
-RUN apt install -y libgz-fuel-tools9-dev
-RUN apt install -y libgz-gui8-dev
-RUN apt install -y libgz-sim8-dev
-RUN apt install -y libgz-launch7-dev
-RUN apt install -y libgz-math7-dev
-RUN apt install -y libgz-msgs10-dev
-RUN apt install -y libgz-physics7-dev
-RUN apt install -y libgz-plugin2-dev
-RUN apt install -y libgz-rendering8-dev
-RUN apt install -y libgz-tools2-dev
-RUN apt install -y libgz-transport13-dev
-RUN apt install -y libgz-utils2-dev
-RUN apt install -y libsdformat14
+# RUN apt install -y libgz-cmake3-dev
+# RUN apt install -y libgz-common5-dev
+# RUN apt install -y libgz-fuel-tools9-dev
+# RUN apt install -y libgz-gui8-dev
+# RUN apt install -y libgz-sim8-dev
+# RUN apt install -y libgz-launch7-dev
+# RUN apt install -y libgz-math7-dev
+# RUN apt install -y libgz-msgs10-dev
+# RUN apt install -y libgz-physics7-dev
+# RUN apt install -y libgz-plugin2-dev
+# #RUN apt install -y libgz-rendering8-dev
+# RUN apt install -y libgz-tools2-dev
+# RUN apt install -y libgz-transport13-dev
+# RUN apt install -y libgz-utils2-dev
+# RUN apt install -y libsdformat14
+
+# RUN apt remove ros-jazzy-gz-rendering-vendor
+            # libgz-rendering
+            # libgz-sensors8
+            # ros-jazzy-gz-dartsim-vendor
+            # ros-jazzy-gz-ogre-next-vendor
+            # ros-jazzy-gz-cmake-vendor
+            # ros-jazzy-ros-gz-interfaces
+
+# apt install libogre-next-2.3.0 libogre-next-2.3-dev
 
 # build the sim
 WORKDIR $ROS_WS
@@ -113,6 +123,7 @@ RUN mkdir -p $GZ_WS/src
 
 # custom GZ collection for only the forked packages
 RUN git clone https://github.com/PhantomCybernetics/gz-sensors -b gz-sensors8 $GZ_WS/src/gz-sensors
+RUN git clone https://github.com/PhantomCybernetics/gz-rendering -b gz-rendering8 $GZ_WS/src/gz-rendering
 
 # RUN vcs import < $ROS_WS/src/simbot_gz/collection-harmonic-custom.yaml
 # RUN apt -y install $(sort -u $(find . -iname 'packages-'`lsb_release -cs`'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/gz\|sdf/d' | tr '\n' ' ')

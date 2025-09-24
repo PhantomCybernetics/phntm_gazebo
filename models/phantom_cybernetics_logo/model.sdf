@@ -16,6 +16,9 @@
                     <diffuse>0.2 0.2 0.2 1</diffuse>
                     <specular>1 1 1 1</specular>
                 </material> -->
+                <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label">
+                    <label>1</label>
+                </plugin>
             </visual>
         </link>
     </model>

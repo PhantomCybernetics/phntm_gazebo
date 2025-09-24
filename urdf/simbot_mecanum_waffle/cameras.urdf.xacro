@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
 
   <!-- Front / back camera -->
-  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing depth:=false">
+  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing depth:=false fps:=90 bounding_boxes:=false">
     <link name="camera_link_${suffix}">
       <visual>
         <origin rpy="0 0 ${pi}"/>
@@ -34,11 +34,12 @@
     </joint>
 
     <gazebo reference="camera_optical_frame_${suffix}">
+    
       <sensor name="camera_${suffix}" type="camera">
         <gz_frame_id>camera_optical_frame_${suffix}</gz_frame_id>
         <pose>0 0 0 0 -${pi/2.0} ${pi/2.0}</pose>
         <always_on>true</always_on>
-        <update_rate>30</update_rate>
+        <update_rate>${fps}</update_rate>
         <visualize>false</visualize>
         <topic>rgb_${suffix}/raw</topic>
         <camera>
@@ -49,6 +50,7 @@
           <encoder_bit_rate>${encoder_bit_rate}</encoder_bit_rate>
           <encoder_input_pixel_format>${encoder_input_pixel_format}</encoder_input_pixel_format>
           <encoder_thread_count>${encoder_thread_count}</encoder_thread_count>
+          <bounding_boxes>${bounding_boxes}</bounding_boxes>
           <image>
             <width>${width}</width>
             <height>${height}</height>
@@ -61,6 +63,33 @@
           </clip>
         </camera>
       </sensor>
+
+      <!-- BB camera -->
+      <xacro:if value="${bounding_boxes}">
+        <sensor name="bb_camera_${suffix}" type="boundingbox_camera">
+          <gz_frame_id>camera_optical_frame_${suffix}</gz_frame_id>
+          <always_on>true</always_on>
+          <pose>0 0 0 0 -${pi/2.0} ${pi/2.0}</pose>
+          <update_rate>${fps}</update_rate>
+          <visualize>true</visualize>
+          <topic>bb_${suffix}/this_must_be_here</topic>
+          <camera>
+            <topic2d>detections/${suffix}/boxes_2d</topic2d>
+            <topic3d>detections/${suffix}/boxes_3d</topic3d>
+            <box_type>2d+3d</box_type>
+            <horizontal_fov>${fov}</horizontal_fov>
+            <image>
+              <width>${width/10}</width>
+              <height>${height/10}</height>
+            </image>
+            <clip>
+              <near>0.001</near>
+              <far>10</far>
+            </clip>
+          </camera>
+        </sensor>
+      </xacro:if>
+
     </gazebo>
 
     <!-- Depth camera -->
@@ -76,9 +105,9 @@
       <gazebo reference="depth_camera_optical_frame_${suffix}">
         <sensor name="depth_camera_${suffix}" type="depth_camera">
           <gz_frame_id>depth_camera_optical_frame_${suffix}</gz_frame_id>
-          <pose>0 0 0 -${pi/2.0} ${pi/2.0}</pose>
+          <pose>0 0 0 0 -${pi/2.0} ${pi/2.0}</pose>
           <always_on>true</always_on>
-          <update_rate>30</update_rate>
+          <update_rate>${fps}</update_rate>
           <visualize>false</visualize>
           <topic>depth_${suffix}/raw</topic>
           <camera>
@@ -100,7 +129,7 @@
   </xacro:macro>
 
   <!-- top down camera that moves in z direction -->
-  <xacro:macro name="top_down_camera" params="suffix parent xyz rpy width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing">
+  <xacro:macro name="top_down_camera" params="suffix parent xyz rpy width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing fps:=90">
     <link name="camera_link_${suffix}"/>
 
     <joint name="camera_joint_${suffix}" type="fixed">
@@ -114,7 +143,7 @@
         <gz_frame_id>camera_link_${suffix}</gz_frame_id>
         <pose>0 0 0 0 -${pi/2} ${pi/2}</pose>
         <always_on>true</always_on>
-        <update_rate>30</update_rate>
+        <update_rate>${fps}</update_rate>
         <visualize>false</visualize>
         <topic>rgb_${suffix}/raw</topic>
         <camera>

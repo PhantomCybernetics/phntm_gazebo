@@ -54,6 +54,7 @@ mecanum_controller:
 
     in_chained_mode: False
     is_async: True
+    use_sim_time: False
     
     command_interfaces:
       - velocity

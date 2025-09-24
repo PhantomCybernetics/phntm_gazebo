@@ -10,10 +10,10 @@
       <a href="https://www.phantomcybernetics.com" id="phntm-cybernetics-logo"><img src="/static/graph/phantom-cybernetics-logo-white.svg"/></a>
       <h2 class="with-phntm-cybernetics-logo">About this Demo</h2>
     description: > # this will be shown as a modal dialog on demo launch
-      This Gazebo Harmonic simulation runs on a server physically located in Oregon, USA.
-      Your RTT depends on your geographical distance to the datacenter and your connection quality.<br>
+      This simulation utilizes a modified Gazebo Harmonic and runs on a server physically located in Oregon, USA.<br>
+      Your RTT depends on geographical distance to the datacenter and your connection quality.<br>
       <br>
-      Video feeds are encoded into H.264 using AMD GPU and all data streamed over WebRTC
+      Video is encoded into H.264 using AMD GPU and all data is streamed over WebRTC
       by the <a href="https://docs.phntm.io/bridge" class="external">Phantom Bridge</a>.
       <span class="desktop-only">This UI is responsive and available optimised for mobile devices (phones and tables) on the same URL.</span>
       <span class="touch-only">This UI is responsive and available optimised for desktop on the same URL.</span><br>
@@ -38,6 +38,10 @@
 
     bridge_server_address: https://us-ca.bridge.phntm.io # Cloud Bridge to connect to, see https://docs.phntm.io/bridge/availability-zones.html
     log_sdp: True # verbose WebRTC debug
+    webrtc_debug: True
+
+    extra_packages:
+      - vision_msgs
 
     collapse_services:
       - rcl_interfaces/srv/DescribeParameters
@@ -72,6 +76,18 @@
     /depth_front/raw:
       max_sensor_value: 2.0
       colormap: 13
+    /detections/front/boxes_2d:
+      input_width: 128 # detection input frame width
+      input_height: 72 # detection input frame height
+      label_map: [ 'football', 'mirek works here', 'person', 'woman', 'man', 'camera', 'TV' ] # class label map
+    /detections/front/boxes_3d:
+      label_map: [ 'football', 'mirek works here', 'person', 'woman', 'man', 'camera', 'TV' ] # class label map
+    /detections/back/boxes_2d:
+      input_width: 128 # detection input frame width
+      input_height: 72 # detection input frame height
+      label_map: [ 'football', 'mirek works here', 'person', 'woman', 'man', 'camera', 'TV' ] # class label map
+    /detections/back/boxes_3d:
+      label_map: [ 'football', 'mirek works here', 'person', 'woman', 'man', 'camera', 'TV' ] # class label map
 
     ui_battery_topic: '/battery' # battery to show in the UI (e.g. /battery), '' to disable
 

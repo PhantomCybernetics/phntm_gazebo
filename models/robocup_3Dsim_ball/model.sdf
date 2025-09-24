@@ -44,6 +44,9 @@
             <uri>model://robocup_3Dsim_ball/meshes/football2.dae</uri>
           </mesh>
         </geometry>
+        <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label">
+          <label>0</label>
+        </plugin>
       </visual>
       <velocity_decay>
         <!-- Nonzero values here will help slow the ball's motion -->

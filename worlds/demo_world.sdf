@@ -50,6 +50,7 @@
     <!--light-->
     <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
+      <visualize>false</visualize>
       <pose>10 -10 1 0 0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>

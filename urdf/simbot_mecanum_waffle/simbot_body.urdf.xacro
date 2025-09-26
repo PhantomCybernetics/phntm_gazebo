@@ -2,6 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
   <!-- <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/simple_wheel.urdf.xacro"/> -->
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/simbot_bumper.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/cameras.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/lidar.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/range_sensor.urdf.xacro"/>
@@ -11,8 +12,8 @@
   <xacro:property name="base_collision_offset" value="-0.064 0 0.097"/>
   <xacro:property name="base_collision_box_size" value="0.266 0.266 0.094"/>
   <xacro:property name="wheel_z_offset" value="0.047"/>
-  <xacro:property name="front_wheel_x_offset" value="0.025"/>
-  <xacro:property name="rear_wheel_x_offset" value="-0.12"/>
+  <xacro:property name="front_wheel_x_offset" value="0.015"/>
+  <xacro:property name="rear_wheel_x_offset" value="-0.15"/>
   <xacro:property name="left_wheel_y_offset" value="0.157"/>
   <xacro:property name="right_wheel_y_offset" value="${-left_wheel_y_offset}"/>
 
@@ -25,7 +26,9 @@
   <xacro:arg name="encoder_thread_count" default="2"/>
   <xacro:arg name="cameras_width" default="1280"/>
   <xacro:arg name="cameras_height" default="720"/>
-  <xacro:arg name="cameras_anti_aliasing" default="4"/>
+  <xacro:arg name="cameras_anti_aliasing" default="2"/>
+  <xacro:arg name="cameras_fps" default="60"/>
+  <xacro:arg name="depth_cameras_fps" default="30"/>
 
   <xacro:macro name="base_link" params="parent xyz rpy">
     <link name="base_link">
@@ -55,6 +58,9 @@
       <child link="base_link" />
       <origin xyz="${xyz}" rpy="${rpy}" />
     </joint>
+
+    <xacro:bumper suffix="front" xyz=".1 0 0.07" rpy="0 0 0" parent="base_link"/>
+    <xacro:bumper suffix="rear" xyz="-.225 0 0.07" rpy="0 0 ${pi}" parent="base_link"/>
 
     <!-- Wheels -->
     <!-- Front Left -->
@@ -87,8 +93,10 @@
       encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
       xyz="0.07 0.0 0.1030" rpy="0 0 0"
       anti_aliasing="$(arg cameras_anti_aliasing)"
-      depth="true"
       bounding_boxes="true"
+      fps="$(arg cameras_fps)"
+      depth="true"
+      depth_fps="$(arg depth_cameras_fps)"
     />
 
     <xacro:robot_camera parent="base_link" suffix="back"
@@ -102,6 +110,7 @@
       xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"
       anti_aliasing="$(arg cameras_anti_aliasing)"
       bounding_boxes="true"
+      fps="$(arg cameras_fps)"
     /> <!-- pixel_format="L8" -->
 
     <!-- Top-Down camera as moving camera -->
@@ -115,14 +124,15 @@
       encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
       xyz="0.0 0.0 $(arg camera_top_z)" rpy="${pi} 0 -${pi/2}"
       anti_aliasing="$(arg cameras_anti_aliasing)"
+      fps="$(arg cameras_fps)"
     />
 
     <xacro:lidar parent="base_link" suffix="1" xyz="0.0000 0.0000 .1510" rpy="0 0 0"/>
     <xacro:imu parent="base_link" suffix="1" xyz="0 0 0" rpy="0 0 0"/>
-    <xacro:range_sensor parent="base_link" suffix="fr" xyz="0.065 -0.10 0.08" rpy="0.0 0.0 -0.187"/>
-    <xacro:range_sensor parent="base_link" suffix="fl" xyz="0.065 0.10 0.08" rpy="0.0 0.0 0.187"/>
-    <xacro:range_sensor parent="base_link" suffix="rr" xyz="-0.19 -0.10 0.08" rpy="0.0 0.0 ${3.1416+0.187}"/>
-    <xacro:range_sensor parent="base_link" suffix="rl" xyz="-0.19 0.10 0.08" rpy="0.0 0.0 ${3.1416-0.187}"/>
+    <xacro:range_sensor parent="base_link" suffix="fr" xyz="0.065 -0.10 0.1" rpy="0.0 0.0 -0.187"/>
+    <xacro:range_sensor parent="base_link" suffix="fl" xyz="0.065 0.10 0.1" rpy="0.0 0.0 0.187"/>
+    <xacro:range_sensor parent="base_link" suffix="rr" xyz="-0.19 -0.10 0.1" rpy="0.0 0.0 ${3.1416+0.187}"/>
+    <xacro:range_sensor parent="base_link" suffix="rl" xyz="-0.19 0.10 0.1" rpy="0.0 0.0 ${3.1416-0.187}"/>
 
 
   </xacro:macro>

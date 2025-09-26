@@ -2,8 +2,8 @@
 <sdf version="1.11">
   <world name="demo_world">
     
-    <physics name="1ms" type="ignored">
-      <max_step_size>0.03</max_step_size>
+    <physics type="ode">
+      <max_step_size>0.006</max_step_size>
       <real_time_factor>1.0</real_time_factor>
       <dart>
         <collision_detector>ode</collision_detector>
@@ -71,224 +71,107 @@
     </include> -->
 
 
-    <model name="logo">
-      <include>
-        <uri>model://phantom_cybernetics_logo</uri>
-      </include>
-      <pose>1.37 -0.5 0.2 1.57 0 3.14</pose>
-    </model>
+    <model name="logo"><include><uri>model://phantom_cybernetics_logo</uri></include><pose>1.37 -0.5 0.2 1.57 0 3.14</pose></model>
 
-    <model name="wall_0_0">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-3 -3 0 0 0 0</pose>
-    </model>
-    <model name="wall_1_0">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-2 -3 0 0 0 0</pose>
-    </model>
-    <model name="wall_2_0">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-1 -3 0 0 0 0</pose>
-    </model>
-    <model name="wall_3_0">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>0 -3 0 0 0 0</pose>
-    </model>
-    <model name="wall_4_0">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>1 -3 0 0 0 0</pose>
-    </model>
-    <model name="wall_5_0">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>2 -3 0 0 0 0</pose>
-    </model>
-    <model name="wall_6_0">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>3 -3 0 0 0 0</pose>
-    </model>
-    <model name="wall_0_1">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-3 -2 0 0 0 0</pose>
-    </model>
-    <model name="wall_4_1">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>1 -2 0 0 0 0</pose>
-    </model>
-    <model name="wall_6_1">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>3 -2 0 0 0 0</pose>
-    </model>
-    <model name="wall_0_2">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-3 -1 0 0 0 0</pose>
-    </model>
-    <model name="wall_2_2">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-1 -1 0 0 0 0</pose>
-    </model>
-    <model name="wall_4_2">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>1 -1 0 0 0 0</pose>
-    </model>
-    <model name="wall_6_2">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>3 -1 0 0 0 0</pose>
-    </model>
-    <model name="wall_0_3">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-3 0 0 0 0 0</pose>
-    </model>
-    <model name="wall_2_3">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-1 0 0 0 0 0</pose>
-    </model>
-    <model name="wall_6_3">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>3 0 0 0 0 0</pose>
-    </model>
-    <model name="wall_0_4">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-3 1 0 0 0 0</pose>
-    </model>
-    <model name="wall_2_4">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-1 1 0 0 0 0</pose>
-    </model>
-    <model name="wall_3_4">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>0 1 0 0 0 0</pose>
-    </model>
-    <model name="wall_4_4">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>1 1 0 0 0 0</pose>
-    </model>
-    <model name="wall_6_4">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>3 1 0 0 0 0</pose>
-    </model>
-    <model name="wall_0_5">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-3 2 0 0 0 0</pose>
-    </model>
-    <model name="wall_6_5">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>3 2 0 0 0 0</pose>
-    </model>
-    <model name="wall_0_6">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-3 3 0 0 0 0</pose>
-    </model>
-    <model name="wall_1_6">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-2 3 0 0 0 0</pose>
-    </model>
-    <model name="wall_2_6">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>-1 3 0 0 0 0</pose>
-    </model>
-    <model name="wall_3_6">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>0 3 0 0 0 0</pose>
-    </model>
-    <model name="wall_4_6">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>1 3 0 0 0 0</pose>
-    </model>
-    <model name="wall_5_6">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>2 3 0 0 0 0</pose>
-    </model>
-    <model name="wall_6_6">
-      <include>
-        <uri>model://my_brick_box</uri>
-      </include>
-      <pose>3 3 0 0 0 0</pose>
-    </model>
+    <model name="wall_0_0"><include><uri>model://my_brick_box</uri></include><pose>-3 -3 0 0 0 0</pose></model>
+    <model name="wall_1_0"><include><uri>model://my_brick_box</uri></include><pose>-2 -3 0 0 0 0</pose></model> -->
+    <model name="wall_2_0"><include><uri>model://my_brick_box</uri></include><pose>-1 -3 0 0 0 0</pose></model>
+    <model name="wall_3_0"><include><uri>model://my_brick_box</uri></include><pose>0 -3 0 0 0 0</pose></model>
+    <model name="wall_4_0"><include><uri>model://my_brick_box</uri></include><pose>1 -3 0 0 0 0</pose></model>
+
+    <model name="wall_5_0"><include><uri>model://my_brick_box</uri></include><pose>2 -3 0 0 0 0</pose></model>
+
+    <model name="wall_br_0_0"><include><uri>model://my_brick_box</uri></include><pose>4 -3 0 0 0 0</pose></model>
+    <model name="wall_br_0_1"><include><uri>model://my_brick_box</uri></include><pose>5 -3 0 0 0 0</pose></model>
+    <model name="wall_br_0_2"><include><uri>model://my_brick_box</uri></include><pose>6 -3 0 0 0 0</pose></model>
+    <model name="wall_br_0_3"><include><uri>model://my_brick_box</uri></include><pose>7 -3 0 0 0 0</pose></model>
+    <model name="wall_br_0_4"><include><uri>model://my_brick_box</uri></include><pose>8 -3 0 0 0 0</pose></model>
+    <model name="wall_br_0_5"><include><uri>model://my_brick_box</uri></include><pose>9 -3 0 0 0 0</pose></model>
+
+    <model name="wall_br_1_0"><include><uri>model://my_brick_box</uri></include><pose>9 -4 0 0 0 0</pose></model>
+    <model name="wall_br_1_1"><include><uri>model://my_brick_box</uri></include><pose>9 -5 0 0 0 0</pose></model>
+    <model name="wall_br_1_2"><include><uri>model://my_brick_box</uri></include><pose>9 -6 0 0 0 0</pose></model>
+    <model name="wall_br_1_3"><include><uri>model://my_brick_box</uri></include><pose>9 -7 0 0 0 0</pose></model>
+    <model name="wall_br_1_4"><include><uri>model://my_brick_box</uri></include><pose>9 -8 0 0 0 0</pose></model>
+    <model name="wall_br_1_5"><include><uri>model://my_brick_box</uri></include><pose>9 -9 0 0 0 0</pose></model>
+
+    <model name="wall_br_2_0"><include><uri>model://my_brick_box</uri></include><pose>9 -10 0 0 0 0</pose></model>
+    <model name="wall_br_2_1"><include><uri>model://my_brick_box</uri></include><pose>9 -11 0 0 0 0</pose></model>
+    <model name="wall_br_2_2"><include><uri>model://my_brick_box</uri></include><pose>9 -12 0 0 0 0</pose></model>
+    <model name="wall_br_2_3"><include><uri>model://my_brick_box</uri></include><pose>9 -13 0 0 0 0</pose></model>
+    <model name="wall_br_2_4"><include><uri>model://my_brick_box</uri></include><pose>9 -14 0 0 0 0</pose></model>
+    <model name="wall_br_2_5"><include><uri>model://my_brick_box</uri></include><pose>9 -15 0 0 0 0</pose></model>
+
+    <model name="wall_br_3_0"><include><uri>model://my_brick_box</uri></include><pose>4 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_1"><include><uri>model://my_brick_box</uri></include><pose>5 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_2"><include><uri>model://my_brick_box</uri></include><pose>6 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_3"><include><uri>model://my_brick_box</uri></include><pose>7 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_4"><include><uri>model://my_brick_box</uri></include><pose>8 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_5"><include><uri>model://my_brick_box</uri></include><pose>9 -15 0 0 0 0</pose></model>
+
+    <model name="wall_br_3_6"><include><uri>model://my_brick_box</uri></include><pose>3 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_7"><include><uri>model://my_brick_box</uri></include><pose>2 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_8"><include><uri>model://my_brick_box</uri></include><pose>1 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_9"><include><uri>model://my_brick_box</uri></include><pose>0 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_10"><include><uri>model://my_brick_box</uri></include><pose>-1 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_11"><include><uri>model://my_brick_box</uri></include><pose>-2 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_12"><include><uri>model://my_brick_box</uri></include><pose>-3 -15 0 0 0 0</pose></model>
+    <model name="wall_br_3_13"><include><uri>model://my_brick_box</uri></include><pose>-4 -15 0 0 0 0</pose></model>
+
+    <model name="wall_br_4_0"><include><uri>model://my_brick_box</uri></include><pose>-5 -10 0 0 0 0</pose></model>
+    <model name="wall_br_4_1"><include><uri>model://my_brick_box</uri></include><pose>-5 -11 0 0 0 0</pose></model>
+    <model name="wall_br_4_2"><include><uri>model://my_brick_box</uri></include><pose>-5 -12 0 0 0 0</pose></model>
+    <model name="wall_br_4_3"><include><uri>model://my_brick_box</uri></include><pose>-5 -13 0 0 0 0</pose></model>
+    <model name="wall_br_4_4"><include><uri>model://my_brick_box</uri></include><pose>-5 -14 0 0 0 0</pose></model>
+    <model name="wall_br_4_5"><include><uri>model://my_brick_box</uri></include><pose>-5 -15 0 0 0 0</pose></model>
+
+    <model name="wall_br_4_6"><include><uri>model://my_brick_box</uri></include><pose>-5 -9 0 0 0 0</pose></model>
+    <model name="wall_br_4_7"><include><uri>model://my_brick_box</uri></include><pose>-5 -8 0 0 0 0</pose></model>
+    <model name="wall_br_4_8"><include><uri>model://my_brick_box</uri></include><pose>-5 -7 0 0 0 0</pose></model>
+    <model name="wall_br_4_9"><include><uri>model://my_brick_box</uri></include><pose>-5 -6 0 0 0 0</pose></model>
+    <model name="wall_br_4_10"><include><uri>model://my_brick_box</uri></include><pose>-5 -5 0 0 0 0</pose></model>
+    <model name="wall_br_4_11"><include><uri>model://my_brick_box</uri></include><pose>-5 -4 0 0 0 0</pose></model>
+
+    <model name="wall_6_0"><include><uri>model://my_brick_box</uri></include><pose>3 -3 0 0 0 0</pose></model>
+    <model name="wall_0_12"><include><uri>model://my_brick_box</uri></include><pose>-3 -2 0 0 0 0</pose></model> -->
+    <model name="wall_0_1"><include><uri>model://my_brick_box</uri></include><pose>-5 -2 0 0 0 0</pose></model>
+    <model name="wall_0_7"><include><uri>model://my_brick_box</uri></include><pose>-5 -3 0 0 0 0</pose></model>
+    <model name="wall_0_8"><include><uri>model://my_brick_box</uri></include><pose>-5 -1 0 0 0 0</pose></model>
+    <model name="wall_0_9"><include><uri>model://my_brick_box</uri></include><pose>-5 0 0 0 0 0</pose></model>
+    <model name="wall_0_10"><include><uri>model://my_brick_box</uri></include><pose>-5 1 0 0 0 0</pose></model>
+    <model name="wall_0_11"><include><uri>model://my_brick_box</uri></include><pose>-5 2 0 0 0 0</pose></model>
+    <model name="wall_0_13"><include><uri>model://my_brick_box</uri></include><pose>-4 2 0 0 0 0</pose></model>
+
+    <model name="wall_4_1"><include><uri>model://my_brick_box</uri></include><pose>1 -2 0 0 0 0</pose></model>
+    <model name="wall_6_1"><include><uri>model://my_brick_box</uri></include><pose>3 -2 0 0 0 0</pose></model>
+    <model name="wall_0_2"><include><uri>model://my_brick_box</uri></include><pose>-3 -1 0 0 0 0</pose></model>
+    <model name="wall_2_2"><include><uri>model://my_brick_box</uri></include><pose>-1 -1 0 0 0 0</pose></model>
+    <model name="wall_4_2"><include><uri>model://my_brick_box</uri></include><pose>1 -1 0 0 0 0</pose></model>
+    <model name="wall_6_2"><include><uri>model://my_brick_box</uri></include><pose>3 -1 0 0 0 0</pose></model>
+    <!-- <model name="wall_0_3"><include><uri>model://my_brick_box</uri></include><pose>-3 0 0 0 0 0</pose></model> -->
+    <model name="wall_2_3"><include><uri>model://my_brick_box</uri></include><pose>-1 0 0 0 0 0</pose></model>
+    <model name="wall_6_3"><include><uri>model://my_brick_box</uri></include><pose>3 0 0 0 0 0</pose></model>
+    <model name="wall_0_4"><include><uri>model://my_brick_box</uri></include><pose>-3 1 0 0 0 0</pose></model>
+    <model name="wall_2_4"><include><uri>model://my_brick_box</uri></include><pose>-1 1 0 0 0 0</pose></model>
+    <model name="wall_3_4"><include><uri>model://my_brick_box</uri></include><pose>0 1 0 0 0 0</pose></model>
+    <model name="wall_4_4"><include><uri>model://my_brick_box</uri></include><pose>1 1 0 0 0 0</pose></model>
+    <model name="wall_6_4"><include><uri>model://my_brick_box</uri></include><pose>3 1 0 0 0 0</pose></model>
+    <model name="wall_0_5"><include><uri>model://my_brick_box</uri></include><pose>-3 2 0 0 0 0</pose></model>
+    <model name="wall_6_5"><include><uri>model://my_brick_box</uri></include><pose>3 2 0 0 0 0</pose></model>
+    <model name="wall_0_6"><include><uri>model://my_brick_box</uri></include><pose>-3 3 0 0 0 0</pose></model>
+    <model name="wall_1_6"><include><uri>model://my_brick_box</uri></include><pose>-2 3 0 0 0 0</pose></model>
+    <model name="wall_2_6"><include><uri>model://my_brick_box</uri></include><pose>-1 3 0 0 0 0</pose></model>
+    <model name="wall_3_6"><include><uri>model://my_brick_box</uri></include><pose>0 3 0 0 0 0</pose></model>
+    <model name="wall_4_6"><include><uri>model://my_brick_box</uri></include><pose>1 3 0 0 0 0</pose></model>
+    <model name="wall_5_6"><include><uri>model://my_brick_box</uri></include><pose>2 3 0 0 0 0</pose></model>
+    <model name="wall_6_6"><include><uri>model://my_brick_box</uri></include><pose>3 3 0 0 0 0</pose></model>
 
     <!-- FOOTBALLS -->
-    <model name="ball_0">
-      <include>
-        <uri>model://robocup_3Dsim_ball</uri>
-      </include>
-      <pose>-2 2 0 0 0 0</pose>
-    </model>
-    <model name="ball_1">
-      <include>
-        <uri>model://robocup_3Dsim_ball</uri>
-      </include>
-      <pose>2 -.7 0 0 0 0</pose>
-    </model>
-    <model name="ball_2">
-      <include>
-        <uri>model://robocup_3Dsim_ball</uri>
-      </include>
-      <pose>2 2 0 0 0 0</pose>
-    </model>
-    <model name="ball_3">
-      <include>
-        <uri>model://robocup_3Dsim_ball</uri>
-      </include>
-      <pose>-2 -2 0 0 0 0</pose>
-    </model>
+    <model name="ball_0"><include><uri>model://robocup_3Dsim_ball</uri></include><pose>-2 2 0 0 0 0</pose></model>
+    <model name="ball_1"><include><uri>model://robocup_3Dsim_ball</uri></include><pose>2 -.7 0 0 0 0</pose></model>
+    <model name="ball_2"><include><uri>model://robocup_3Dsim_ball</uri></include><pose>2 2 0 0 0 0</pose></model>
+    <model name="ball_3"><include><uri>model://robocup_3Dsim_ball</uri></include><pose>-2 -2 0 0 0 0</pose></model>
+    <model name="ball_4"><include><uri>model://robocup_3Dsim_ball</uri></include><pose>-4 -3 0 0 0 0</pose></model>
+
   </world>
 </sdf>

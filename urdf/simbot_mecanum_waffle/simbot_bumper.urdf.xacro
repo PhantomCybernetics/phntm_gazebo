@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="bumper" params="parent suffix xyz rpy">
+
+        <link name="bumper_${suffix}_link">
+        <visual>
+        <origin xyz="-0.17 0 0.025" rpy="0 0 ${pi/2}"/>
+            <geometry>
+            <mesh filename="package://simbot_gz/meshes/simbot_bumper.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+            <box size="0.025 0.3 0.04"/>
+            </geometry>
+        </collision>
+        </link>
+
+        <joint name="bumper_${suffix}_joint" type="fixed">
+            <parent link="${parent}" />
+            <child link="bumper_${suffix}_link" />
+            <origin xyz="${xyz}" rpy="${rpy}" />
+        </joint>
+
+    </xacro:macro>
+
+</robot>

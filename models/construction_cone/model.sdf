@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="construction_cone">
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <scale>2 2 2</scale>
+            <uri>model://construction_cone/meshes/construction_cone.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <scale>2 2 2</scale>
+            <uri>model://construction_cone/meshes/construction_cone.dae</uri>
+          </mesh>
+        </geometry>
+        <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label">
+          <label>1</label>
+        </plugin>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -29,6 +29,7 @@
   <xacro:arg name="cameras_anti_aliasing" default="2"/>
   <xacro:arg name="cameras_fps" default="60"/>
   <xacro:arg name="depth_cameras_fps" default="30"/>
+  <xacro:arg name="bb_cameras_fps" default="30"/>
 
   <xacro:macro name="base_link" params="parent xyz rpy">
     <link name="base_link">
@@ -97,6 +98,7 @@
       fps="$(arg cameras_fps)"
       depth="true"
       depth_fps="$(arg depth_cameras_fps)"
+      bb_fps="$(arg bb_cameras_fps)"
     />
 
     <xacro:robot_camera parent="base_link" suffix="back"

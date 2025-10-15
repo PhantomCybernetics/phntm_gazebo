@@ -20,7 +20,7 @@
 
     <gazebo reference="range_link_${suffix}">
       <sensor name="range_sensor_${suffix}" type="gpu_lidar">
-        <topic>/range_${suffix}</topic>
+        <topic>/range_${suffix}_laser</topic>
         <gz_frame_id>range_link_${suffix}</gz_frame_id>
         <update_rate>15</update_rate>
         <ray>

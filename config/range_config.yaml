@@ -1,13 +1,13 @@
 laser_to_range_converter:
   ros__parameters:
     # Input scan topic (LIDAR)
-    scan_topics: "/range_fr,/range_fl,/range_rr,/range_rl"
+    range_topics: [ /range_fr, /range_fl, /range_rr, /range_rl ]
 
     # Field of view for averaging (in degrees)
-    fov_deg: 10.0
+    # fov_deg: 10.0
 
     # Target angle to center the arc on (0 rad = forward, ±π for sides/back)
-    target_angle_rad: 0.0
+    # target_angle_rad: 0.0
 
     # Output publish rate (Hz)
     publish_rate_hz: 10.0

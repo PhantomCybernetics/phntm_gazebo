@@ -48,26 +48,26 @@
   direction: GZ_TO_ROS
   lazy: true
 
-- ros_topic_name: "/range_fr"
-  gz_topic_name: "/range_fr"
+- ros_topic_name: "/range_fr_laser"
+  gz_topic_name: "/range_fr_laser"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/range_fl"
-  gz_topic_name: "/range_fl"
+- ros_topic_name: "/range_fl_laser"
+  gz_topic_name: "/range_fl_laser"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/range_rr"
-  gz_topic_name: "/range_rr"
+- ros_topic_name: "/range_rr_laser"
+  gz_topic_name: "/range_rr_laser"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/range_rl"
-  gz_topic_name: "/range_rl"
+- ros_topic_name: "/range_rl_laser"
+  gz_topic_name: "/range_rl_laser"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS

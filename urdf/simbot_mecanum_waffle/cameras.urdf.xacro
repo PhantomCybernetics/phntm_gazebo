@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
 
   <!-- Front / back camera -->
-  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing depth:=false fps:=60 depth_fps:=30 bb_fps:=20 bounding_boxes:=false">
+  <xacro:macro name="robot_camera" params="suffix parent xyz rpy fov:=1.2 width height pixel_format encoder_hw_device encoder_bit_rate encoder_thread_count encoder_input_pixel_format anti_aliasing depth:=false depth_width:=640 depth_height:=480 fps:=60 depth_fps:=30 bb_fps:=20 bounding_boxes:=false">
     <link name="camera_link_${suffix}">
       <visual>
         <origin rpy="0 0 ${pi}"/>
@@ -84,7 +84,7 @@
             </image>
             <clip>
               <near>0.001</near>
-              <far>4</far>
+              <far>7</far>
             </clip>
           </camera>
         </sensor>
@@ -114,12 +114,12 @@
             <camera_info_topic>depth_${suffix}/camera_info</camera_info_topic>
             <horizontal_fov>${fov}</horizontal_fov>
             <image>
-              <width>640</width>
-              <height>480</height>
+              <width>${depth_width}</width>
+              <height>${depth_height}</height>
             </image>
             <clip>
               <near>0.1</near> <!-- smaller produces rendering errors -->
-              <far>10</far>
+              <far>100</far>
             </clip>
           </camera>
         </sensor>

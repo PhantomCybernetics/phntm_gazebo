@@ -1,0 +1,19 @@
+material Human/Diffuse
+{
+  technique
+  {
+    pass
+    {
+      ambient 1 0 0
+      diffuse 1 0 0
+      specular 1 0 0 1
+      
+      texture_unit
+      {
+        texture simple_box.png
+        filtering linear
+        colour_op replace
+      }
+    }
+  }
+}

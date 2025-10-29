@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="human">
+    <static>true</static>
+    <link name="human">
+      <pose>0 0 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://human/meshes/Human.stl</uri>
+            <scale>.3 .3 .3</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <pose>0 0 1.2 0 0 -1.57</pose>
+        <cast_shadows>true</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://human/meshes/Human.stl</uri>
+            <scale>.3 .3 .3</scale>
+          </mesh>
+        </geometry>
+        <material name="human_mat">
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+          <emmisive>1 1 1 1</emmisive>
+          <specular>1 1 0 1</specular>
+          <shininess>1</shininess>
+          <pbr>
+            <metal>
+              <metalness>.2</metalness>
+            </metal>
+          </pbr>
+        </material>
+        <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label">
+          <label>3</label>
+        </plugin>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -18,23 +18,23 @@
 
     <!-- Assign meshes and friction directions based on suffix -->
     <xacro:if value="${suffix_param == 'fl'}">
-      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_a.dae"/>
+      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_b.dae"/>
       <xacro:property name="visual_rotation" value="0.0"/>
       <xacro:property name="fdir" value="1 -1 0"/>
     </xacro:if>
     <xacro:if value="${suffix_param == 'fr'}">
-      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_b.dae"/>
+      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_a.dae"/>
       <xacro:property name="visual_rotation" value="0.0"/>
       <xacro:property name="fdir" value="1 1 0"/>
     </xacro:if>
     <xacro:if value="${suffix_param == 'rl'}">
-      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_b.dae"/>
-      <xacro:property name="visual_rotation" value="0.0"/>
+      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_a.dae"/>
+      <xacro:property name="visual_rotation" value="${pi}"/>
       <xacro:property name="fdir" value="1 1 0"/>
     </xacro:if>
     <xacro:if value="${suffix_param == 'rr'}">
-      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_a.dae"/>
-      <xacro:property name="visual_rotation" value="0.0"/>
+      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_b.dae"/>
+      <xacro:property name="visual_rotation" value="${pi}"/>
       <xacro:property name="fdir" value="1 -1 0"/>
     </xacro:if>
 
@@ -51,7 +51,7 @@
     <!-- Wheel Link -->
     <link name="mecanum_wheel_link_${suffix}">
       <visual>
-        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${ visual_rotation- pi}"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${visual_rotation-pi}"/>
         <geometry>
           <mesh filename="${mesh}" scale="1.0 1.0 1.0"/>
         </geometry>

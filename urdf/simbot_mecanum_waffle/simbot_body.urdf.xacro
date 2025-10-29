@@ -29,12 +29,14 @@
   <xacro:arg name="cameras_anti_aliasing" default="2"/>
   <xacro:arg name="cameras_fps" default="60"/>
   <xacro:arg name="depth_cameras_fps" default="30"/>
+  <xacro:arg name="depth_cameras_width" default="800"/>
+  <xacro:arg name="depth_cameras_height" default="600"/>
   <xacro:arg name="bb_cameras_fps" default="30"/>
 
   <xacro:macro name="base_link" params="parent xyz rpy">
     <link name="base_link">
       <visual>
-      <origin xyz="${base_visual_offset}" rpy="0 0 0"/>
+        <origin xyz="${base_visual_offset}" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://simbot_gz/meshes/simbot_base.dae" scale="1 1 1"/>
         </geometry>
@@ -64,6 +66,7 @@
     <xacro:bumper suffix="rear" xyz="-.225 0 0.07" rpy="0 0 ${pi}" parent="base_link"/>
 
     <!-- Wheels -->
+
     <!-- Front Left -->
     <xacro:mecanum_wheel parent="base_link" suffix="fl"
                         xyz="${front_wheel_x_offset} ${left_wheel_y_offset} ${wheel_z_offset}" 
@@ -74,7 +77,7 @@
                         xyz="${front_wheel_x_offset} ${right_wheel_y_offset} ${wheel_z_offset}" 
                         rpy="0 0 0"/>
 
-    <!-- Rear Left -->
+     <!-- Rear Left -->
     <xacro:mecanum_wheel parent="base_link" suffix="rl"
                         xyz="${rear_wheel_x_offset} ${left_wheel_y_offset} ${wheel_z_offset}" 
                         rpy="0 0 0"/>
@@ -83,6 +86,7 @@
     <xacro:mecanum_wheel parent="base_link" suffix="rr"
                         xyz="${rear_wheel_x_offset} ${right_wheel_y_offset} ${wheel_z_offset}" 
                         rpy="0 0 0"/>
+
     <!-- Robot cameras -->
     <xacro:robot_camera parent="base_link" suffix="front" fov="1.5"
       width="$(arg cameras_width)"
@@ -97,6 +101,8 @@
       bounding_boxes="true"
       fps="$(arg cameras_fps)"
       depth="true"
+      depth_width="$(arg depth_cameras_width)"
+      depth_height="$(arg depth_cameras_height)"
       depth_fps="$(arg depth_cameras_fps)"
       bb_fps="$(arg bb_cameras_fps)"
     />
@@ -130,7 +136,7 @@
     />
 
     <xacro:lidar parent="base_link" suffix="1" xyz="0.0000 0.0000 .1510" rpy="0 0 0"/>
-    <xacro:imu parent="base_link" suffix="1" xyz="0 0 0" rpy="0 0 0"/>
+    <xacro:imu parent="base_link" suffix="1" xyz="-.1 0.1 .1" rpy="-${pi} ${pi} -${pi/2}"/>
     <xacro:range_sensor parent="base_link" suffix="fr" xyz="0.065 -0.10 0.1" rpy="0.0 0.0 -0.187"/>
     <xacro:range_sensor parent="base_link" suffix="fl" xyz="0.065 0.10 0.1" rpy="0.0 0.0 0.187"/>
     <xacro:range_sensor parent="base_link" suffix="rr" xyz="-0.19 -0.10 0.1" rpy="0.0 0.0 ${3.1416+0.187}"/>

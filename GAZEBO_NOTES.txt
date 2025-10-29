@@ -34,3 +34,5 @@ All cameras render on the same thread, then block it by synchronous processing. 
 
 Each camera seems to be calling the physics solver when rednering, as opposed to calling it only once per the rendering thread's update.
 This means speed of the simulation depends on the amount of rendering.
+
+Materials don't work for OBJ

@@ -12,5 +12,7 @@
       <parameters>$(find simbot_gz)/config/controller_config_simbot.yaml</parameters>
     </plugin>
 
+   
+
   </gazebo>
 </robot>

@@ -255,25 +255,23 @@ def launch_setup(context, *args, **kwargs):
     print(f"Making sim_extras node...")    
     actions.append(Node(
         package='simbot_gz',
-        executable='sim_extras_publisher_async.py',
+        executable='sim_extras_publisher.py',
         name='sim_extras_publisher',
         parameters=[PathJoinSubstitution([
             FindPackageShare(PACKAGE_NAME),
-            'config',
-            'sim_extras_config.yaml'
-        ])],
-        output='screen'
+            'config', 'sim_extras_config.yaml'
+        ]), { 'camera_top_z': LaunchConfiguration('camera_top_z') }],
+        output='screen',
     ))
     
     print(f"Making range converter node...")    
     actions.append(Node(
         package=PACKAGE_NAME,
-        executable='laser_to_range_async.py',  
+        executable='laser_to_range_converter.py',  
         name='laser_to_range_converter',
         parameters=[PathJoinSubstitution([
             FindPackageShare(PACKAGE_NAME),
-            'config',
-            'range_config.yaml'
+            'config', 'range_config.yaml'
         ])],
         output='screen'
     ))

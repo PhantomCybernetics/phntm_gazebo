@@ -10,10 +10,21 @@ from sensor_msgs.msg import BatteryState
 from nav_msgs.msg import Odometry
 from phntm_interfaces.msg import IWStatus
 from rclpy.qos import QoSProfile, ReliabilityPolicy
+# from tf2_msgs.msg import TFMessage
+# from geometry_msgs.msg import TransformStamped, Transform
+# from simbot_gz.srv import GetFloat32, SetFloat32
+# import time
+
+# NOTE:
+# Move a scene obj like this:
+# gz service -s /world/demo_world/set_pose --reqtype gz.msgs.Pose --reptype gz.msgs.Boolean --req "name: 'slope_0', position: { x: 3, y: -4, z: 0 }, orientation: { x: 0.0, y: 0.0, z: 0.0, w: 1.0 }"
 
 class SimExtrasPublisher(Node):
+    
     def __init__(self):
-        super().__init__('sim_extras_publisher')
+        node_name = 'sim_extras_publisher'
+        
+        super().__init__(node_name)
 
         self.declare_parameter('refresh_period_sec', 5.0)
         self.declare_parameter('ui_battery_topic', '/ui/battery')
@@ -24,7 +35,11 @@ class SimExtrasPublisher(Node):
         self.declare_parameter('max_linear_speed', 10.0)
         self.declare_parameter('max_angular_speed', 10.0)
         self.declare_parameter('voltage_drop_range', 1.0)
-
+        # self.declare_parameter('camera_top_z', 0.0)
+        # self.declare_parameter('tf_topic', '/tf')
+        # self.declare_parameter('top_camera_parent_frame_id', 'base_link')
+        # self.declare_parameter('top_camera_frame_id', 'camera_joint_top')
+        
         self.battery_topic = self.get_parameter('ui_battery_topic').get_parameter_value().string_value
         self.wifi_topic = self.get_parameter('ui_wifi_topic').get_parameter_value().string_value
         self.nominal_voltage = self.get_parameter('nominal_voltage').get_parameter_value().double_value
@@ -49,12 +64,49 @@ class SimExtrasPublisher(Node):
         )
         self.create_subscription(TwistStamped, '/cmd_vel', self.cmd_vel_callback, qos)
         self.create_subscription(Odometry, '/odom', self.odom_callback, qos)
+        
+        # self.top_camera_z_position = self.get_parameter('camera_top_z').get_parameter_value().double_value
+        # self.tf_topic = self.get_parameter('tf_topic').get_parameter_value().string_value
+        # self.top_camera_parent_frame_id = self.get_parameter('top_camera_parent_frame_id').get_parameter_value().string_value
+        # self.top_camera_frame_id = self.get_parameter('top_camera_frame_id').get_parameter_value().string_value
+        # print(f'Initial top Camera Z set to {self.top_camera_z_position}', flush=True)
+        # self.set_top_camera_z_srv = self.create_service(SetFloat32, f'/{node_name}/set_top_camera_z', self.set_top_camera_z_callback)
+        # self.get_top_camera_z_srv = self.create_service(GetFloat32, f'/{node_name}/get_top_camera_z', self.get_top_camera_z_callback)
+        # self.tf_pub = self.create_publisher(TFMessage, self.tf_topic, 1)
+
+        
+    # def set_top_camera_z_callback(self, request:SetFloat32.Request, response:SetFloat32.Response):
+    #     self.top_camera_z_position = request.data
+    #     print(f'Top Camera Z set to {self.top_camera_z_position}', flush=True)
+
+    #     time_nanosec:int = time.time_ns()
+    #     msg = TFMessage()
+    #     ts = TransformStamped()
+    #     ts.header.stamp.sec = math.floor(time_nanosec / 1000000000)
+    #     ts.header.stamp.nanosec = time_nanosec % 1000000000
+    #     ts.header.frame_id = self.top_camera_parent_frame_id
+    #     ts.child_frame_id = self.top_camera_frame_id
+    #     ts.transform = Transform()
+    #     ts.transform.translation.z = self.top_camera_z_position
+    #     msg.transforms = []
+    #     msg.transforms.append(ts)
+        
+    #     self.tf_pub.publish(msg)
+        
+    #     response.success = True
+    #     return response        
+        
+    # def get_top_camera_z_callback(self, request:GetFloat32.Request, response:GetFloat32.Response):
+    #     response.data = self.top_camera_z_position
+    #     return response
 
     def cmd_vel_callback(self, msg):
         self.last_cmd_vel = msg
 
+
     def odom_callback(self, msg):
         self.last_position = msg.pose.pose.position
+
 
     def publish_battery_status(self):
         msg = self.last_cmd_vel or TwistStamped()
@@ -78,6 +130,7 @@ class SimExtrasPublisher(Node):
         msg.percentage = max(0.0, min(1.0, msg.percentage))
 
         self.battery_pub.publish(msg)
+
 
     def publish_wifi_status(self):
         pos = self.last_position
@@ -103,6 +156,7 @@ class SimExtrasPublisher(Node):
 
         self.wifi_pub.publish(msg)
 
+
     async def main_loop(self):
         try:
             while not self.shutting_down:
@@ -117,6 +171,7 @@ class SimExtrasPublisher(Node):
                 await asyncio.sleep(self.get_parameter('refresh_period_sec').get_parameter_value().double_value)
         except (asyncio.CancelledError, KeyboardInterrupt):
             pass
+
 
     async def shutdown_cleanup(self):
         self.shutting_down = True
@@ -139,7 +194,7 @@ async def main_async():
         node.destroy_node()
 
 
-def main():
+def main(args=None):
     rclpy.init()
     asyncio.run(main_async())
     rclpy.shutdown()

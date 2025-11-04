@@ -147,6 +147,9 @@
         <visualize>false</visualize>
         <topic>rgb_${suffix}/raw</topic>
         <camera>
+          <set_pose_srv_z>set_${suffix}_camera_z</set_pose_srv_z>
+          <get_pose_srv_z>get_${suffix}_camera_z</get_pose_srv_z>
+          <tf_static_topic>/tf_static</tf_static_topic>
           <camera_info_topic>rgb_${suffix}/camera_info</camera_info_topic>
           <camera_h264_topic>rgb_${suffix}/h264</camera_h264_topic>
           <horizontal_fov>1.2</horizontal_fov>

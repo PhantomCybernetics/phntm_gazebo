@@ -121,15 +121,28 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
 ENV GZ_WS=/gz_ws
 RUN mkdir -p $GZ_WS/src
 
-# custom GZ collection for only the forked packages
 RUN git clone https://github.com/PhantomCybernetics/gz-sensors -b gz-sensors8 $GZ_WS/src/gz-sensors
 RUN git clone https://github.com/PhantomCybernetics/gz-rendering -b gz-rendering8 $GZ_WS/src/gz-rendering
 
-# RUN vcs import < $ROS_WS/src/simbot_gz/collection-harmonic-custom.yaml
-# RUN apt -y install $(sort -u $(find . -iname 'packages-'`lsb_release -cs`'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/gz\|sdf/d' | tr '\n' ' ')
+RUN apt-install -y libgz-rendering8-ogre2-dev
+
 WORKDIR $GZ_WS
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-    colcon build --symlink-install
+    colcon build --symlink-install --packages-select gz-rendering8
+
+# gotta remove these from paths:
+# ?? needs more testing + remove from CMAKE_PREFIX_PATH and GZ_SIM_RESOURCE_PATH in ~/.bashrc ??
+# RUN rm -rf /opt/ros/jazzy/opt/gz_rendering_vendor/ /opt/ros/jazzy/opt/gz_sensors_vendor/
+# RUN rm -rf /opt/ros/jazzy/share/gz_sensors_vendor/ /opt/ros/jazzy/share/gz_rendering_vendor/
+
+# make rendering8 from src preferred
+ENV CMAKE_PREFIX_PATH=/gz_ws/install/gz-rendering8:$CMAKE_PREFIX_PATH
+ENV GZ_SIM_RESOURCE_PATH=/gz_ws/install/gz-rendering8/share/:/gz_ws/install/gz-sensors8/share/:$GZ_SIM_RESOURCE_PATH
+
+# ... then finish sensors
+RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
+    . install/setup.bash && \
+    colcon build --symlink-install --packages-select gz-sensors8
 
 # RUN apt-get install -y \
 #     libgz-common6-dev \

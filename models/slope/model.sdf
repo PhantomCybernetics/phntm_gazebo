@@ -8,7 +8,7 @@
         <geometry>
           <mesh>
             <uri>model://slope/meshes/slope.dae</uri>
-            <scale>.5 .5 .25</scale>
+            <scale>.5 1 .25</scale>
           </mesh>
         </geometry>
         <surface>
@@ -26,9 +26,22 @@
         <geometry>
           <mesh>
             <uri>model://slope/meshes/slope.dae</uri>
-            <scale>.5 .5 .25</scale>
+            <scale>.5 1 .25</scale>
           </mesh>
         </geometry>
+        <cast_shadows>true</cast_shadows>
+        <material name="slope_mat">
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+          <emmisive>1 1 1 1</emmisive>
+          <specular>1 1 0 1</specular>
+          <shininess>1</shininess>
+          <pbr>
+            <metal>
+              <metalness>.2</metalness>
+            </metal>
+          </pbr>
+        </material>
       </visual>
     </link>
   </model>

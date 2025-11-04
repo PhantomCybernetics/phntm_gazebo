@@ -32,9 +32,7 @@
       Some features are disabled in this demo, the simulation is restarted every day.<br>
       <br>
       <b>Privacy Disclaimer</b><br>
-      This UI uses your browser's local storage to save some data and <a href="https://analytics.google.com" class="external">Google Analytics</a> for traffic monitoring.<br>
-      <!-- <input type="checkbox" checked id="map-consent"><label for="map-consent">I AGREE</label></input>
-      that my approximate anonymised location will be shown in the <a href="https://map.phntm.io" class="external">Community Map</a> -->
+      This UI uses your browser's local storage to save some data and <a href="https://analytics.google.com" class="external">Google Analytics</a> for traffic monitoring.
 
     bridge_server_address: https://us-ca.bridge.phntm.io # Cloud Bridge to connect to, see https://docs.phntm.io/bridge/availability-zones.html
     log_sdp: True # verbose WebRTC debug

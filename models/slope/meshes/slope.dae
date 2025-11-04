@@ -87,7 +87,7 @@
           <bind_material>
             <technique_common>
               <instance_material symbol="Material-material" target="#Material-material">
-                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+                <bind_vertex_input input_semantic="TEXCOORD" input_set="1" semantic="CHANNEL1"/>
               </instance_material>
             </technique_common>
           </bind_material>

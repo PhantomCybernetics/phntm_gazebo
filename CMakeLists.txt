@@ -29,15 +29,15 @@ install(DIRECTORY
 )
 
 install(PROGRAMS
-  scripts/laser_to_range_async.py
-  scripts/sim_extras_publisher_async.py
+  scripts/laser_to_range_converter.py
+  scripts/sim_extras_publisher.py
   DESTINATION lib/${PROJECT_NAME}/
 )
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "srv/SetFloat64.srv"
-  "srv/GetFloat64.srv"
-)
+# rosidl_generate_interfaces(${PROJECT_NAME}
+#  "srv/SetFloat32.srv"
+#  "srv/GetFloat32.srv"
+# )
 ament_export_dependencies(rosidl_default_runtime)
 
 if(BUILD_TESTING)

@@ -28,6 +28,11 @@ Poor integration with the rendering engine -> Pick one for fuck's sake! -> tons 
 Logical camera unfinished, partially in the SDF Format but not instantiating and not reading obj poses.
 BoundingBox Camera must be run on low res camera.
 
+The SDF specs are wrong. link.kinematic doesn't work, inertia syntax is diferent.
+WHY ARE THERE NO DEFAULTS AND INSTEAD THE PARSER REQUIRES ELEMENTS AND DEFAULT VALUES??
+
+Commenting in the URDF/SDF breaks the parser.
+
 The cameras, camera info and bb detections all have mismatching frames of reference
 
 All cameras render on the same thread, then block it by synchronous processing. This means that desired FPS is never achieved.

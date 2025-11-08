@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="lidar" params="suffix parent xyz rpy">
-    <link name="lidar_link_${suffix}">
+  <xacro:macro name="lidar" params="parent xyz rpy">
+    <link name="lidar_link">
       <visual>
         <geometry>
           <cylinder radius="0.02" length="0.02" />
@@ -18,18 +18,18 @@
       </collision>
     </link>
 
-    <joint name="lidar_joint_${suffix}" type="fixed">
+    <joint name="lidar_joint" type="fixed">
       <parent link="${parent}" />
-      <child link="lidar_link_${suffix}" />
+      <child link="lidar_link" />
       <origin xyz="${xyz}" rpy="${rpy}" />
       <axis xyz="0 0 1" />
     </joint>
 
-     <gazebo reference="lidar_link_${suffix}">
+     <gazebo reference="lidar_link">
       <sensor name='gpu_lidar' type='gpu_lidar'>
         <topic>/scan</topic>
         <update_rate>30</update_rate>
-        <gz_frame_id>lidar_link_${suffix}</gz_frame_id>
+        <gz_frame_id>lidar_link</gz_frame_id>
         <ray>
           <scan>
             <horizontal>

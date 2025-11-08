@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <robot name="delirobo" xmlns:xacro="http://ros.org/wiki/xacro">
-	<xacro:macro name="imu" params="suffix parent xyz rpy">
-		<joint name="imu_joint_${suffix}" type="fixed">
+	<xacro:macro name="imu" params="parent xyz rpy">
+		<joint name="imu_joint" type="fixed">
 			<parent link="${parent}" />
-			<child link="imu_link_${suffix}" />
+			<child link="imu_link" />
 			<origin xyz="${xyz}" rpy="${rpy}" />
 		</joint>
 
-		<link name="imu_link_${suffix}">
+		<link name="imu_link">
 			<inertial>
 				<origin xyz="0 0 0" />
 				<mass value="0.005" />
@@ -15,7 +15,7 @@
 			</inertial>
 		</link>
 
-		<gazebo reference="imu_link_${suffix}">
+		<gazebo reference="imu_link">
       <sensor type="imu" name="imu_sensor">
         <topic>/imu</topic>
         <update_rate>30</update_rate>

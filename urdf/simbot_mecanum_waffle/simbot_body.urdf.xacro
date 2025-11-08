@@ -8,14 +8,15 @@
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/range_sensor.urdf.xacro"/>
   <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/imu.urdf.xacro"/>
 
-  <xacro:property name="base_visual_offset" value="-0.064 0 0.097"/>
-  <xacro:property name="base_collision_offset" value="-0.064 0 0.097"/>
+  <xacro:property name="base_visual_offset" value="0 0 0.097"/>
+  <xacro:property name="base_collision_offset" value="0 0 0.097"/>
   <xacro:property name="base_collision_box_size" value="0.266 0.266 0.094"/>
+
   <xacro:property name="wheel_z_offset" value="0.047"/>
-  <xacro:property name="front_wheel_x_offset" value="0.015"/>
-  <xacro:property name="rear_wheel_x_offset" value="-0.15"/>
+  <xacro:property name="front_wheel_x_offset" value="0.0825"/>
+  <xacro:property name="rear_wheel_x_offset" value="-0.0825"/>
   <xacro:property name="left_wheel_y_offset" value="0.157"/>
-  <xacro:property name="right_wheel_y_offset" value="${-left_wheel_y_offset}"/>
+  <xacro:property name="right_wheel_y_offset" value="-0.157"/>
 
   <xacro:arg name="camera_top_z" default="2.0"/>
 
@@ -62,8 +63,8 @@
       <origin xyz="${xyz}" rpy="${rpy}" />
     </joint>
 
-    <xacro:bumper suffix="front" xyz=".1 0 0.07" rpy="0 0 0" parent="base_link"/>
-    <xacro:bumper suffix="rear" xyz="-.225 0 0.07" rpy="0 0 ${pi}" parent="base_link"/>
+    <xacro:bumper suffix="front" xyz=".164 0 0.07" rpy="0 0 0" parent="base_link"/>
+    <xacro:bumper suffix="rear" xyz="-.164 0 0.07" rpy="0 0 ${pi}" parent="base_link"/>
 
     <!-- Wheels -->
 
@@ -96,7 +97,7 @@
       encoder_bit_rate="$(arg encoder_bit_rate)"
       encoder_thread_count="$(arg encoder_thread_count)"
       encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
-      xyz="0.07 0.0 0.1030" rpy="0 0 0"
+      xyz="0.134 0.0 0.1030" rpy="0 0 0"
       anti_aliasing="$(arg cameras_anti_aliasing)"
       bounding_boxes="true"
       fps="$(arg cameras_fps)"
@@ -115,7 +116,7 @@
       encoder_bit_rate="$(arg encoder_bit_rate)"
       encoder_thread_count="$(arg encoder_thread_count)"
       encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
-      xyz="-0.195 0.0000 0.1030" rpy="0 0 3.14159"
+      xyz="-0.134 0.0000 0.1030" rpy="0 0 3.14159"
       anti_aliasing="$(arg cameras_anti_aliasing)"
       bounding_boxes="true"
       fps="$(arg cameras_fps)"
@@ -135,12 +136,12 @@
       fps="$(arg cameras_fps)"
     />
 
-    <xacro:lidar parent="base_link" suffix="1" xyz="0.0000 0.0000 .1510" rpy="0 0 0"/>
-    <xacro:imu parent="base_link" suffix="1" xyz="-.1 0.1 .1" rpy="-${pi} ${pi} -${pi/2}"/>
-    <xacro:range_sensor parent="base_link" suffix="fr" xyz="0.065 -0.10 0.1" rpy="0.0 0.0 -0.187"/>
-    <xacro:range_sensor parent="base_link" suffix="fl" xyz="0.065 0.10 0.1" rpy="0.0 0.0 0.187"/>
-    <xacro:range_sensor parent="base_link" suffix="rr" xyz="-0.19 -0.10 0.1" rpy="0.0 0.0 ${3.1416+0.187}"/>
-    <xacro:range_sensor parent="base_link" suffix="rl" xyz="-0.19 0.10 0.1" rpy="0.0 0.0 ${3.1416-0.187}"/>
+    <xacro:lidar parent="base_link" xyz="0.064 0.0000 .1510" rpy="0 0 0"/>
+    <xacro:imu parent="base_link" xyz="-.05 0.1 .1" rpy="-${pi} ${pi} -${pi/2}"/>
+    <xacro:range_sensor parent="base_link" suffix="fr" xyz="0.129 -0.10 0.1" rpy="0.0 0.0 -0.187"/>
+    <xacro:range_sensor parent="base_link" suffix="fl" xyz="0.129 0.10 0.1" rpy="0.0 0.0 0.187"/>
+    <xacro:range_sensor parent="base_link" suffix="rr" xyz="-0.129 -0.10 0.1" rpy="0.0 0.0 ${3.1416+0.187}"/>
+    <xacro:range_sensor parent="base_link" suffix="rl" xyz="-0.129 0.10 0.1" rpy="0.0 0.0 ${3.1416-0.187}"/>
 
 
   </xacro:macro>

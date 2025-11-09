@@ -29,6 +29,9 @@ class SimExtrasPublisher(Node):
         self.declare_parameter('refresh_period_sec', 5.0)
         self.declare_parameter('ui_battery_topic', '/ui/battery')
         self.declare_parameter('ui_wifi_topic', '/iw_status')
+        self.declare_parameter('wifi_quality_max', 1.0)
+        self.declare_parameter('wifi_quality_min', 0.1)
+        self.declare_parameter('wifi_max_distance', 10.0)
         self.declare_parameter('nominal_voltage', 22.2)
         self.declare_parameter('min_voltage', 19.2)
         self.declare_parameter('max_voltage', 25.2)
@@ -42,6 +45,9 @@ class SimExtrasPublisher(Node):
         
         self.battery_topic = self.get_parameter('ui_battery_topic').get_parameter_value().string_value
         self.wifi_topic = self.get_parameter('ui_wifi_topic').get_parameter_value().string_value
+        self.wifi_quality_max = self.get_parameter('wifi_quality_max').get_parameter_value().double_value
+        self.wifi_quality_min = self.get_parameter('wifi_quality_min').get_parameter_value().double_value
+        self.wifi_max_distance = self.get_parameter('wifi_max_distance').get_parameter_value().double_value
         self.nominal_voltage = self.get_parameter('nominal_voltage').get_parameter_value().double_value
         self.min_voltage = self.get_parameter('min_voltage').get_parameter_value().double_value
         self.max_voltage = self.get_parameter('max_voltage').get_parameter_value().double_value
@@ -138,7 +144,7 @@ class SimExtrasPublisher(Node):
             return
 
         distance = math.sqrt(pos.x**2 + pos.y**2 + pos.z**2)
-        quality = 0.2 if distance >= 10.0 else 0.95 - (distance / 10.0) * (0.95 - 0.2)
+        quality = self.wifi_quality_min if distance >= self.wifi_max_distance else self.wifi_quality_max - (distance / self.wifi_max_distance) * (self.wifi_quality_max - self.wifi_quality_min)
         quality = max(0.0, min(1.0, quality))
 
         msg = IWStatus()

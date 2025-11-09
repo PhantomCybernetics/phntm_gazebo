@@ -13,3 +13,6 @@ sim_extras_publisher:
 
     # Wi-Fi simulation parameters
     ui_wifi_topic: /iw_status
+    wifi_quality_max: 1.0
+    wifi_quality_min: 0.1
+    wifi_max_distance: 10.0

@@ -3,7 +3,7 @@
         {
             "label": "Restart Sim",
             "color": "red",
-            "show_request": true,
+            "show_request": false,
             "show_reply": true,
             "value": {
                 "id_container": "simbot-gz",
@@ -15,7 +15,7 @@
         {
             "label": "Scan",
             "color": "orange",
-            "show_request": true,
+            "show_request": false,
             "show_reply": true,
             "value": {
                 "attempt_roam": false
@@ -24,7 +24,7 @@
         {
             "label": "Roam",
             "color": "magenta",
-            "show_request": true,
+            "show_request": false,
             "show_reply": true,
             "value": {
                 "attempt_roam": true

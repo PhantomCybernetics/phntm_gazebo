@@ -153,7 +153,9 @@
                     "ros_srv_id": "/phntm_agent_g4ad_xlarge/iw_scan",
                     "ros_srv_val": {
                         "attempt_roam": false
-                    }
+                    },
+                    "ros_srv_silent_req": true,
+                    "ros_srv_silent_res": false
                 },
                 {
                     "action": "ros-srv",
@@ -164,7 +166,9 @@
                     "ros_srv_id": "/phntm_agent_g4ad_xlarge/iw_scan",
                     "ros_srv_val": {
                         "attempt_roam": true
-                    }
+                    },
+                    "ros_srv_silent_req": true,
+                    "ros_srv_silent_res": false
                 }
             ]
         },

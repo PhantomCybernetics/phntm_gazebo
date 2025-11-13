@@ -108,7 +108,7 @@
       bb_fps="$(arg bb_cameras_fps)"
     />
 
-    <xacro:robot_camera parent="base_link" suffix="back"
+    <xacro:robot_camera parent="base_link" suffix="rear"
       width="$(arg cameras_width)"
       height="$(arg cameras_height)"
       pixel_format="$(arg cameras_pixel_format)"

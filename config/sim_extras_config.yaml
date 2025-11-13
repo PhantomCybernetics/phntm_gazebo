@@ -16,3 +16,5 @@ sim_extras_publisher:
     wifi_quality_max: 1.0
     wifi_quality_min: 0.1
     wifi_max_distance: 10.0
+    wifi_supports_scanning: True
+    wifi_frame_id: g4ad_xlarge

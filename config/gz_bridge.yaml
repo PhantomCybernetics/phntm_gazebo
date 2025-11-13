@@ -27,8 +27,8 @@
   direction: GZ_TO_ROS
   lazy: true
 
-- ros_topic_name: "/rgb_back/camera_info"
-  gz_topic_name: "/rgb_back/camera_info"
+- ros_topic_name: "/rgb_rear/camera_info"
+  gz_topic_name: "/rgb_rear/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS

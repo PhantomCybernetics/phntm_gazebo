@@ -1,8 +1,8 @@
 {
-    "BasicMovement": {
-        "label": "BasicMovement",
+    "MecanumDrive": {
+        "label": "Mecanum Drive",
         "keyboard": {
-            "driver": "Twist",
+            "driver": "TwistInputDriver",
             "driver_config": {
                 "output_topic": "/cmd_vel",
                 "stamped": true
@@ -67,11 +67,48 @@
                     "dead_min": -0.01,
                     "dead_max": 0.01,
                     "scale": -2
+                },
+                {
+                    "driver_axis": "linear.y",
+                    "key": "S",
+                    "key_mod": "shift",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": 2
+                },
+                {
+                    "driver_axis": "linear.y",
+                    "key": "F",
+                    "key_mod": "shift",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -2
+                },
+                {
+                    "driver_axis": "angular.z",
+                    "key": "ARROWLEFT",
+                    "key_mod": "shift",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": 2
+                },
+                {
+                    "driver_axis": "angular.z",
+                    "key": "ARROWRIGHT",
+                    "key_mod": "shift",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01,
+                    "scale": -2
+                },
+                {
+                    "action": "input-profile",
+                    "key": "2",
+                    "profile": "BoolTest"
                 }
             ]
         },
         "touch": {
-            "driver": "Twist",
+            "driver": "TwistInputDriver",
             "driver_config": {
                 "output_topic": "/cmd_vel",
                 "stamped": true
@@ -98,16 +135,47 @@
                     "dead_max": 0.01,
                     "scale": -1
                 }
+            ],
+            "buttons": [
+                {
+                    "action": "input-profile",
+                    "placement": "top",
+                    "label": "Bool Input Test",
+                    "sort_index": 2,
+                    "profile": "BoolTest"
+                },
+                {
+                    "action": "ros-srv",
+                    "style": "yellow",
+                    "placement": "top",
+                    "label": "Wi-Fi Scan",
+                    "sort_index": 0,
+                    "ros_srv_id": "/phntm_agent_g4ad_xlarge/iw_scan",
+                    "ros_srv_val": {
+                        "attempt_roam": false
+                    }
+                },
+                {
+                    "action": "ros-srv",
+                    "style": "orange",
+                    "placement": "top",
+                    "label": "Wi-Fi Roam",
+                    "sort_index": 1,
+                    "ros_srv_id": "/phntm_agent_g4ad_xlarge/iw_scan",
+                    "ros_srv_val": {
+                        "attempt_roam": true
+                    }
+                }
             ]
         },
-        "gamepad": {
+        "DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)": {
             "axes": [
                 {
                     "axis": 0,
                     "dead_max": 0.1,
                     "dead_min": -0.1,
                     "driver_axis": "linear.y",
-                    "scale": -1
+                    "scale": -2
                 },
                 {
                     "axis": 1,
@@ -131,10 +199,107 @@
                     "ctrl_state": "toggle"
                 }
             ],
-            "driver": "Twist",
+            "driver": "TwistInputDriver",
             "driver_config": {
                 "output_topic": "/cmd_vel",
                 "stamped": true
+            }
+        }
+    },
+    "BoolTest": {
+        "label": "Bool Test",
+        "keyboard": {
+            "driver": "ExampleBoolInputDriver",
+            "driver_config": {
+                "output_topic": "/user_input_bool"
+            },
+            "buttons": [
+                {
+                    "driver_btn": "btn.0",
+                    "key": "E"
+                },
+                {
+                    "driver_btn": "btn.1",
+                    "key": "D"
+                },
+                {
+                    "driver_btn": "btn.1",
+                    "key": "S"
+                },
+                {
+                    "driver_btn": "btn.4",
+                    "key": "F"
+                },
+                {
+                    "driver_axis": "axis.1",
+                    "key": "ARROWLEFT",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                },
+                {
+                    "driver_axis": "axis.2",
+                    "key": "ARROWRIGHT",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                },
+                {
+                    "action": "input-profile",
+                    "key": "1",
+                    "profile": "MecanumDrive"
+                },
+                {
+                    "action": "ctrl-enabled",
+                    "key": "`",
+                    "ctrl_state": "toggle"
+                }
+            ]
+        },
+        "touch": {
+            "driver": "ExampleBoolInputDriver",
+            "driver_config": {
+                "output_topic": "/user_input_bool"
+            },
+            "axes": [
+                {
+                    "axis": 0,
+                    "driver_axis": "axis.2",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                },
+                {
+                    "axis": 1,
+                    "driver_axis": "axis.3",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                },
+                {
+                    "axis": 2,
+                    "driver_axis": "axis.2",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                },
+                {
+                    "axis": 3,
+                    "driver_axis": "axis.3",
+                    "dead_min": -0.01,
+                    "dead_max": 0.01
+                }
+            ],
+            "buttons": [
+                {
+                    "action": "input-profile",
+                    "placement": "top",
+                    "label": "Mecanum Drive",
+                    "sort_index": 0,
+                    "profile": "MecanumDrive"
+                }
+            ]
+        },
+        "DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)": {
+            "driver": "TwistInputDriver",
+            "driver_config": {
+                "output_topic": "/user_input",
+                "stamped": false
             }
         }
     }

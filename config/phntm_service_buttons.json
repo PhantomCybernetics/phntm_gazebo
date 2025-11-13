@@ -1,0 +1,34 @@
+{
+    "/phntm_agent_g4ad_xlarge/docker_command": [
+        {
+            "label": "Restart Sim",
+            "color": "red",
+            "show_request": true,
+            "show_reply": true,
+            "value": {
+                "id_container": "simbot-gz",
+                "set_state": 2
+            }
+        }
+    ],
+    "/phntm_agent_g4ad_xlarge/iw_scan": [
+        {
+            "label": "Scan",
+            "color": "orange",
+            "show_request": true,
+            "show_reply": true,
+            "value": {
+                "attempt_roam": false
+            }
+        },
+        {
+            "label": "Roam",
+            "color": "magenta",
+            "show_request": true,
+            "show_reply": true,
+            "value": {
+                "attempt_roam": true
+            }
+        }
+    ]
+}

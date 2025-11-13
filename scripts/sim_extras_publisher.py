@@ -9,6 +9,7 @@ from geometry_msgs.msg import TwistStamped
 from sensor_msgs.msg import BatteryState
 from nav_msgs.msg import Odometry
 from phntm_interfaces.msg import IWStatus
+from phntm_interfaces.srv import IWScanCmd
 from rclpy.qos import QoSProfile, ReliabilityPolicy
 # from tf2_msgs.msg import TFMessage
 # from geometry_msgs.msg import TransformStamped, Transform
@@ -32,6 +33,8 @@ class SimExtrasPublisher(Node):
         self.declare_parameter('wifi_quality_max', 1.0)
         self.declare_parameter('wifi_quality_min', 0.1)
         self.declare_parameter('wifi_max_distance', 10.0)
+        self.declare_parameter('wifi_supports_scanning', False)
+        self.declare_parameter('wifi_frame_id', '')
         self.declare_parameter('nominal_voltage', 22.2)
         self.declare_parameter('min_voltage', 19.2)
         self.declare_parameter('max_voltage', 25.2)
@@ -48,6 +51,8 @@ class SimExtrasPublisher(Node):
         self.wifi_quality_max = self.get_parameter('wifi_quality_max').get_parameter_value().double_value
         self.wifi_quality_min = self.get_parameter('wifi_quality_min').get_parameter_value().double_value
         self.wifi_max_distance = self.get_parameter('wifi_max_distance').get_parameter_value().double_value
+        self.wifi_supports_scanning = self.get_parameter('wifi_supports_scanning').get_parameter_value().bool_value
+        self.wifi_frame_id = self.get_parameter('wifi_frame_id').get_parameter_value().string_value
         self.nominal_voltage = self.get_parameter('nominal_voltage').get_parameter_value().double_value
         self.min_voltage = self.get_parameter('min_voltage').get_parameter_value().double_value
         self.max_voltage = self.get_parameter('max_voltage').get_parameter_value().double_value
@@ -71,40 +76,8 @@ class SimExtrasPublisher(Node):
         self.create_subscription(TwistStamped, '/cmd_vel', self.cmd_vel_callback, qos)
         self.create_subscription(Odometry, '/odom', self.odom_callback, qos)
         
-        # self.top_camera_z_position = self.get_parameter('camera_top_z').get_parameter_value().double_value
-        # self.tf_topic = self.get_parameter('tf_topic').get_parameter_value().string_value
-        # self.top_camera_parent_frame_id = self.get_parameter('top_camera_parent_frame_id').get_parameter_value().string_value
-        # self.top_camera_frame_id = self.get_parameter('top_camera_frame_id').get_parameter_value().string_value
-        # print(f'Initial top Camera Z set to {self.top_camera_z_position}', flush=True)
-        # self.set_top_camera_z_srv = self.create_service(SetFloat32, f'/{node_name}/set_top_camera_z', self.set_top_camera_z_callback)
-        # self.get_top_camera_z_srv = self.create_service(GetFloat32, f'/{node_name}/get_top_camera_z', self.get_top_camera_z_callback)
-        # self.tf_pub = self.create_publisher(TFMessage, self.tf_topic, 1)
+        # self.fake_wifi_scan_srv = self.create_service(IWScanCmd, f'/phntm_agent{"_" + self.wifi_frame_id if self.wifi_frame_id else ""}/iw_scan', self.fake_wifi_scan_srv_callback)
 
-        
-    # def set_top_camera_z_callback(self, request:SetFloat32.Request, response:SetFloat32.Response):
-    #     self.top_camera_z_position = request.data
-    #     print(f'Top Camera Z set to {self.top_camera_z_position}', flush=True)
-
-    #     time_nanosec:int = time.time_ns()
-    #     msg = TFMessage()
-    #     ts = TransformStamped()
-    #     ts.header.stamp.sec = math.floor(time_nanosec / 1000000000)
-    #     ts.header.stamp.nanosec = time_nanosec % 1000000000
-    #     ts.header.frame_id = self.top_camera_parent_frame_id
-    #     ts.child_frame_id = self.top_camera_frame_id
-    #     ts.transform = Transform()
-    #     ts.transform.translation.z = self.top_camera_z_position
-    #     msg.transforms = []
-    #     msg.transforms.append(ts)
-        
-    #     self.tf_pub.publish(msg)
-        
-    #     response.success = True
-    #     return response        
-        
-    # def get_top_camera_z_callback(self, request:GetFloat32.Request, response:GetFloat32.Response):
-    #     response.data = self.top_camera_z_position
-    #     return response
 
     def cmd_vel_callback(self, msg):
         self.last_cmd_vel = msg
@@ -158,9 +131,16 @@ class SimExtrasPublisher(Node):
         msg.quality_max = 100
         msg.level = 200
         msg.noise = 0
-        msg.supports_scanning = False
+        msg.header.frame_id = self.wifi_frame_id
+        msg.supports_scanning = self.wifi_supports_scanning
 
         self.wifi_pub.publish(msg)
+
+
+    # def fake_wifi_scan_srv_callback(self, request:IWScanCmd.Request, response:IWScanCmd.Response):
+    #     response.err = 1
+    #     response.msg = 'Scanning not supported by this interface'
+    #     return response
 
 
     async def main_loop(self):

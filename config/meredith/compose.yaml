@@ -1,0 +1,48 @@
+services:
+  phntm_bridge:
+    image: phntm/bridge:jazzy
+    container_name: phntm-bridge
+    hostname: phntm-bridge.local
+    restart: unless-stopped # restarts after first run
+    privileged: true # bridge needs this
+    # cpuset: '0,1,2' # consider dedicating a few CPU cores for maximal responsiveness
+    network_mode: host # webrtc needs this
+    ipc: host # bridge needs this to see other local containers
+    volumes:
+      - ~/phntm_bridge_client:/ros2_ws/src/phntm_bridge # (optional) live repo mapped here for easy updates
+      - ~/simbot_gz/config/meredith/phntm_bridge.yaml:/ros2_ws/phntm_bridge_params.yaml # bridge config goes here
+      - ~/simbot_gz/config/meredith/phntm_bridge.yaml:/ros2_ws/phntm_agent_params.yaml # agent config goes here
+      - ~/simbot_gz/config/phntm_input_config.json:/ros2_ws/phntm_input_config.json
+      - ~/simbot_gz/config/phntm_service_buttons.json:/ros2_ws/phntm_service_buttons.json
+      - ~/phntm_interfaces:/ros2_ws/src/phntm_interfaces
+      - ~/phntm_agent:/ros2_ws/src/phntm_agent
+      - /var/run:/host_run # docker file extractor and wifi control need this
+      - /tmp:/tmp # wifi control needs this
+    devices:
+      - /dev:/dev # LED control & GPU encoder needs this
+    command:
+      /bin/sh -c "while sleep 1000; do :; done"
+      # ros2 launch phntm_bridge client_agent_launch.py # this launches Bridge Client and Agent together
+
+  simbot-gz:
+    image: phntm/simbot-gz:harmonic-jazzy-amd
+    container_name: simbot-gz
+    hostname: simbot-gz.local
+    restart: unless-stopped
+    privileged: true 
+    #runtime: nvidia
+    volumes:
+      - /dev/shm:/dev/shm
+      - ~/simbot_gz:/ros2_ws/src/simbot_gz
+      - ~/phntm_interfaces:/ros2_ws/src/phntm_interfaces
+      - ~/gz_ws:/gz_ws/src
+    devices:
+      - /dev:/dev # GPU 
+    # group_add:
+    #  - video
+    network_mode: host
+    # ipc: host  # Bridge needs this to see other local containers
+    #shm_size: '200mb'
+    command:
+      /bin/sh -c "while sleep 1000; do :; done"
+      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi

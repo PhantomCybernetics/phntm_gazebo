@@ -18,20 +18,62 @@
       <a href="https://www.phantomcybernetics.com" id="phntm-cybernetics-logo"></a>
       <h2 class="with-phntm-cybernetics-logo">About this Demo</h2>
     about_dialog: > # this will be shown as a modal dialog on demo launch
-      This simulation utilizes a modified Gazebo Harmonic and runs on a server physically located in Oregon, USA.<br>
+      This simulation utilizes a modified Gazebo Harmonic and runs on a server physically located in Oregon, USA.
+      Video is encoded into H.264 using AMD GPU and all data is streamed over WebRTC by the <a href="https://docs.phntm.io/bridge" class="external">Phantom Bridge</a>.
       Your RTT depends on geographical distance to the datacenter and your connection quality.<br>
       <br>
-      Video is encoded into H.264 using AMD GPU and all data is streamed over WebRTC
-      by the <a href="https://docs.phntm.io/bridge" class="external">Phantom Bridge</a>.
-      <span class="desktop-only">This UI is responsive and available optimised for mobile devices (phones and tables) on the same URL.</span>
-      <span class="touch-only">This UI is responsive and available optimised for desktop on the same URL.</span><br>
-      <br>
+      <div class="qr-container desktop-only">
+        <b>Try This on a Mobile Device</b><br>
+        <span id="about-dialog-qr"></span>
+        <script type="text/javascript">
+            console.debug("QRCodeStyling", window.location);
+            new exports.QRCodeStyling({
+              width: 250,
+              height: 250,
+              type: "canvas",
+              data: "https://phntn.io/bridge-demo-oregon",
+              dotsOptions: {
+                color: "#4267b2",
+                type: "square"
+              },
+              backgroundOptions: {
+                color: "#e9ebee",
+              },
+              imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 20
+              },
+              cornersSquareOptions: {
+                type: 'extra-rounded'
+              }
+            }).append(document.getElementById('about-dialog-qr'));
+        </script>
+      </div>
       <b>Robot Controls</b><br>
-      <b class="key-mapping">~</b> enables and disables keyboard control<br>
-      Use <b class="key-mapping">E</b>, <b class="key-mapping">D</b>, <b class="key-mapping">S</b>, <b class="key-mapping">F</b>
-      and <b class="key-mapping">Left</b> &amp; <b class="key-mapping">Right</b> arrow keys to drive the robot, holding <b class="key-mapping">Shift</b> increases speed.<br>
-      You can also connect a <b class="key-mapping">Gamepad</b> and adjust your mappings in the Human Input Dialog (the monkey in top right corner).<br>
-      On mobile devices you can use the built-in virtual gamepad.<br>
+      <div class="desktop-only">
+        <table class="controls">
+          <tr>
+            <td><b class="key-mapping">~</b></td>
+            <td>Enable / disable keyboard input</td>
+          </tr>
+          <tr>
+            <td><b class="key-mapping">E</b>, <b class="key-mapping">D</b>, <b class="key-mapping">S</b>, <b class="key-mapping">F</b></td>
+            <td>Mecanum drive forward / back / left / right</td>
+          </tr>
+          <tr>
+            <td><b class="key-mapping">Left</b> &amp; <b class="key-mapping">Right</b></td>
+            <td>Turn left / right</td>
+          </tr>
+          <tr>
+            <td><b class="key-mapping">Shift</b></td>
+            <td>Increase speed</td>
+          </tr>
+        </table>
+        You can <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation.html" class="external">change your mappings</a> and connect a <b>Gamepad</b>.<br>
+      </div>
+      <div class="touch-only">
+        Use the virtual gamepad (icon the the top right) to drive the robot. You can also connect a physical keyboard and/or gamepad and <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation.html" class="external">customize your input mappings.</a>
+      </div>
       <br>
       When multiple peers are connected to this robot, you will see a number like <span class="num-peers">2</span> next to the robot's name.
       Too many connected peers may decrease performance. Robot control is allowed to one peer at the time.
@@ -41,6 +83,7 @@
       <br>
       <b>Privacy Disclaimer</b><br>
       This UI uses your browser's local storage to save some data and <a href="https://analytics.google.com" class="external">Google Analytics</a> for traffic monitoring.
+      
 
     bridge_server_address: https://us-ca.bridge.phntm.io # Cloud Bridge to connect to, see https://docs.phntm.io/bridge/availability-zones.html
 
@@ -176,17 +219,17 @@
     # docker_monitor_topic: '/docker_info' # produced by Agent
 
     ui_custom_includes_js: 
-      - https://localhost:1234/input-drivers/example-bool-input-driver.js
-      - https://localhost:1234/custom-slider-service-widget/slider-widget.js
-      - https://localhost:1234/custom-bool-panel-widget/bool-panel-widget.js
-      - https://localhost:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.js
+      - https://mrkbk.local:1234/input-drivers/example-bool-input-driver.js
+      - https://mrkbk.local:1234/custom-slider-service-widget/slider-widget.js
+      - https://mrkbk.local:1234/custom-bool-panel-widget/bool-panel-widget.js
+      - https://mrkbk.local:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.js
       
     ui_custom_includes_css:
       # - https://ui-extras.phntm.io/css-example/example.css
-      - https://localhost:1234/css-example/demo-tweaks.css
-      - https://localhost:1234/custom-bool-panel-widget/bool-panel-widget.css
-      - https://localhost:1234/custom-slider-service-widget/slider-widget.css
-      - https://localhost:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.css
+      - https://mrkbk.local:1234/css-example/demo-tweaks.css
+      - https://mrkbk.local:1234/custom-bool-panel-widget/bool-panel-widget.css
+      - https://mrkbk.local:1234/custom-slider-service-widget/slider-widget.css
+      - https://mrkbk.local:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.css
 
     ## User input config
     input_drivers: [ 'TwistInputDriver', 'ExampleBoolInputDriver' ] # enabled input drivers, custom class must be included via ui_custom_includes_js

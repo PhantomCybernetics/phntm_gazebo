@@ -261,3 +261,8 @@
     wifi_monitor_topic: '/iw_status' # writes output here
     enable_wifi_scan: True # enable wi-fi scanning
     enable_wifi_roam: True # enable wi-fi roaming
+
+    wifi_map_example:
+      default_odometry_topic: /odom
+      default_laser_topic: /scan
+      default_wifi_topic: /iw_status

@@ -232,6 +232,7 @@
       - https://mrkbk.local:1234/custom-bool-panel-widget/bool-panel-widget.js
       - https://mrkbk.local:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.js
       - https://mrkbk.local:1234/custom-world-model-battery-plugin/world-model-battery-plugin.js
+      - https://mrkbk.local:1234/custom-video-cmd-vel-overlay/video-cmd-vel-overlay.js
       
     ui_custom_includes_css:
       # - https://ui-extras.phntm.io/css-example/example.css
@@ -239,6 +240,7 @@
       - https://mrkbk.local:1234/custom-bool-panel-widget/bool-panel-widget.css
       - https://mrkbk.local:1234/custom-slider-service-widget/slider-widget.css
       - https://mrkbk.local:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.css
+      - https://mrkbk.local:1234/custom-video-cmd-vel-overlay/video-cmd-vel-overlay.css
 
     ## User input config
     input_drivers: [ 'TwistInputDriver', 'ExampleBoolInputDriver' ] # enabled input drivers, custom class must be included via ui_custom_includes_js

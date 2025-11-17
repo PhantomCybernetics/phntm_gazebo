@@ -116,7 +116,7 @@
       encoder_bit_rate="$(arg encoder_bit_rate)"
       encoder_thread_count="$(arg encoder_thread_count)"
       encoder_input_pixel_format="$(arg encoder_input_pixel_format)"
-      xyz="-0.134 0.0000 0.1030" rpy="0 0 3.14159"
+      xyz="-0.134 0.0000 0.095" rpy="0 0 3.14159"
       anti_aliasing="$(arg cameras_anti_aliasing)"
       bounding_boxes="true"
       fps="$(arg cameras_fps)"

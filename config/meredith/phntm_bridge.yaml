@@ -159,6 +159,14 @@
     /battery:
       min_voltage: 19.2 # set empty voltage
       max_voltage: 25.2 # set set full voltage
+      force_frame_id: base_link
+      world_model:
+        offset_pos: [ -0.132, 0.01875, 0.13 ]
+        offset_rot: [ 0.0, 0.0, -1.57 ]
+        scale: [ 0.005, 0.003, 0.005 ]
+        num_segments: 6
+        color_on: red
+        color_off: black
     /rgb_front/camera_info:
       frustum_color: lime
     /rgb_rear/camera_info:
@@ -223,6 +231,7 @@
       - https://mrkbk.local:1234/custom-slider-service-widget/slider-widget.js
       - https://mrkbk.local:1234/custom-bool-panel-widget/bool-panel-widget.js
       - https://mrkbk.local:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.js
+      - https://mrkbk.local:1234/custom-world-model-battery-plugin/world-model-battery-plugin.js
       
     ui_custom_includes_css:
       # - https://ui-extras.phntm.io/css-example/example.css

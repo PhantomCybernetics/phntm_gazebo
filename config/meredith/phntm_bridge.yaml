@@ -139,6 +139,11 @@
       # - /rgb_back/raw
       # - /rgb_top/raw
 
+    blacklist_parameter_services:
+      - controller_manager # nodes with disabled parameter services
+    enable_node_parameters_read: True
+    enable_node_parameters_write: False
+
     encoder_default_hw_device: 'vaapi' # 'cuda' for Nvidia, 'vaapi' for AMD/Intel or 'sw' for CPU
 
     video_topics_default_depth: 5

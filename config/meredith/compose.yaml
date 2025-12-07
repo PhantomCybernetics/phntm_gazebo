@@ -8,6 +8,8 @@ services:
     # cpuset: '0,1,2' # consider dedicating a few CPU cores for maximal responsiveness
     network_mode: host # webrtc needs this
     ipc: host # bridge needs this to see other local containers
+    environment:
+      RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
     volumes:
       - ~/phntm_bridge_client:/ros2_ws/src/phntm_bridge # (optional) live repo mapped here for easy updates
       - ~/simbot_gz/config/meredith/phntm_bridge.yaml:/ros2_ws/phntm_bridge_params.yaml # bridge config goes here
@@ -22,7 +24,7 @@ services:
       - /dev:/dev # LED control & GPU encoder needs this
     command:
       /bin/sh -c "while sleep 1000; do :; done"
-      # ros2 launch phntm_bridge client_agent_launch.py # this launches Bridge Client and Agent together
+      #ros2 launch phntm_bridge client_agent_launch.py # this launches Bridge Client and Agent together
 
   simbot-gz:
     image: phntm/simbot-gz:harmonic-jazzy-amd

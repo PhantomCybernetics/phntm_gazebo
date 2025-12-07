@@ -4,7 +4,7 @@ sim_extras_publisher:
 
     # Battery simulation parameters
     ui_battery_topic: /battery
-    nominal_voltage: 24.3
+    nominal_voltage: 22.3
     min_voltage: 19.2
     max_voltage: 25.2
     max_linear_speed: 10.0

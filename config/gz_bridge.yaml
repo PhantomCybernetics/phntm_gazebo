@@ -9,7 +9,7 @@
   ros_type_name: "sensor_msgs/msg/Imu"
   gz_type_name: "gz.msgs.IMU"
   direction: GZ_TO_ROS
-  lazy: true
+  lazy: false
   qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/scan"
@@ -17,7 +17,7 @@
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
-  lazy: true
+  lazy: false
   qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/rgb_front/camera_info"
@@ -25,28 +25,28 @@
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
-  lazy: true
+  lazy: false
 
 - ros_topic_name: "/rgb_rear/camera_info"
   gz_topic_name: "/rgb_rear/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
-  lazy: true
+  lazy: false
 
 - ros_topic_name: "/rgb_top/camera_info"
   gz_topic_name: "/rgb_top/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
-  lazy: true
+  lazy: false
 
 - ros_topic_name: "/depth_front/camera_info"
   gz_topic_name: "/depth_front/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
-  lazy: true
+  lazy: false
 
 - ros_topic_name: "/range_fr_laser"
   gz_topic_name: "/range_fr_laser"

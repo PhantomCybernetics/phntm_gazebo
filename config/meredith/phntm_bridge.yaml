@@ -31,7 +31,7 @@
               width: 250,
               height: 250,
               type: "canvas",
-              data: "https://phntn.io/bridge-demo-oregon",
+              data: "https://phntm.io/demo-meredith",
               dotsOptions: {
                 color: "#4267b2",
                 type: "square"
@@ -69,7 +69,7 @@
             <td>Increase speed</td>
           </tr>
         </table>
-        You can <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation.html" class="external">change your mappings</a> and connect a <b>Gamepad</b>.<br>
+        You can <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation.html" class="external">change your mappings</a> and connect a gamepad.<br>
       </div>
       <div class="touch-only">
         Use the virtual gamepad (icon the the top right) to drive the robot. You can also connect a physical keyboard and/or gamepad and <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation.html" class="external">customize your input mappings.</a>
@@ -82,7 +82,7 @@
       Some features are disabled in this demo, the simulation is restarted every day.<br>
       <br>
       <b>Privacy Disclaimer</b><br>
-      This UI uses your browser's local storage to save some data and <a href="https://analytics.google.com" class="external">Google Analytics</a> for traffic monitoring.
+      This UI uses your browser's local storage to save some data and <a href="https://www.gosquared.com" class="external">GoSquared</a> for traffic monitoring.
       
 
     bridge_server_address: https://us-ca.bridge.phntm.io # Cloud Bridge to connect to, see https://docs.phntm.io/bridge/availability-zones.html
@@ -153,6 +153,7 @@
       reliability: RELIABLE
       durability: TRANSIENT_LOCAL
       lifespan_sec: -1.0
+      history_depth: 20
     /robot_description:
       reliability: RELIABLE
       durability: TRANSIENT_LOCAL
@@ -230,22 +231,23 @@
     # enable_wifi_roam: False
 
     # docker_monitor_topic: '/docker_info' # produced by Agent
+   
 
     ui_custom_includes_js: 
-      - https://mrkbk.local:1234/input-drivers/example-bool-input-driver.js
-      - https://mrkbk.local:1234/custom-slider-service-widget/slider-widget.js
-      - https://mrkbk.local:1234/custom-bool-panel-widget/bool-panel-widget.js
-      - https://mrkbk.local:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.js
-      - https://mrkbk.local:1234/custom-world-model-battery-plugin/world-model-battery-plugin.js
-      - https://mrkbk.local:1234/custom-video-cmd-vel-overlay/video-cmd-vel-overlay.js
+      - https://ui-extras.phntm.io/input-drivers/example-bool-input-driver.js
+      - https://ui-extras.phntm.io/custom-slider-service-widget/slider-widget.js
+      - https://ui-extras.phntm.io/custom-bool-panel-widget/bool-panel-widget.js
+      - https://ui-extras.phntm.io/custom-wifi-map-panel-widget/wifi-map-panel-widget.js
+      - https://ui-extras.phntm.io/custom-world-model-battery-plugin/world-model-battery-plugin.js
+      - https://ui-extras.phntm.io/custom-video-cmd-vel-overlay/video-cmd-vel-overlay.js
       
     ui_custom_includes_css:
       # - https://ui-extras.phntm.io/css-example/example.css
-      - https://mrkbk.local:1234/css-example/demo-tweaks.css
-      - https://mrkbk.local:1234/custom-bool-panel-widget/bool-panel-widget.css
-      - https://mrkbk.local:1234/custom-slider-service-widget/slider-widget.css
-      - https://mrkbk.local:1234/custom-wifi-map-panel-widget/wifi-map-panel-widget.css
-      - https://mrkbk.local:1234/custom-video-cmd-vel-overlay/video-cmd-vel-overlay.css
+      - https://ui-extras.phntm.io/css-example/demo-tweaks.css
+      - https://ui-extras.phntm.io/custom-bool-panel-widget/bool-panel-widget.css
+      - https://ui-extras.phntm.io/custom-slider-service-widget/slider-widget.css
+      - https://ui-extras.phntm.io/custom-wifi-map-panel-widget/wifi-map-panel-widget.css
+      - https://ui-extras.phntm.io/custom-video-cmd-vel-overlay/video-cmd-vel-overlay.css
 
     ## User input config
     input_drivers: [ 'TwistInputDriver', 'ExampleBoolInputDriver' ] # enabled input drivers, custom class must be included via ui_custom_includes_js
@@ -261,7 +263,8 @@
       value_read_service: /gz_cameras_direct/get_top_camera_z # getter service
       timeout_sec: 2.0
 
-    peer_limit: 15 # DDOS protection
+    peer_limit: 3 # DDOS protection
+    ui_background_disconnect_sec: 10.0
 
     # agent config
     host_name: 'g4ad_xlarge' # lower case, must be valid ros id or ''

@@ -10,6 +10,9 @@ services:
     ipc: host # bridge needs this to see other local containers
     environment:
       RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
+      RCUTILS_COLORIZED_OUTPUT: 1
+    logging:
+      driver: local
     volumes:
       - ~/phntm_bridge_client:/ros2_ws/src/phntm_bridge # (optional) live repo mapped here for easy updates
       - ~/simbot_gz/config/meredith/phntm_bridge.yaml:/ros2_ws/phntm_bridge_params.yaml # bridge config goes here
@@ -22,9 +25,10 @@ services:
       - /tmp:/tmp # wifi control needs this
     devices:
       - /dev:/dev # LED control & GPU encoder needs this
+    shm_size: '200mb'
     command:
-      /bin/sh -c "while sleep 1000; do :; done"
-      #ros2 launch phntm_bridge client_agent_launch.py # this launches Bridge Client and Agent together
+      # /bin/sh -c "while sleep 1000; do :; done"
+      ros2 launch phntm_bridge client_agent_launch.py # this launches Bridge Client and Agent together
 
   simbot-gz:
     image: phntm/simbot-gz:harmonic-jazzy-amd
@@ -32,19 +36,23 @@ services:
     hostname: simbot-gz.local
     restart: unless-stopped
     privileged: true 
-    #runtime: nvidia
+    environment:
+      RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
+    logging:
+      driver: local
     volumes:
       - /dev/shm:/dev/shm
       - ~/simbot_gz:/ros2_ws/src/simbot_gz
-      - ~/phntm_interfaces:/ros2_ws/src/phntm_interfaces
-      - ~/gz_ws:/gz_ws/src
+      # - ~/phntm_interfaces:/ros2_ws/src/phntm_interfaces
+      # - ~/gz_ws:/gz_ws/src
     devices:
       - /dev:/dev # GPU 
+    # runtime: nvidia
     # group_add:
     #  - video
     network_mode: host
     # ipc: host  # Bridge needs this to see other local containers
-    #shm_size: '200mb'
+    shm_size: '200mb'
     command:
-      /bin/sh -c "while sleep 1000; do :; done"
-      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi
+      # /bin/sh -c "while sleep 1000; do :; done"
+      ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi

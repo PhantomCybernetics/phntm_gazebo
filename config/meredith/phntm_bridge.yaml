@@ -5,7 +5,7 @@
 ## Robot UI is available at:
 ## https://bridge.phntm.io/6879ffa5653cb3962e622401
 ##
-## See the full list of configuration options at https://docs.phntm.io/bridge/basics/bridge-config.html
+## See the full list of configuration options at https://docs.phntm.io/bridge/basics/configuration
 
 /**:
   ros__parameters:
@@ -69,10 +69,10 @@
             <td>Increase speed</td>
           </tr>
         </table>
-        You can <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation.html" class="external">change your mappings</a> and connect a gamepad.<br>
+        You can <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation" class="external">change your mappings</a> and connect a gamepad.<br>
       </div>
       <div class="touch-only">
-        Use the virtual gamepad (icon the the top right) to drive the robot. You can also connect a physical keyboard and/or gamepad and <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation.html" class="external">customize your input mappings.</a>
+        Use the virtual gamepad (icon the the top right) to drive the robot. You can also connect a physical keyboard and/or gamepad and <a href="https://docs.phntm.io/bridge/ui/user-input-and-teleoperation" class="external">customize your input mappings.</a>
       </div>
       <br>
       When multiple peers are connected to this robot, you will see a number like <span class="num-peers">2</span> next to the robot's name.
@@ -85,7 +85,7 @@
       This UI uses your browser's local storage to save some data and <a href="https://www.gosquared.com" class="external">GoSquared</a> for traffic monitoring.
       
 
-    bridge_server_address: https://us-ca.bridge.phntm.io # Cloud Bridge to connect to, see https://docs.phntm.io/bridge/availability-zones.html
+    bridge_server_address: https://us-ca.bridge.phntm.io # Cloud Bridge to connect to, see https://docs.phntm.io/bridge/availability-zones
 
     log_sdp: True # verbose WebRTC debug
 
@@ -180,6 +180,7 @@
     /depth_front/raw:
       max_sensor_value: 2.0
       colormap: 13
+      history_depth: 2
     /detections/front/boxes_2d:
       input_width: 128 # detection input frame width
       input_height: 72 # detection input frame height
@@ -232,7 +233,6 @@
 
     # docker_monitor_topic: '/docker_info' # produced by Agent
    
-
     ui_custom_includes_js: 
       - https://ui-extras.phntm.io/input-drivers/example-bool-input-driver.js
       - https://ui-extras.phntm.io/custom-slider-service-widget/slider-widget.js
@@ -263,7 +263,7 @@
       value_read_service: /gz_cameras_direct/get_top_camera_z # getter service
       timeout_sec: 2.0
 
-    peer_limit: 3 # DDOS protection
+    peer_limit: 10 # DDOS protection
     ui_background_disconnect_sec: 10.0
 
     # agent config

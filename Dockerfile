@@ -1,9 +1,9 @@
 ARG ROS_DISTRO=jazzy
 # GPU = "nvidia" or "amd"
-ARG GPU=nvidia 
+ARG GPU=amd 
 FROM ros:$ROS_DISTRO
 
-RUN echo "Building docker image with ROS_DISTRO=$ROS_DISTRO"
+RUN echo "Building docker image with ROS_DISTRO=$ROS_DISTRO and GPU=$GPU"
 
 RUN apt-get update -y --fix-missing
 
@@ -15,6 +15,7 @@ RUN apt-get install -y vim mc \
                        clangd
 
 RUN apt-get install -y lsb-release gnupg
+RUN apt install -y ros-$ROS_DISTRO-rmw-cyclonedds-cpp
 
 # h264 video output
 RUN apt install -y ffmpeg
@@ -64,9 +65,6 @@ RUN apt-get install -y ros-$ROS_DISTRO-ros-gz \
     ros-$ROS_DISTRO-ros2-control \
     ros-$ROS_DISTRO-ros2-controllers \
     ros-$ROS_DISTRO-controller-manager
-    #ros-$ROS_DISTRO-navigation2 \
-    # ros-$ROS_DISTRO-nav2-bringup \
-    # ros-$ROS_DISTRO-slam-toolbox
 
 # init ROS workspace before GZ (using collection-harmonic-custom.yaml)
 ENV ROS_WS=/ros2_ws
@@ -83,34 +81,6 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     rosdep install -i --from-path src/phntm_interfaces --rosdistro $ROS_DISTRO -y && \
     colcon build --symlink-install --packages-select phntm_interfaces
 
-# Gazebo Harmonic binary packages
-#RUN apt-get install -y gz-harmonic
-# RUN apt install -y libgz-cmake3-dev
-# RUN apt install -y libgz-common5-dev
-# RUN apt install -y libgz-fuel-tools9-dev
-# RUN apt install -y libgz-gui8-dev
-# RUN apt install -y libgz-sim8-dev
-# RUN apt install -y libgz-launch7-dev
-# RUN apt install -y libgz-math7-dev
-# RUN apt install -y libgz-msgs10-dev
-# RUN apt install -y libgz-physics7-dev
-# RUN apt install -y libgz-plugin2-dev
-# #RUN apt install -y libgz-rendering8-dev
-# RUN apt install -y libgz-tools2-dev
-# RUN apt install -y libgz-transport13-dev
-# RUN apt install -y libgz-utils2-dev
-# RUN apt install -y libsdformat14
-
-# RUN apt remove ros-jazzy-gz-rendering-vendor
-            # libgz-rendering
-            # libgz-sensors8
-            # ros-jazzy-gz-dartsim-vendor
-            # ros-jazzy-gz-ogre-next-vendor
-            # ros-jazzy-gz-cmake-vendor
-            # ros-jazzy-ros-gz-interfaces
-
-# apt install libogre-next-2.3.0 libogre-next-2.3-dev
-
 # build the sim
 WORKDIR $ROS_WS
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
@@ -124,53 +94,21 @@ RUN mkdir -p $GZ_WS/src
 RUN git clone https://github.com/PhantomCybernetics/gz-sensors -b gz-sensors8 $GZ_WS/src/gz-sensors
 RUN git clone https://github.com/PhantomCybernetics/gz-rendering -b gz-rendering8 $GZ_WS/src/gz-rendering
 
-RUN apt-install -y libgz-rendering8-ogre2-dev
+RUN apt-get install -y libgz-rendering8-ogre2-dev
 
 WORKDIR $GZ_WS
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     colcon build --symlink-install --packages-select gz-rendering8
 
-# gotta remove these from paths:
-# ?? needs more testing + remove from CMAKE_PREFIX_PATH and GZ_SIM_RESOURCE_PATH in ~/.bashrc ??
-# RUN rm -rf /opt/ros/jazzy/opt/gz_rendering_vendor/ /opt/ros/jazzy/opt/gz_sensors_vendor/
-# RUN rm -rf /opt/ros/jazzy/share/gz_sensors_vendor/ /opt/ros/jazzy/share/gz_rendering_vendor/
-
 # make rendering8 from src preferred
-ENV CMAKE_PREFIX_PATH=/gz_ws/install/gz-rendering8:$CMAKE_PREFIX_PATH
-ENV GZ_SIM_RESOURCE_PATH=/gz_ws/install/gz-rendering8/share/:/gz_ws/install/gz-sensors8/share/:$GZ_SIM_RESOURCE_PATH
+ENV CMAKE_PREFIX_PATH=/gz_ws/install/gz-rendering8
+ENV GZ_SIM_RESOURCE_PATH=/gz_ws/install/gz-rendering8/share/:/gz_ws/install/gz-sensors8/share/
 
 # ... then finish sensors
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-    . install/setup.bash && \
+    . /ros2_ws/install/setup.sh && \
+    . /gz_ws/install/setup.sh && \
     colcon build --symlink-install --packages-select gz-sensors8
-
-# RUN apt-get install -y \
-#     libgz-common6-dev \
-#     libgz-plugin3-dev \
-#     libgz-rendering9-dev
-
-#optix deps
-# RUN apt install -y g++ freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libglu1-mesa-dev libfreeimage-dev libglfw3-dev
-# RUN apt install wget -y
-# WORKDIR /root/
-# RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
-# RUN dpkg -i cuda-keyring_1.1-1_all.deb
-# RUN apt-get update
-# RUN apt install -y cuda-toolkit-12-9
-# RUN apt install -y cuda-drivers
-# WORKDIR $ROS_WS
-
-# RUN apt remove apt remove ros-$ROS_DISTRO-gz-sensors-vendor
-# RUN apt remove libgz-sensors8
-
-# gz-sensors fork
-# RUN git clone https://github.com/gazebosim/gz-sensors /root/gz-sensors
-# WORKDIR /root/gz-sensors
-# RUN git checkout gz-sensors8
-# RUN mkdir build; cd build; cmake ..; make
-
-ENV GZ_SIM_RESOURCE_PATH=/usr/share/gz
-ENV GZ_CONFIG_PATH=/usr/share/gz
 
 RUN if [ "$GPU" = "nvidia" ]; then \
         echo "NVIDIA_VISIBLE_DEVICES=all" >> /root/.bashrc; \
@@ -196,7 +134,6 @@ RUN chmod a+x /ros_entrypoint.sh
 RUN echo 'source /opt/ros/'$ROS_DISTRO'/setup.bash' >> /root/.bashrc
 RUN echo 'test -f "/ros2_ws/install/setup.bash" && source "/ros2_ws/install/setup.bash"' >> /root/.bashrc
 RUN echo 'test -f "/gz_ws/install/setup.bash" && source "/gz_ws/install/setup.bash"' >> /root/.bashrc
-RUN echo 'export RCUTILS_COLORIZED_OUTPUT=1' >> /root/.bashrc
 
 # set startup path
 WORKDIR $ROS_WS
@@ -204,5 +141,5 @@ WORKDIR $ROS_WS
 # pimp up prompt with hostame and color
 RUN echo "PS1='\${debian_chroot:+(\$debian_chroot)}\\[\\033[01;35m\\]\\u@\\h\\[\\033[00m\\] \\[\\033[01;34m\\]\\w\\[\\033[00m\\] '"  >> /root/.bashrc
 
-ENTRYPOINT ["/ros_entrypoint.sh"]
+ENTRYPOINT [ "/ros_entrypoint.sh" ]
 CMD [ "bash" ]

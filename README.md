@@ -1,7 +1,7 @@
 # Gazebo Simbot
 
 Headless Gazebo sim with GPU rendering used as a demo but also for internal development & testing purposes.
-This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked version of [gz-sensors8](https://github.com/PhantomCybernetics/gz-sensors), which introduces Direct ROS2 node for low-latency publishing (skipping Gazebo message typings and gz-ros-bridge entirely). The used CameraSensor either generates raw camera frames into a ROS2 Image topic or encodes frames into H.264 (via libavcodec) and produces them as ffmpeg_image_transport_msgs::msg::FFMPEGPacket messages.
+This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked version of [gz-sensors8](https://github.com/PhantomCybernetics/gz-sensors) and [gz-rendering8](https://github.com/PhantomCybernetics/gz-rendering), which introduce Direct ROS2 node for low-latency publishing (skipping Gazebo message typings and gz-ros-bridge entirely). The used CameraSensor either generates raw camera frames into a ROS2 Image topic or encodes frames into H.264 (via libavcodec) and produces them as ffmpeg_image_transport_msgs::msg::FFMPEGPacket messages.
 
 ### Clone this repo and build the Docker image
 ```bash
@@ -12,91 +12,42 @@ cd simbot_gz
 GPU=amd; docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy-$GPU --build-arg GPU=$GPU .
 ```
 
-This builds Gazebo Harmonic with our forked gz-sensors8 package.
-
-### Add Gazebo service to your compose.yaml
-```yaml
-services:
-  simbot-gz:
-    image: phntm/simbot-gz:harmonic-jazzy-amd
-    container_name: simbot-gz
-    hostname: simbot-gz.local
-    restart: unless-stopped
-    # runtime: nvidia # with Nvidia
-    volumes:
-      - /dev/shm:/dev/shm
-      - ~/simbot_gz:/ros2_ws/src/simbot_gz
-    devices:
-      - /dev:/dev # GPU
-    group_add:
-      - video
-    network_mode: host
-    shm_size: '200mb'
-    command:
-      ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi
-      ## on g4ad_xlarge (AMD)launch:
-      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi
-      ## on g4dn_xlarge (Nvidia) launch:
-      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=cuda cameras_pixel_format:=BGR_INT8 encoder_input_pixel_format:=bgr0
-      ## on jetson orin nano:
-      # ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=sw camera_top_z:=5.0 cameras_pixel_format:=RGB_INT8 encoder_input_pixel_format:=nv12 encoder_thread_count:=3 cameras_resolution:=640x480
-```
+This builds Gazebo Harmonic with our forked gz-sensors8 & gz-rendering8 packages.
 
 ### Install Phantom Bridge Client
 
 Follow instructions [[here|PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client]]
 
-In `./config/phntm_bridge_example.yaml` you'll find a template for the Sim's Bridge configuration that uses default input config from `./config/phntm_input_config.json`.
-There's also an example of the Agent's config in `./config/phntm_agent_example.yaml` configured for this sim.
+### Link compose.yaml
 
-### Add Bridge service to your compose.yaml
-```yaml
-  phntm-bridge:
-    image: phntm/bridge:jazzy
-    container_name: phntm-bridge
-    hostname: phntm-bridge.local
-    restart: unless-stopped  # Restarts after first run
-    privileged: true  # Bridge needs this
-    # cpuset: '0,1,2' # Consider dedicating a few CPU cores for maximal responsiveness
-    network_mode: host  # WebRTC needs this
-    ipc: host  # Bridge needs this to see other local containers
-    shm_size: '200mb'
-    runtime: nvidia # for Nvidia
-    environment: # for Nvidi a
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
-    volumes:
-      - ~/phntm_bridge.yaml:/ros2_ws/phntm_bridge_params.yaml  # Bridge config goes here
-      - ~/phntm_agent.yaml:/ros2_ws/phntm_agent_params.yaml  # Agent config goes here
-      - ~/simbot_gz/config/phntm_input_config.json:/ros2_ws/phntm_input_config.json # default input mapping
-      - /var/run:/host_run  # Docker file extractor and WiFi control need this
-      - /tmp:/tmp  # WiFi control needs this
-      - ~/simbot_gz:/ros2_ws/src/simbot_gz # srv defs
-    devices:
-      - /dev:/dev  # GPU
-    deploy:
-      resources:  
-        reservations:
-          devices:
-            - capabilities: [gpu]
+In ``simbot_gz/config/[demo_name]`` you'll find a config.yaml file. Link it to ~.
 
-    command:
-      ros2 launch phntm_bridge client_agent_launch.py
+```bash
+ln -s ~/simbot_gz/config/meredith/compose.yaml ~/compose.yaml
 ```
+
+If setting up a new instance, make a copy of some demo folder and register a new Robot Id/Key/Name!
 
 ### Launch
 ```bash
-docker compose up simbot-gz
+docker compose up
 ```
 
+You can observe logs using `docker logs` like so:
+
+```bash
+docker logs -t -f phntm-bridge
+docker logs -t -f simbot-gz
+```
+
+
 ### Argument examples 
-`camera_top_z:=5.0` - initial distance of the top-down camera above the robot [m] \
 `encoder_hw_device:=cuda` - hardware device for the H.264 video encoding (`cuda` - default, `vaapi` or `sw`) \
 `cameras_pixel_format:=BGR_INT8` - internal format generated bu the Gazebo/Ogre2 cameras (`RGB_INT8` default) \
 `cameras_resolution:=1280x720` - resolutions for all cameras \
 `encoder_input_pixel_format:=bgr0` - input pixel format for the H.264 video encoder (autodetected and defaults to `nv12` if not set) 
 
-The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped in an OpenCV Mat and if necessary, transformed to match the supported input pixel format of the encoder. This scaling operation is performed on CPU (on a dedicated thread) and could be expencive. Some formats (such as `yuv420` or `nv12`) require this scaling. If supported by the encoder, it is recommended to use `bgr0` or similar to skip this scaling step.
+The rendering cameras generate a raw RGB (or BGR) frames that need to be wrapped in an OpenCV Mat and if necessary, transformed to match the supported input pixel format of the encoder. This scaling operation is performed on CPU (on a dedicated thread) and could be expensive. Some formats (such as `yuv420` or `nv12`) require this scaling. If supported by the encoder, it is recommended to use `bgr0` or similar to skip this scaling step. A Vaapi device may only support vaapi input. Supported input pixel formats are printed when AVCodec is instanced.
 
 ## Hardware Notes
 
@@ -122,6 +73,7 @@ Frame encoding is done on the CPU as the GPU has no video encoding capabilities
 
 ## Known Issues
 - Gazebo often leaves behind zombie processes, kill them with `pkill -9 -f "gz sim"`
-- Gazebo sometimes crashes with `ODE INTERNAL ERROR 1: assertion "aabbBound >= dMinIntExact && aabbBound < dMaxIntExact" failed in collide() [collision_space.cpp:460]`. This is an error of the physics engine. It happens for instance when an object runs away of falls through the ground, causing an integer overflow
+- Gazebo sometimes crashes with `ODE INTERNAL ERROR 1: assertion "aabbBound >= dMinIntExact && aabbBound < dMaxIntExact" failed in collide() [collision_space.cpp:460]`. This is an error of the physics engine. It happens when an object runs away of falls through the ground, causing an integer overflow
 - The hardware H.264 encoder requires NV12 frames as the input. The Ogre2 engine produces rgb8 textures and offers an OpenGL texture handle. This means a transformation needs to take place before we can feed the input frames to the encoder. It is theoretically possible to do this completely on the GPU with zero-copy to RAM, minimal CPU involvement and very low latency, however, this has proven to be very challenging and more work is needed, [see details here](https://www.reddit.com/r/GraphicsProgramming/comments/1mn0gpn/zerocopy_h264_video_encoding_from_opengl_texture/). At the moment, every frame if copied to RAM and transformed on the CPU, which means we're losing about 3-5 FPS per active camera (all cameras in Gazebo run on the same rendering thread).
 - The Range sensors are implemented as GPU lidars with limited FOV, then converted to sensor_msgs/msg/Range by the laser_to_range_converter. This is not ideal but fine for now.
+- Gazebols lazy publishers using gz_bridge often crash on unsubscribe, don't use them

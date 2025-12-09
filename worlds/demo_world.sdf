@@ -203,7 +203,7 @@
 
     <model name="cone_10"><include><uri>model://construction_cone</uri></include><pose>0.3 -2.3 0 0 0 0</pose></model>
 
-    <model name="slope_0"><include><uri>model://slope</uri></include><pose>3 -4.5 0 0 0 0</pose></model>
+    <!-- <model name="slope_0"><include><uri>model://slope</uri></include><pose>3 -4.5 0 0 0 0</pose></model> -->
     <model name="ball_h"><include><uri>model://robocup_3Dsim_ball</uri></include><pose>3 -10.5 0 0 0 0</pose></model>
 
     <model name="human"><include><uri>model://human</uri></include><pose>4.5 -10.5 0 0 0 0</pose></model>

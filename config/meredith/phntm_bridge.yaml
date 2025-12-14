@@ -87,7 +87,9 @@
 
     bridge_server_address: https://us-ca.bridge.phntm.io # Cloud Bridge to connect to, see https://docs.phntm.io/bridge/availability-zones
 
-    log_sdp: True # verbose WebRTC debug
+    log_sdp: False
+    sio_verbose: False
+    webrtc_debug: True
 
     ## Extra packages to install on the 1st container run
     ## This is either a package folder mounted into the container,
@@ -107,7 +109,6 @@
     # conn_led_gpio_chip: /dev/gpiochip0
     # conn_led_pin: 23
     # data_led_pin: 24
-    webrtc_debug: True
 
     ## Services collapsed by default in the UI menu
     ## (srv_type or service id)
@@ -127,17 +128,22 @@
 
     ## Blacklisted services (not available in the UI)
     ## (srv_type or service id)
-    # blacklist_services: 
-    #  - /phntm_agent/iw_scan
+    blacklist_services: 
+      - /controller_manager/configure_controller
+      - /controller_manager/load_controller
+      - /controller_manager/reload_controller_libraries
+      - /controller_manager/set_hardware_component_state
+      - /controller_manager/switch_controller
+      - /controller_manager/unload_controller
 
     blacklist_topics: 
       - /range_fl_laser
       - /range_fr_laser
       - /range_rl_laser
       - /range_rr_laser
-      # - /rgb_front/raw
-      # - /rgb_back/raw
-      # - /rgb_top/raw
+      - /rgb_front/raw
+      - /rgb_rear/raw
+      - /rgb_top/raw
 
     blacklist_parameter_services:
       - controller_manager # nodes with disabled parameter services
@@ -180,7 +186,11 @@
     /depth_front/raw:
       max_sensor_value: 2.0
       colormap: 13
-      history_depth: 2
+      history_depth: 1
+      gop_size: 30
+      bit_rate: 10000000
+      # debug_num_frames: 1000000000
+      # pts_source: message
     /detections/front/boxes_2d:
       input_width: 128 # detection input frame width
       input_height: 72 # detection input frame height
@@ -214,6 +224,11 @@
       low_fps: 10
       # encoder_bit_rate: 10000000
       encoder_gop_size: 30
+      print_time_deltas: False
+    /rgb_front/raw:
+      debug_num_frames: 10
+      history_depth: 1
+      print_time_deltas: True
     /imu:
       min_acceleration: -11.0
       max_acceleration: 11.0

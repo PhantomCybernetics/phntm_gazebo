@@ -41,5 +41,3 @@ Each camera seems to be calling the physics solver when rednering, as opposed to
 This means speed of the simulation depends on the amount of rendering.
 
 Materials don't work for OBJ
-
-Lazy subscriber in gz_bridge.yaml seems to break on unsubscribe (TextureGpuManager / GpuLidarSensor::Update)

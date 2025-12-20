@@ -17,8 +17,8 @@ services:
         max-size: 200m
     volumes:
       #- ~/phntm_bridge_client:/ros2_ws/src/phntm_bridge # (optional) live repo mapped here for easy updates
-      - ~/simbot_gz/config/meredith/phntm_bridge.yaml:/ros2_ws/phntm_bridge_params.yaml # bridge config goes here
-      - ~/simbot_gz/config/meredith/phntm_bridge.yaml:/ros2_ws/phntm_agent_params.yaml # agent config goes here
+      - ~/simbot_gz/config/phntm_bridge.yaml:/ros2_ws/phntm_bridge_params.yaml # bridge config goes here
+      - ~/simbot_gz/config/phntm_bridge.yaml:/ros2_ws/phntm_agent_params.yaml # agent config goes here
       - ~/simbot_gz/config/phntm_input_config.json:/ros2_ws/phntm_input_config.json
       - ~/simbot_gz/config/phntm_service_buttons.json:/ros2_ws/phntm_service_buttons.json
       #- ~/phntm_interfaces:/ros2_ws/src/phntm_interfaces

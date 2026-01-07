@@ -6,6 +6,7 @@ import random
 import asyncio
 from rclpy.node import Node
 from geometry_msgs.msg import TwistStamped
+from geometry_msgs.msg import Point
 from sensor_msgs.msg import BatteryState
 from nav_msgs.msg import Odometry
 from phntm_interfaces.msg import IWStatus
@@ -65,6 +66,14 @@ class SimExtrasPublisher(Node):
 
         self.last_cmd_vel = None
         self.last_position = None
+        self.was_still = False
+        self.wifi_reset_while_still = False
+        self.wifi_base_pos = Point()
+        self.wifi_base_pos.x = 0.0
+        self.wifi_base_pos.y = 0.0
+        self.wifi_base_pos.z = 0.0
+        self.reset_wifi_base_after_still_for_sec = 60
+        self.still_since = None
         self.shutting_down = False
         self.battery_task = None
         self.wifi_task = None
@@ -79,12 +88,32 @@ class SimExtrasPublisher(Node):
         # self.fake_wifi_scan_srv = self.create_service(IWScanCmd, f'/phntm_agent{"_" + self.wifi_frame_id if self.wifi_frame_id else ""}/iw_scan', self.fake_wifi_scan_srv_callback)
 
 
-    def cmd_vel_callback(self, msg):
+    def cmd_vel_callback(self, msg:TwistStamped):
         self.last_cmd_vel = msg
 
 
-    def odom_callback(self, msg):
+    def odom_callback(self, msg:Odometry):
+        is_still = self.last_position is not None \
+                   and abs(self.last_position.x - msg.pose.pose.position.x) < 0.0001 \
+                   and abs(self.last_position.y - msg.pose.pose.position.y) < 0.0001 \
+                   and abs(self.last_position.z - msg.pose.pose.position.z) < 0.0001
+        
+        if not self.was_still and is_still:
+            print('Robot is still', flush=True)
+            self.still_since = self.get_clock().now()
+        elif self.was_still and is_still:
+            if not self.wifi_reset_while_still:
+                still_for = self.get_clock().now() - self.still_since
+                if still_for.nanoseconds / 1e9 > self.reset_wifi_base_after_still_for_sec:
+                    self.wifi_reset_while_still = True
+                    self.wifi_base_pos = msg.pose.pose.position
+                    print(f'Robot still for {self.reset_wifi_base_after_still_for_sec}s; resetting wi-fi base', flush=True)
+        elif self.was_still and not is_still:
+            print('Robot moving', flush=True)
+            self.wifi_reset_while_still = False
+            
         self.last_position = msg.pose.pose.position
+        self.was_still = is_still
 
 
     def publish_battery_status(self):
@@ -116,7 +145,10 @@ class SimExtrasPublisher(Node):
         if pos is None:
             return
 
-        distance = math.sqrt(pos.x**2 + pos.y**2 + pos.z**2)
+        dx = pos.x - self.wifi_base_pos.x
+        dy = pos.y - self.wifi_base_pos.y
+        dz = pos.z - self.wifi_base_pos.z
+        distance = math.sqrt(dx*dx + dy*dy + dz*dz)
         quality = self.wifi_quality_min if distance >= self.wifi_max_distance else self.wifi_quality_max - (distance / self.wifi_max_distance) * (self.wifi_quality_max - self.wifi_quality_min)
         quality = max(0.0, min(1.0, quality))
 

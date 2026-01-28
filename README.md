@@ -16,16 +16,16 @@ This builds Gazebo Harmonic with our forked gz-sensors8 & gz-rendering8 packages
 
 ### Install Phantom Bridge Client
 
-Follow instructions [[here|PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client]]
+Follow the instructions [here][https://github.com/PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client] to install Phantom Bridge
 
 ### Link compose.yaml
 ```bash
 ln -s ~/simbot_gz/config/compose.yaml ~/compose.yaml
 ```
 
-### Generate phntm_bridge.yaml
+### Generate DEMO phntm_bridge.yaml
 All demos are made identical with only a few changes. `config/phntm_bridge.templ.yaml` is used as a template.
-Register a new machine using `http://register.phntm.yaml/robot`, then use obtained values in a file like this:
+Register a new machine using `http://register.phntm.yaml/robot`, then use obtained ID/KEY values in a YAML file like this:
 ```yaml
 dwight:
     id_robot: ID_FROM_REGISTRATION
@@ -35,7 +35,7 @@ dwight:
     location: 'Frankfurt, Germany'
     demo_url: https://phntm.io/demo-dwight
 ```
-Save it as say `conf/demo_some_name.yaml`, then run `config/generate_demo_config.py demo_some_name.yaml`. This will generate `config/phntm_bridge.yaml` referenced by `config/ompose.yaml`.
+Save it as say `conf/demo_some_name.yaml`, then run `config/generate_demo_config.py demo_some_name.yaml`. This will generate `config/phntm_bridge.yaml` referenced by `config/compose.yaml`.
 
 ### Launch
 ```bash

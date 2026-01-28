@@ -16,7 +16,7 @@ This builds Gazebo Harmonic with our forked gz-sensors8 & gz-rendering8 packages
 
 ### Install Phantom Bridge Client
 
-Follow the instructions [here][https://github.com/PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client] to install Phantom Bridge
+Follow the instructions [here](https://github.com/PhantomCybernetics/phntm_bridge_client?tab=readme-ov-file#phantom-bridge-client) to install Phantom Bridge
 
 ### Link compose.yaml
 ```bash

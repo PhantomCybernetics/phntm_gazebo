@@ -1,6 +1,7 @@
-# Gazebo Simbot
+# Phantom Gazebo
 
 Headless Gazebo sim with GPU rendering used as a demo but also for internal development & testing purposes.
+
 This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked version of [gz-sensors8](https://github.com/PhantomCybernetics/gz-sensors) and [gz-rendering8](https://github.com/PhantomCybernetics/gz-rendering), which introduce Direct ROS2 node for low-latency publishing (skipping Gazebo message typings and gz-ros-bridge entirely). The used CameraSensor either generates raw camera frames into a ROS2 Image topic or encodes frames into H.264 (via libavcodec) and produces them as ffmpeg_image_transport_msgs::msg::FFMPEGPacket messages.
 
 ### Clone this repo and build the Docker image

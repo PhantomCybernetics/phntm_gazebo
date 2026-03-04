@@ -6,10 +6,10 @@ This simulation utilizes Gazebo Harmonic and ROS2 Jazzy, combined with forked ve
 ### Clone this repo and build the Docker image
 ```bash
 cd ~
-git clone git@github.com:PhantomCybernetics/simbot_gz.git simbot_gz
-cd simbot_gz
+git clone git@github.com:PhantomCybernetics/phntm_gazebo.git phntm_gazebo
+cd phntm_gazebo
 # GPU options: amd, nvidia or not set for sw encoding (not recommended)
-GPU=amd; docker build -f Dockerfile -t phntm/simbot-gz:harmonic-jazzy-$GPU --build-arg GPU=$GPU .
+GPU=amd; docker build -f Dockerfile -t phntm/gazebo:harmonic-jazzy-$GPU --build-arg GPU=$GPU .
 ```
 
 This builds Gazebo Harmonic with our forked gz-sensors8 & gz-rendering8 packages.
@@ -20,7 +20,7 @@ Follow the instructions [here](https://github.com/PhantomCybernetics/phntm_bridg
 
 ### Link compose.yaml
 ```bash
-ln -s ~/simbot_gz/config/compose.yaml ~/compose.yaml
+ln -s ~/phntm_gazebo/config/compose_demo.yaml ~/compose.yaml
 ```
 
 ### Generate DEMO phntm_bridge.yaml
@@ -46,7 +46,7 @@ You can observe logs using `docker logs` like so:
 
 ```bash
 docker logs -t -f phntm-bridge
-docker logs -t -f simbot-gz
+docker logs -t -f phntm-gazebo
 ```
 
 

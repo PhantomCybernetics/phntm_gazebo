@@ -17,10 +17,10 @@ services:
         max-size: 200m
     volumes:
       #- ~/phntm_bridge_client:/ros2_ws/src/phntm_bridge # (optional) live repo mapped here for easy updates
-      - ~/simbot_gz/config/phntm_bridge.yaml:/ros2_ws/phntm_bridge_params.yaml # bridge config goes here
-      - ~/simbot_gz/config/phntm_bridge.yaml:/ros2_ws/phntm_agent_params.yaml # agent config goes here
-      - ~/simbot_gz/config/phntm_input_config.json:/ros2_ws/phntm_input_config.json
-      - ~/simbot_gz/config/phntm_service_buttons.json:/ros2_ws/phntm_service_buttons.json
+      - ~/phntm_gazebo/config/phntm_bridge.yaml:/ros2_ws/phntm_bridge_params.yaml # bridge config goes here
+      - ~/phntm_gazebo/config/phntm_bridge.yaml:/ros2_ws/phntm_agent_params.yaml # agent config goes here
+      - ~/phntm_gazebo/config/phntm_input_config.json:/ros2_ws/phntm_input_config.json
+      - ~/phntm_gazebo/config/phntm_service_buttons.json:/ros2_ws/phntm_service_buttons.json
       #- ~/phntm_interfaces:/ros2_ws/src/phntm_interfaces
       #- ~/phntm_agent:/ros2_ws/src/phntm_agent
       - /var/run:/host_run # docker file extractor and wifi control need this
@@ -32,10 +32,10 @@ services:
       #/bin/sh -c "while sleep 1000; do :; done"
       ros2 launch phntm_bridge client_agent_launch.py # this launches Bridge Client and Agent together
 
-  simbot-gz:
-    image: phntm/simbot-gz:harmonic-jazzy-amd
-    container_name: simbot-gz
-    hostname: simbot-gz.local
+  phntm_gazebo:
+    image: phntm/gazebo:harmonic-jazzy-amd
+    container_name: phntm-gazebo
+    hostname: phntm-gazebo.local
     restart: unless-stopped
     privileged: true 
     environment:
@@ -46,7 +46,7 @@ services:
         max-size: 200m
     volumes:
       - /dev/shm:/dev/shm
-      - ~/simbot_gz:/ros2_ws/src/simbot_gz
+      - ~/phntm_gazebo:/ros2_ws/src/phntm_gazebo
       # - ~/phntm_interfaces:/ros2_ws/src/phntm_interfaces
       # - ~/gz_ws:/gz_ws/src
     devices:
@@ -59,4 +59,4 @@ services:
     shm_size: '200mb'
     command:
       # /bin/sh -c "while sleep 1000; do :; done"
-      ros2 launch simbot_gz simbot_gz.launch.py encoder_hw_device:=vaapi
+      ros2 launch phntm_gazebo simbot_gz.launch.py encoder_hw_device:=vaapi

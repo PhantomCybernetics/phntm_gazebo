@@ -13,27 +13,27 @@
     <xacro:property name="iyy" value="0.000169"/>
     <xacro:property name="izz" value="0.000111"/>
     <xacro:property name="visual_rotation" value="0.0"/> <!-- might be updated-->
-     <xacro:property name="mesh" value="package://simbot_gz/meshes/3w_v2/omni_frame.stl"/> <!-- might be updated-->
+     <xacro:property name="mesh" value="package://phntm_gazebo/meshes/3w_v2/omni_frame.stl"/> <!-- might be updated-->
      <xacro:property name="fdir" value="1.0 -1.0 0.0"/> <!-- might be updated-->
 
     <!-- Assign meshes and friction directions based on suffix -->
     <xacro:if value="${suffix_param == 'fl'}">
-      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_b.dae"/>
+      <xacro:property name="mesh" value="package://phntm_gazebo/meshes/mecanum_b.dae"/>
       <xacro:property name="visual_rotation" value="0.0"/>
       <xacro:property name="fdir" value="1 -1 0"/>
     </xacro:if>
     <xacro:if value="${suffix_param == 'fr'}">
-      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_a.dae"/>
+      <xacro:property name="mesh" value="package://phntm_gazebo/meshes/mecanum_a.dae"/>
       <xacro:property name="visual_rotation" value="0.0"/>
       <xacro:property name="fdir" value="1 1 0"/>
     </xacro:if>
     <xacro:if value="${suffix_param == 'rl'}">
-      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_a.dae"/>
+      <xacro:property name="mesh" value="package://phntm_gazebo/meshes/mecanum_a.dae"/>
       <xacro:property name="visual_rotation" value="${pi}"/>
       <xacro:property name="fdir" value="1 1 0"/>
     </xacro:if>
     <xacro:if value="${suffix_param == 'rr'}">
-      <xacro:property name="mesh" value="package://simbot_gz/meshes/mecanum_b.dae"/>
+      <xacro:property name="mesh" value="package://phntm_gazebo/meshes/mecanum_b.dae"/>
       <xacro:property name="visual_rotation" value="${pi}"/>
       <xacro:property name="fdir" value="1 -1 0"/>
     </xacro:if>

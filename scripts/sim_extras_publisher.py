@@ -14,7 +14,6 @@ from phntm_interfaces.srv import IWScanCmd
 from rclpy.qos import QoSProfile, ReliabilityPolicy
 # from tf2_msgs.msg import TFMessage
 # from geometry_msgs.msg import TransformStamped, Transform
-# from simbot_gz.srv import GetFloat32, SetFloat32
 # import time
 
 # NOTE:

@@ -7,7 +7,7 @@
         <visual>
         <origin xyz="-0.17 0 0.025" rpy="0 0 ${pi/2}"/>
             <geometry>
-            <mesh filename="package://simbot_gz/meshes/simbot_bumper.dae" scale="1 1 1"/>
+            <mesh filename="package://phntm_gazebo/meshes/simbot_bumper.dae" scale="1 1 1"/>
             </geometry>
         </visual>
         <collision>

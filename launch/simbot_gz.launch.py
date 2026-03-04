@@ -10,7 +10,7 @@ from launch_ros.actions import Node
 from launch.events import Shutdown
 from pathlib import Path
 
-PACKAGE_NAME = "simbot_gz"
+PACKAGE_NAME = "phntm_gazebo"
 
 ARGUMENTS = [
     DeclareLaunchArgument(
@@ -247,14 +247,14 @@ def launch_setup(context, *args, **kwargs):
 
     # print(f"Making kinematics node...")    
     # kinematics = Node(
-    #     package='simbot_gz',
+    #     package='phntm_gazebo',
     #     executable="kinematics",
     #     parameters=[{"use_sim_time": use_sim_time}]
     # )
     
     print(f"Making sim_extras node...")    
     actions.append(Node(
-        package='simbot_gz',
+        package=PACKAGE_NAME,
         executable='sim_extras_publisher.py',
         name='sim_extras_publisher',
         parameters=[PathJoinSubstitution([

@@ -70,7 +70,7 @@ RUN apt-get install -y ros-$ROS_DISTRO-ros-gz \
 ENV ROS_WS=/ros2_ws
 RUN mkdir -p $ROS_WS/src
 WORKDIR $ROS_WS
-COPY ./ $ROS_WS/src/simbot_gz
+COPY ./ $ROS_WS/src/phntm_gazebo
 
 WORKDIR $ROS_WS
 
@@ -85,8 +85,8 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
 WORKDIR $ROS_WS
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     . /ros2_ws/install/setup.sh && \
-    rosdep install -i --from-path src/simbot_gz --rosdistro $ROS_DISTRO -y && \
-    colcon build --symlink-install --packages-select simbot_gz
+    rosdep install -i --from-path src/phntm_gazebo --rosdistro $ROS_DISTRO -y && \
+    colcon build --symlink-install --packages-select phntm_gazebo
 
 ENV GZ_WS=/gz_ws
 RUN mkdir -p $GZ_WS/src

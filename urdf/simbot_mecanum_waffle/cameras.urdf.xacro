@@ -7,7 +7,7 @@
       <visual>
         <origin rpy="0 0 ${pi}"/>
         <geometry>
-          <mesh filename="package://simbot_gz/meshes/camera.dae" />
+          <mesh filename="package://phntm_gazebo/meshes/camera.dae" />
         </geometry>
       </visual>
       <collision>

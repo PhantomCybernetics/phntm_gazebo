@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" xmlns:gz="http://gazebosim.com/schema">
-  <!-- <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/simple_wheel.urdf.xacro"/> -->
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/simbot_bumper.urdf.xacro"/>
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/cameras.urdf.xacro"/>
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/lidar.urdf.xacro"/>
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/range_sensor.urdf.xacro"/>
-  <xacro:include filename="$(find simbot_gz)/urdf/simbot_mecanum_waffle/imu.urdf.xacro"/>
+  <!-- <xacro:include filename="$(find phntm_gazebo)/urdf/simbot_mecanum_waffle/simple_wheel.urdf.xacro"/> -->
+  <xacro:include filename="$(find phntm_gazebo)/urdf/simbot_mecanum_waffle/mecanum_wheel.urdf.xacro"/>
+  <xacro:include filename="$(find phntm_gazebo)/urdf/simbot_mecanum_waffle/simbot_bumper.urdf.xacro"/>
+  <xacro:include filename="$(find phntm_gazebo)/urdf/simbot_mecanum_waffle/cameras.urdf.xacro"/>
+  <xacro:include filename="$(find phntm_gazebo)/urdf/simbot_mecanum_waffle/lidar.urdf.xacro"/>
+  <xacro:include filename="$(find phntm_gazebo)/urdf/simbot_mecanum_waffle/range_sensor.urdf.xacro"/>
+  <xacro:include filename="$(find phntm_gazebo)/urdf/simbot_mecanum_waffle/imu.urdf.xacro"/>
 
   <xacro:property name="base_visual_offset" value="0 0 0.097"/>
   <xacro:property name="base_collision_offset" value="0 0 0.097"/>
@@ -39,7 +39,7 @@
       <visual>
         <origin xyz="${base_visual_offset}" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://simbot_gz/meshes/simbot_base.dae" scale="1 1 1"/>
+          <mesh filename="package://phntm_gazebo/meshes/simbot_base.dae" scale="1 1 1"/>
         </geometry>
       </visual>
       <collision>

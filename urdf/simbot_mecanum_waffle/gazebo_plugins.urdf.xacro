@@ -9,7 +9,7 @@
     <plugin name="gz::sim::systems::Imu" filename="gz-sim-imu-system" />
 
     <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="gz_ros2_control-system">
-      <parameters>$(find simbot_gz)/config/controller_config_simbot.yaml</parameters>
+      <parameters>$(find phntm_gazebo)/config/controller_config_simbot.yaml</parameters>
     </plugin>
 
    

@@ -48,6 +48,20 @@
   direction: GZ_TO_ROS
   lazy: false
 
+- ros_topic_name: "/rgb_kuka_palm/camera_info"
+  gz_topic_name: "/rgb_kuka_palm/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+  lazy: false
+
+- ros_topic_name: "/depth_kuka_palm/camera_info"
+  gz_topic_name: "/depth_kuka_palm/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+  lazy: false
+
 - ros_topic_name: "/range_fr_laser"
   gz_topic_name: "/range_fr_laser"
   ros_type_name: "sensor_msgs/msg/LaserScan"

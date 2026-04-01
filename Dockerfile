@@ -135,6 +135,19 @@ RUN echo 'source /opt/ros/'$ROS_DISTRO'/setup.bash' >> /root/.bashrc
 RUN echo 'test -f "/ros2_ws/install/setup.bash" && source "/ros2_ws/install/setup.bash"' >> /root/.bashrc
 RUN echo 'test -f "/gz_ws/install/setup.bash" && source "/gz_ws/install/setup.bash"' >> /root/.bashrc
 
+!TODO!
+# Kuka 
+apt install -y ros-jazzy-moveit \
+               ros-jazzy-moveit-ros-planning-interface
+mv move_group_interface_improved.h /opt/ros/jazzy/include/moveit_ros_planning_interface/moveit/move_group_interface/
+cd ~
+clone kuka package to ~
+symlink projects
+cd /ros2_ws
+rosdep install -i --from-path src/ --rosdistro $ROS_DISTRO -y
+colcon build --symlink-install
+
+
 # set startup path
 WORKDIR $ROS_WS
 

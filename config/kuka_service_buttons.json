@@ -2,7 +2,7 @@
     "/kuka/kuka_arm_controller/follow_joint_trajectory": [
         {
             "label": "Home",
-            "color": "green",
+            "color": "blue",
             "show_request": false,
             "show_reply": false,
             "value": {
@@ -27,9 +27,9 @@
                             "positions": [
                                 3.1,
                                 -1.6,
-                                -1.57,
+                                -1.6,
                                 null,
-                                -1.57,
+                                -1.6,
                                 1
                             ],
                             "velocities": [],
@@ -64,8 +64,8 @@
             }
         },
         {
-            "label": "Pickup",
-            "color": "black",
+            "label": "Pick up",
+            "color": "green",
             "show_request": false,
             "show_reply": false,
             "value": {
@@ -89,11 +89,11 @@
                         {
                             "positions": [
                                 3.1,
-                                -2.45,
+                                -2.5,
                                 -2,
                                 null,
                                 1.3,
-                                1.57
+                                1.6
                             ],
                             "velocities": [],
                             "accelerations": [],
@@ -127,8 +127,8 @@
             }
         },
         {
-            "label": "Pose 1",
-            "color": "blue",
+            "label": "Drop off",
+            "color": "orange",
             "show_request": false,
             "show_reply": false,
             "value": {
@@ -140,33 +140,8 @@
                         },
                         "frame_id": ""
                     },
-                    "joint_names": [
-                        "joint_1",
-                        "joint_2",
-                        "joint_3",
-                        "joint_4",
-                        "joint_5",
-                        "joint_6"
-                    ],
-                    "points": [
-                        {
-                            "positions": [
-                                0.5,
-                                -0.5,
-                                1,
-                                1.57,
-                                -1.57,
-                                2.5
-                            ],
-                            "velocities": [],
-                            "accelerations": [],
-                            "effort": [],
-                            "time_from_start": {
-                                "sec": 5,
-                                "nanosec": 0
-                            }
-                        }
-                    ]
+                    "joint_names": [],
+                    "points": []
                 },
                 "multi_dof_trajectory": {
                     "header": {
@@ -190,8 +165,46 @@
             }
         },
         {
-            "label": "Fw",
-            "color": "orange",
+            "label": "Forward",
+            "color": "red",
+            "show_request": false,
+            "show_reply": false,
+            "value": {
+                "trajectory": {
+                    "header": {
+                        "stamp": {
+                            "sec": 0,
+                            "nanosec": 0
+                        },
+                        "frame_id": ""
+                    },
+                    "joint_names": [],
+                    "points": []
+                },
+                "multi_dof_trajectory": {
+                    "header": {
+                        "stamp": {
+                            "sec": 0,
+                            "nanosec": 0
+                        },
+                        "frame_id": ""
+                    },
+                    "joint_names": [],
+                    "points": []
+                },
+                "path_tolerance": [],
+                "component_path_tolerance": [],
+                "goal_tolerance": [],
+                "component_goal_tolerance": [],
+                "goal_time_tolerance": {
+                    "sec": 0,
+                    "nanosec": 0
+                }
+            }
+        },
+        {
+            "label": "Test",
+            "color": "blue",
             "show_request": false,
             "show_reply": false,
             "value": {
@@ -251,274 +264,6 @@
                     "nanosec": 0
                 }
             }
-        },
-        {
-            "label": "Err",
-            "color": "magenta",
-            "show_request": false,
-            "show_reply": false,
-            "value": {
-                "trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [
-                        "joint_1"
-                    ],
-                    "points": [
-                        {
-                            "positions": [
-                                null
-                            ],
-                            "velocities": [],
-                            "accelerations": [],
-                            "effort": [],
-                            "time_from_start": {
-                                "sec": 0,
-                                "nanosec": 0
-                            }
-                        }
-                    ]
-                },
-                "multi_dof_trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "path_tolerance": [],
-                "component_path_tolerance": [],
-                "goal_tolerance": [],
-                "component_goal_tolerance": [],
-                "goal_time_tolerance": {
-                    "sec": 0,
-                    "nanosec": 0
-                }
-            }
-        },
-        {
-            "label": "Pose 2 (slow)",
-            "color": "blue",
-            "show_request": false,
-            "show_reply": false,
-            "value": {
-                "trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [
-                        "joint_1",
-                        "joint_2",
-                        "joint_3",
-                        "joint_4",
-                        "joint_5",
-                        "joint_6"
-                    ],
-                    "points": [
-                        {
-                            "positions": [
-                                3.1,
-                                -1,
-                                0.5,
-                                null,
-                                1.5,
-                                null
-                            ],
-                            "velocities": [],
-                            "accelerations": [],
-                            "effort": [],
-                            "time_from_start": {
-                                "sec": 2,
-                                "nanosec": 0
-                            }
-                        }
-                    ]
-                },
-                "multi_dof_trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "path_tolerance": [],
-                "component_path_tolerance": [],
-                "goal_tolerance": [],
-                "component_goal_tolerance": [],
-                "goal_time_tolerance": {
-                    "sec": 0,
-                    "nanosec": 0
-                }
-            }
-        },
-        {
-            "label": "Call",
-            "color": "blue",
-            "show_request": true,
-            "show_reply": true,
-            "value": {
-                "trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "multi_dof_trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "path_tolerance": [],
-                "component_path_tolerance": [],
-                "goal_tolerance": [],
-                "component_goal_tolerance": [],
-                "goal_time_tolerance": {
-                    "sec": 0,
-                    "nanosec": 0
-                }
-            }
-        },
-        {
-            "label": "Call XX",
-            "color": "blue",
-            "show_request": true,
-            "show_reply": true,
-            "value": {
-                "trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "multi_dof_trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "path_tolerance": [],
-                "component_path_tolerance": [],
-                "goal_tolerance": [],
-                "component_goal_tolerance": [],
-                "goal_time_tolerance": {
-                    "sec": 0,
-                    "nanosec": 0
-                }
-            }
-        },
-        {
-            "label": "Call",
-            "color": "blue",
-            "show_request": true,
-            "show_reply": true,
-            "value": {
-                "trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "multi_dof_trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "path_tolerance": [],
-                "component_path_tolerance": [],
-                "goal_tolerance": [],
-                "component_goal_tolerance": [],
-                "goal_time_tolerance": {
-                    "sec": 0,
-                    "nanosec": 0
-                }
-            }
-        },
-        {
-            "label": "Call",
-            "color": "green",
-            "show_request": true,
-            "show_reply": true,
-            "value": {
-                "trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "multi_dof_trajectory": {
-                    "header": {
-                        "stamp": {
-                            "sec": 0,
-                            "nanosec": 0
-                        },
-                        "frame_id": ""
-                    },
-                    "joint_names": [],
-                    "points": []
-                },
-                "path_tolerance": [],
-                "component_path_tolerance": [],
-                "goal_tolerance": [],
-                "component_goal_tolerance": [],
-                "goal_time_tolerance": {
-                    "sec": 0,
-                    "nanosec": 0
-                }
-            }
         }
     ],
     "/kuka/kuka_arm_controller/query_state": [
@@ -529,16 +274,16 @@
             "show_reply": true,
             "value": {
                 "time": {
-                    "sec": 10,
-                    "nanosec": 0
+                    "nanosec": 0,
+                    "sec": 10
                 }
             }
         }
     ],
     "/kuka/robotiq_2f140_controller/follow_joint_trajectory": [
         {
-            "label": "Open",
-            "color": "green",
+            "label": "Open Claw",
+            "color": "black",
             "show_request": false,
             "show_reply": false,
             "value": {
@@ -563,7 +308,7 @@
                             "effort": [],
                             "time_from_start": {
                                 "sec": 0,
-                                "nanosec": 500
+                                "nanosec": 0
                             }
                         }
                     ]
@@ -591,7 +336,7 @@
         },
         {
             "label": "Close",
-            "color": "black",
+            "color": "magenta",
             "show_request": false,
             "show_reply": false,
             "value": {
@@ -609,14 +354,14 @@
                     "points": [
                         {
                             "positions": [
-                                0.695
+                                0.7
                             ],
                             "velocities": [],
                             "accelerations": [],
                             "effort": [],
                             "time_from_start": {
                                 "sec": 0,
-                                "nanosec": 500
+                                "nanosec": 0
                             }
                         }
                     ]

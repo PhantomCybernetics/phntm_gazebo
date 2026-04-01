@@ -10,6 +10,22 @@
           </mesh>
         </geometry>
       </collision>
+      <inertial>
+        <mass>0.026</mass>
+        <inertia>
+          <ixx>4.16e-4</ixx>
+          <iyy>4.16e-4</iyy>
+          <izz>4.16e-4</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+      <velocity_decay>
+        <!-- Nonzero values here will help slow the motion -->
+        <linear>0.5</linear>
+        <angular>0.5</angular>
+      </velocity_decay>
       <visual name="visual">
         <geometry>
           <mesh>
